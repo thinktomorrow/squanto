@@ -3,7 +3,7 @@
 namespace Thinktomorrow\Squanto\Commands;
 
 use Thinktomorrow\Squanto\Domain\Trans;
-use Thinktomorrow\Squanto\Handlers\ReadOriginalTranslationsFromDisk;
+use Thinktomorrow\Squanto\Handlers\LaravelTranslationsReader;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Handlers\SaveTranslationsToDisk;
 use Illuminate\Console\Command;
@@ -40,7 +40,7 @@ class ImportTranslationsCommand extends Command
 
         foreach ($locales as $locale) {
         // Get all our translations files
-            $lines = app(ReadOriginalTranslationsFromDisk::class)->readLoosely($locale, $groups);
+            $lines = app(LaravelTranslationsReader::class)->readLoosely($locale, $groups);
 
             foreach ($groups as $slug) {
                 if (!$group = Page::findBySlug($slug)) {

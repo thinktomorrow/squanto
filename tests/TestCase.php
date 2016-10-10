@@ -28,7 +28,7 @@ class TestCase extends BaseTestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['path.lang'] = $this->getStubDirectory();
+        $app['path.lang'] = $this->getStubDirectory('lang');
 
         $this->createTestDatabase();
         $app['config']->set('database.connections.sqlite', [
@@ -47,9 +47,9 @@ class TestCase extends BaseTestCase
         $app['config']->set('translatable.fallback_locale','en');
     }
 
-    private function getStubDirectory()
+    private function getStubDirectory($dir = null)
     {
-        return __DIR__.'/stubs';
+        return __DIR__.'/stubs/' . $dir;
     }
 
     /**

@@ -4,10 +4,10 @@ namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Handlers\ClearCacheTranslations;
-use Thinktomorrow\Squanto\Handlers\ReadOriginalTranslationsFromDisk;
 use Thinktomorrow\Squanto\Handlers\WriteTranslationLineToDisk;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
+use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider
@@ -24,7 +24,7 @@ class SquantoServiceProvider extends BaseServiceProvider
             'translation.loader',
             'Thinktomorrow\\Squanto\\Handlers\\ClearCacheTranslations',
             'Thinktomorrow\\Squanto\\Handlers\\WriteTranslationLineToDisk',
-            'Thinktomorrow\\Squanto\\Handlers\\ReadOriginalTranslationsFromDisk',
+            'Thinktomorrow\\Squanto\\Services\\LaravelTranslationsReader',
         ];
     }
 
@@ -47,23 +47,21 @@ class SquantoServiceProvider extends BaseServiceProvider
     {
         $this->registerTranslator();
 
-        $path = $this->getSquantoCachePath();
-
-        $this->app->bind(ClearCacheTranslations::class, function ($app) use ($path) {
+        $this->app->bind(ClearCacheTranslations::class, function($app){
             return new ClearCacheTranslations(
-                new Filesystem(new Local($path))
+                new Filesystem(new Local($this->getSquantoCachePath()))
             );
         });
 
-        $this->app->bind(WriteTranslationLineToDisk::class, function ($app) use ($path) {
+        $this->app->bind(WriteTranslationLineToDisk::class, function($app){
             return new WriteTranslationLineToDisk(
-                new Filesystem(new Local($path))
+                new Filesystem(new Local($this->getSquantoCachePath()))
             );
         });
 
-        $this->app->bind(ReadOriginalTranslationsFromDisk::class, function ($app) {
-            return new ReadOriginalTranslationsFromDisk(
-                new Filesystem(new Local(base_path('resources/lang')))
+        $this->app->bind(LaravelTranslationsReader::class, function($app) {
+            return new LaravelTranslationsReader(
+                new Filesystem(new Local($this->getLangPath()))
             );
         });
     }
@@ -91,5 +89,10 @@ class SquantoServiceProvider extends BaseServiceProvider
     private function getSquantoCachePath()
     {
         return config('squanto.cache_path',storage_path('app/trans'));
+    }
+
+    private function getLangPath()
+    {
+        return config('squanto.lang_path',app('path.lang'));
     }
 }
