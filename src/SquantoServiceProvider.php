@@ -38,11 +38,17 @@ class SquantoServiceProvider extends BaseServiceProvider
 
         $path = $this->getSquantoCachePath();
 
-        $this->app->bind(ClearCacheTranslations::class, function ($app) use ($path) {
-            return new ClearCacheTranslations(
-                new Filesystem(new Local($path))
-            );
-        });
+        $this->app->when(ClearCacheTranslations::class)
+            ->needs(Filesystem::class)
+            ->give(function () use($path) {
+                return new Filesystem(new Local($path));
+            });
+
+//        $this->app->bind(ClearCacheTranslations::class, function ($app) use ($path) {
+//            return new ClearCacheTranslations(
+//                new Filesystem(new Local($path))
+//            );
+//        });
 
         $this->app->bind(WriteTranslationLineToDisk::class, function ($app) use ($path) {
             return new WriteTranslationLineToDisk(

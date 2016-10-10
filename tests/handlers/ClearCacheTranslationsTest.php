@@ -13,7 +13,7 @@ class ClearCacheTranslationsTest extends TestCase
         // The filesystem bindings are not present in the container for some reason
         // Only after loading the translator, they seem to be loaded in...
         // TODO: should look into this further to find out bug behind this all
-        app('translator');
+//        app('translator');
 
     }
 
