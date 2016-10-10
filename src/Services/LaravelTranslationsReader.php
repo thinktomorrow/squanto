@@ -24,8 +24,8 @@ class LaravelTranslationsReader
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-
         $this->path = app('path.lang');
+        $this->translations = collect();
     }
 
     /**
@@ -62,6 +62,7 @@ class LaravelTranslationsReader
 
     /**
      * Flatten per file a multi-dimensional associative array with dots.
+
      * @return \Illuminate\Support\Collection
      */
     public function flattenPerFile()
@@ -73,6 +74,8 @@ class LaravelTranslationsReader
 
     /**
      * Flatten all files which also flattens the filenames (groups) with dots.
+     * Note: This will remove any empty language files
+     *
      * @return \Illuminate\Support\Collection
      */
     public function flatten()

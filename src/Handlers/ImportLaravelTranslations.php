@@ -2,28 +2,25 @@
 
 namespace Thinktomorrow\Squanto\Handlers;
 
-use League\Flysystem\Filesystem;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 
 class ImportLaravelTranslations
 {
-    /**
-     * Local filesystem. Already contains the path to our translation files
-     * e.g. storage/app/trans
-     *
-     * @var Filesystem
-     */
-    private $filesystem;
+    private $reader;
 
-    public function __construct(Filesystem $filesystem)
+    public function __construct(LaravelTranslationsReader $reader)
     {
-        $this->filesystem = $filesystem;
+        $this->reader = $reader;
     }
 
-    public function import()
+    public function import($locale)
     {
-        // Read originals
+        $translations = $this->reader->read($locale)->flatten();
 
-        // Save to db
+        $translations->each(function($value,$key) use($locale){
+            Line::findOrCreateByKey($key)->saveValue($locale,$value);
+        });
     }
 
 

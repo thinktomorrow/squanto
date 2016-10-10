@@ -30,6 +30,17 @@ class Line extends Model
     }
 
     /**
+     * @param $key
+     * @return Line
+     */
+    public static function findOrCreateByKey($key)
+    {
+        if($line = self::findByKey($key)) return $line;
+
+        return self::make($key);
+    }
+
+    /**
      * Save a translated value
      *
      * @param $locale
