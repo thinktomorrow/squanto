@@ -12,9 +12,20 @@ use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider
 {
-    private function getSquantoCachePath()
+    protected $defer = true;
+
+    /**
+     * @return array
+     */
+    public function provides()
     {
-        return config('squanto.cache_path',storage_path('app/trans'));
+        return [
+            'translator',
+            'translation.loader',
+            'Thinktomorrow\\Squanto\\Handlers\\ClearCacheTranslations',
+            'Thinktomorrow\\Squanto\\Handlers\\WriteTranslationLineToDisk',
+            'Thinktomorrow\\Squanto\\Handlers\\ReadOriginalTranslationsFromDisk',
+        ];
     }
 
     /**
@@ -38,17 +49,11 @@ class SquantoServiceProvider extends BaseServiceProvider
 
         $path = $this->getSquantoCachePath();
 
-        $this->app->when(ClearCacheTranslations::class)
-            ->needs(Filesystem::class)
-            ->give(function () use($path) {
-                return new Filesystem(new Local($path));
-            });
-
-//        $this->app->bind(ClearCacheTranslations::class, function ($app) use ($path) {
-//            return new ClearCacheTranslations(
-//                new Filesystem(new Local($path))
-//            );
-//        });
+        $this->app->bind(ClearCacheTranslations::class, function ($app) use ($path) {
+            return new ClearCacheTranslations(
+                new Filesystem(new Local($path))
+            );
+        });
 
         $this->app->bind(WriteTranslationLineToDisk::class, function ($app) use ($path) {
             return new WriteTranslationLineToDisk(
@@ -81,5 +86,10 @@ class SquantoServiceProvider extends BaseServiceProvider
 
             return $trans;
         });
+    }
+
+    private function getSquantoCachePath()
+    {
+        return config('squanto.cache_path',storage_path('app/trans'));
     }
 }
