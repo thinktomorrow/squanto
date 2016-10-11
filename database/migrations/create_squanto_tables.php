@@ -33,7 +33,6 @@ class CreateSquantoTables extends Migration
 
         Schema::create('squanto_pages', function (Blueprint $table) {
             $table->increments('id');
-            $table->boolean('exclude')->default(0); // exclude group from frontend (so only devs can manage it)
             $table->string('label'); // admin label
             $table->string('description')->nullable(); // admin description
             $table->string('key')->unique(); // refers to the first segment of the linekey

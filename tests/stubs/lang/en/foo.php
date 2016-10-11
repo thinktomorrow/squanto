@@ -1,12 +1,13 @@
 <?php
 
 return [
-    'bam'   => 'bazzz',
+    'bar'   => 'bazzz',
+    'hello' => 'hello :name, welcome back',
     'intro' => [
-        'title' => 'this is an introduction',
+        'title' => 'This is an intro!',
         'header' => [
-            'first'     => 'home',
-            'second'    => 'about',
+            'first'     => 'Home',
+            'second'    => 'About',
         ]
     ]
 ];

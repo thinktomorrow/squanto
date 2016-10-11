@@ -71,7 +71,7 @@ class TestCase extends BaseTestCase
     private function migrate()
     {
         $migrations = [
-            'CreateSquantoTables' => '20160901_100000_create_squanto_tables.php',
+            'CreateSquantoTables' => 'create_squanto_tables.php',
         ];
 
         foreach($migrations as $class => $file)

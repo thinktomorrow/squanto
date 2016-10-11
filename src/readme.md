@@ -7,6 +7,8 @@
 - V use cached version to reduce database calls: observe changes
 - V save cached files in /storage/frameworks/cache/trans the same way as lang structured files
 
+- remove dimsav dependency
+
 # EXTRA
 - allow html
 - compare mode:  between langs (column mode vs stack mode)

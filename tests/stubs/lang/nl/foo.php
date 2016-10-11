@@ -2,9 +2,9 @@
 
 return [
     'bar'   => 'bazz',
-    'hello' => 'hello :name, welcome back',
+    'hello' => 'hallo :name, welkom terug',
     'intro' => [
-        'title' => 'Dit is een introductie',
+        'title' => 'Dit is een introductie!',
         'header' => [
             'first'     => 'Thuis',
             'second'    => 'Over',

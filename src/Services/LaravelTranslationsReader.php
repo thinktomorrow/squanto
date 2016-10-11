@@ -24,7 +24,7 @@ class LaravelTranslationsReader
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->path = app('path.lang');
+        $this->path = app('squanto.lang_path');
         $this->translations = collect();
     }
 
@@ -96,6 +96,10 @@ class LaravelTranslationsReader
         $combined = [];
 
         foreach ($values as $key => $value) {
+
+            // Empty arrays will be ignored in our flattening
+            if(is_array($value) && empty($value)) continue;
+
             $combined[$groupkey . '.' . $key] = $value;
         }
 

@@ -3,11 +3,13 @@
 namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
+use Thinktomorrow\Squanto\Commands\ImportTranslationsCommand;
 use Thinktomorrow\Squanto\Handlers\ClearCacheTranslations;
 use Thinktomorrow\Squanto\Handlers\WriteTranslationLineToDisk;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
+use Thinktomorrow\Squanto\Tests\ImportTranslationsCommandTest;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider
@@ -36,6 +38,17 @@ class SquantoServiceProvider extends BaseServiceProvider
     public function boot()
     {
         $this->app['translator']->addNamespace('squanto', $this->getSquantoCachePath());
+
+        if ($this->app->runningInConsole())
+        {
+            $this->publishes([
+                __DIR__.'/../config/squanto.php' => config_path('squanto.php')
+            ],'config');
+
+            $this->publishes([
+                __DIR__.'/../database/migrations/create_squanto_tables.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_squanto_tables.php'),
+            ],'migrations');
+        }
     }
 
     /**
@@ -45,6 +58,9 @@ class SquantoServiceProvider extends BaseServiceProvider
      */
     public function register()
     {
+        $this->app['squanto.cache_path'] = $this->getSquantoCachePath();
+        $this->app['squanto.lang_path'] = $this->getSquantoLangPath();
+
         $this->registerTranslator();
 
         $this->app->bind(ClearCacheTranslations::class, function($app){
@@ -61,9 +77,15 @@ class SquantoServiceProvider extends BaseServiceProvider
 
         $this->app->bind(LaravelTranslationsReader::class, function($app) {
             return new LaravelTranslationsReader(
-                new Filesystem(new Local($this->getLangPath()))
+                new Filesystem(new Local($this->getSquantoLangPath()))
             );
         });
+
+        $this->commands([
+            ImportTranslationsCommand::class,
+        ]);
+
+        $this->mergeConfigFrom(__DIR__.'/../config/squanto.php','squanto');
     }
 
     private function registerTranslator()
@@ -88,11 +110,13 @@ class SquantoServiceProvider extends BaseServiceProvider
 
     private function getSquantoCachePath()
     {
-        return config('squanto.cache_path',storage_path('app/trans'));
+        $path = config('squanto.cache_path');
+        return is_null($path) ? storage_path('app/trans') : $path;
     }
 
-    private function getLangPath()
+    private function getSquantoLangPath()
     {
-        return config('squanto.lang_path',app('path.lang'));
+        $path = config('squanto.lang_path');
+        return is_null($path) ? app('path.lang') : $path;
     }
 }

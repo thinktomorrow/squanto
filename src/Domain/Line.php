@@ -61,6 +61,13 @@ class Line extends Model
         return $this->getTranslationFor('value',$locale, $fallback);
     }
 
+    public static function findValue($key, $locale)
+    {
+        if(!$line = self::findByKey($key)) return null;
+
+        return $line->getValue($locale,false);
+    }
+
     /**
      * @param $key
      * @return mixed
