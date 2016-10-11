@@ -1,17 +1,14 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Handlers;
+namespace Thinktomorrow\Squanto\Import;
 
-use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Services\ImportStatistics;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
-use Thinktomorrow\Squanto\Services\SingleTranslationImporter;
 
-class ImportLaravelTranslations
+class ImportTranslations
 {
     private $reader;
     private $overwriteProtection = true;
-    private $enable_stats = true;
     private $dry = false;
     private $stats;
     private $excluded_files;
@@ -44,17 +41,15 @@ class ImportLaravelTranslations
         return $this;
     }
 
-    public function importSingleValue($locale, $key, $new_value)
+    public function importOnHoldValue($locale, $key, $value)
     {
-//        $import = app(SingleTranslationImporter::class)->import($locale,$key,$value);
-//
-//        if($stats = $import->getStats())
-//        {
-//            $this->pushToStats(key($stats),reset($stats));
-//        }
+        $stats = app(SingleTranslationImporter::class)
+            ->disableOverwriteProtection()
+            ->import($locale,$key,$value)
+            ->getStats();
 
-        //$this->insertOrUpdateValue($locale,$key,$new_value, true);
-        // TODO: change stats to reflect the change
+        $this->pushToStats(key($stats),reset($stats));
+        $this->removeFromStats('updated_on_hold',$locale,$key);
 
         return $this;
     }

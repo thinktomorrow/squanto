@@ -5,6 +5,7 @@ namespace Thinktomorrow\Squanto\Services;
 
 
 use Illuminate\Support\Str;
+use Thinktomorrow\Squanto\Import\Entry;
 
 class ImportStatistics
 {
@@ -20,9 +21,18 @@ class ImportStatistics
         return $this->attributes;
     }
 
-    public function pushTranslation($item,array $value)
+    public function pushTranslation($action, Entry $translation)
     {
-        return $this->push($item,$value,false,$value['locale'].'.'.$value['key']);
+        return $this->push($action,$translation,false,$translation->locale.'.'.$translation->key);
+    }
+
+    public function removeTranslation($action,$locale,$key)
+    {
+        $k = $locale.'.'.$key;
+
+        if(!isset($this->attributes[$action]) || !isset($this->attributes[$action][$k])) return;
+
+        unset($this->attributes[$action][$k]);
     }
 
     public function pushSingle($key,$value)
@@ -30,17 +40,17 @@ class ImportStatistics
         return $this->push($key,$value,true);
     }
 
-    private function push($item,$value,$single = false,$key = null)
+    private function push($action,$value,$single = false,$key = null)
     {
         if($single)
         {
-            $this->attributes[$item] = $value;
+            $this->attributes[$action] = $value;
             return $this;
         }
 
-        if(!isset($this->attributes[$item])) $this->attributes[$item] = [];
+        if(!isset($this->attributes[$action])) $this->attributes[$action] = [];
 
-        ($key) ? $this->attributes[$item][$key] = $value : $this->attributes[$item][] = $value;
+        ($key) ? $this->attributes[$action][$key] = $value : $this->attributes[$action][] = $value;
 
         return $this;
     }

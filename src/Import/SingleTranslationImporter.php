@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Services;
+namespace Thinktomorrow\Squanto\Import;
 
 use Thinktomorrow\Squanto\Domain\Line;
 
@@ -97,12 +97,7 @@ class SingleTranslationImporter
      */
     private function setStats($action, $locale, $key, $new_value, $original_value = null)
     {
-        $this->stats = [$action => [
-            'key'            => $key,
-            'locale'         => $locale,
-            'new_value'      => $new_value,
-            'original_value' => $original_value,
-        ]];
+        $this->stats = [$action => new Entry($locale,$key,$new_value,$original_value)];
     }
 
     /**

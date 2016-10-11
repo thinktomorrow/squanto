@@ -4,7 +4,7 @@ namespace Thinktomorrow\Squanto\Tests;
 
 use Illuminate\Support\Collection;
 use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Handlers\ImportLaravelTranslations;
+use Thinktomorrow\Squanto\Import\ImportTranslations;
 
 class ImportLaravelTranslationsTest extends TestCase
 {
@@ -19,7 +19,7 @@ class ImportLaravelTranslationsTest extends TestCase
     /** @test */
     public function it_can_import_new_translations()
     {
-        $importer = app(ImportLaravelTranslations::class)->import('nl');
+        $importer = app(ImportTranslations::class)->import('nl');
 
         $this->assertInstanceOf(Collection::class,Line::all());
         $this->assertCount(7,Line::all());
@@ -34,11 +34,11 @@ class ImportLaravelTranslationsTest extends TestCase
     public function with_overwrite_protection_it_only_imports_new_translations()
     {
         // Import all
-        app(ImportLaravelTranslations::class)->disableOverwriteProtection()->import('nl');
+        app(ImportTranslations::class)->disableOverwriteProtection()->import('nl');
 
         $this->reflectLanguageChange();
 
-        $importer = app(ImportLaravelTranslations::class)->enableOverwriteProtection()->import('nl');
+        $importer = app(ImportTranslations::class)->enableOverwriteProtection()->import('nl');
 
         $this->assertCount(7,Line::all());
         $this->assertCount(0,$importer->getStats()->getInserts());
@@ -54,11 +54,11 @@ class ImportLaravelTranslationsTest extends TestCase
     public function without_overwrite_protection_it_updates_existing_translations()
     {
         // Import all
-        app(ImportLaravelTranslations::class)->import('nl');
+        app(ImportTranslations::class)->import('nl');
 
         $this->reflectLanguageChange();
 
-        $importer = app(ImportLaravelTranslations::class)->disableOverwriteProtection()->import('nl');
+        $importer = app(ImportTranslations::class)->disableOverwriteProtection()->import('nl');
 
         $this->assertCount(7,Line::all());
         $this->assertCount(0,$importer->getStats()->getInserts());
@@ -73,8 +73,8 @@ class ImportLaravelTranslationsTest extends TestCase
     /** @test */
     public function it_can_import_multiple_locales()
     {
-        app(ImportLaravelTranslations::class)->import('nl');
-        app(ImportLaravelTranslations::class)->disableOverwriteProtection()->import('en');
+        app(ImportTranslations::class)->import('nl');
+        app(ImportTranslations::class)->disableOverwriteProtection()->import('en');
 
     }
 

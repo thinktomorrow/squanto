@@ -1,21 +1,15 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Commands;
+namespace Thinktomorrow\Squanto\Import;
 
-use Symfony\Component\Console\Helper\Table;
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Domain\Trans;
-use Thinktomorrow\Squanto\Handlers\ImportLaravelTranslations;
-use Thinktomorrow\Squanto\Handlers\LaravelTranslationsReader;
-use Thinktomorrow\Squanto\Domain\Page;
-use Thinktomorrow\Squanto\Handlers\SaveTranslationsToDisk;
 use Illuminate\Console\Command;
+use Symfony\Component\Console\Helper\Table;
 
 class ImportTranslationsCommand extends Command
 {
     private $importer;
 
-    public function __construct(ImportLaravelTranslations $importer)
+    public function __construct(ImportTranslations $importer)
     {
         parent::__construct();
 
@@ -87,50 +81,11 @@ class ImportTranslationsCommand extends Command
             }
         }
 
-return;
-        foreach ($locales as $locale) {
-        // Get all our translations files
-            $lines = app(LaravelTranslationsReader::class)->readLoosely($locale, $groups);
-
-            foreach ($groups as $slug) {
-                if (!$group = Page::findBySlug($slug)) {
-                    $group = Page::make($slug);
-                }
-
-                if (!isset($lines[$slug])) {
-                    continue;
-                }
-
-                foreach ($lines[$slug] as $key => $value) {
-                    $key = $group->slug.'.'.$key;
-
-                    if (!$transline = Trans::findByKey($key)) {
-                        $transline = Trans::make($key, $group->id, null, null, Trans::suggestType($value));
-                    }
-
-                    $currentline = $transline->getTranslation($locale, false);
-
-                    if (!$currentline) {
-                        $transline->saveTranslation($locale, 'value', $value);
-                    } elseif ($currentline->value !== $value) {
-                    // Notify a possible change
-                        $this->info($key. ' '.strtoupper($locale) .' translation has been changed.');
-                        $this->comment("Original value:");
-                        $this->line($currentline->value);
-                        $this->comment("New value:");
-                        $this->line($value);
-                        if (!$this->confirm('Overwrite?', false)) {
-                        //
-                        } else {
-                            $transline->saveTranslation($locale, 'value', $value);
-                        }
-                    }
-                }
-            }
-        }
-
         $this->info('Import finished.');
 
+        // TODO: refresh cache translations from db to disk
+
+        return;
         // Recache results
         app(SaveTranslationsToDisk::class)->clear()->handle();
         $this->info('Translation cache refreshed.');

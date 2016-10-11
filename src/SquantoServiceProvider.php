@@ -3,13 +3,12 @@
 namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
-use Thinktomorrow\Squanto\Commands\ImportTranslationsCommand;
+use Thinktomorrow\Squanto\Import\ImportTranslationsCommand;
 use Thinktomorrow\Squanto\Handlers\ClearCacheTranslations;
 use Thinktomorrow\Squanto\Handlers\WriteTranslationLineToDisk;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
-use Thinktomorrow\Squanto\Tests\ImportTranslationsCommandTest;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider
