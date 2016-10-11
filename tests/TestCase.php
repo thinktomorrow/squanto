@@ -54,8 +54,6 @@ class TestCase extends BaseTestCase
 
     /**
      * Create fresh test database and hydrate with migrations
-     *
-     * @test
      */
     public function createTestDatabase()
     {
