@@ -5,6 +5,7 @@ namespace Thinktomorrow\Squanto\Handlers;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Services\ImportStatistics;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
+use Thinktomorrow\Squanto\Services\SingleTranslationImporter;
 
 class ImportLaravelTranslations
 {
@@ -45,7 +46,14 @@ class ImportLaravelTranslations
 
     public function importSingleValue($locale, $key, $new_value)
     {
-        $this->insertOrUpdateValue($locale,$key,$new_value, true);
+//        $import = app(SingleTranslationImporter::class)->import($locale,$key,$value);
+//
+//        if($stats = $import->getStats())
+//        {
+//            $this->pushToStats(key($stats),reset($stats));
+//        }
+
+        //$this->insertOrUpdateValue($locale,$key,$new_value, true);
         // TODO: change stats to reflect the change
 
         return $this;
@@ -82,59 +90,15 @@ class ImportLaravelTranslations
      * @param $locale
      * @param $key
      * @param $value
-     * @param bool $force ignore overwriteProtection and disable stats
      */
-    private function insertOrUpdateValue($locale, $key, $value, $force = false)
+    private function insertOrUpdateValue($locale, $key, $value)
     {
-        $overwriteProtection = $force ? false : $this->overwriteProtection;
-        $enable_stats = $force ? false : $this->enable_stats;
+        $stats = app(SingleTranslationImporter::class)
+                    ->enableOverwriteProtection($this->overwriteProtection)
+                    ->import($locale,$key,$value)
+                    ->getStats();
 
-        if(!$line = Line::findByKey($key))
-        {
-            if(!$this->dry) Line::make($key)->saveValue($locale, $value);
-
-            if($enable_stats)
-            {
-                $this->pushToStats('inserts', [
-                    'key'            => $key,
-                    'locale'         => $locale,
-                    'new_value'      => $value,
-                    'original_value' => null,
-                ]);
-            }
-
-            return;
-        }
-
-        $translation = $line->getValue($locale, false);
-
-        $stat = [
-            'id'             => $line->id,
-            'key'            => $key,
-            'locale'         => $locale,
-            'new_value'      => $value,
-            'original_value' => $translation,
-        ];
-
-        // Ignore the translation if it has remained the same
-        if($translation === $value)
-        {
-            if($enable_stats) $this->pushToStats('remained_same', $stat);
-            return;
-        }
-
-        if (!is_null($translation) && $overwriteProtection)
-        {
-            if($enable_stats) $this->pushToStats('updates_on_hold', $stat);
-            return;
-        }
-
-        if(!$this->dry) $line->saveValue($locale, $value);
-
-        if($enable_stats)
-        {
-            ($translation) ? $this->pushToStats('updates', $stat) : $this->pushToStats('inserts', $stat);
-        }
+        $this->pushToStats(key($stats),reset($stats));
     }
 
 
