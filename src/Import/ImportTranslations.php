@@ -41,12 +41,22 @@ class ImportTranslations
         return $this;
     }
 
+    /**
+     * Import an existing entry that was put on hold due to overwrite protection
+     *
+     * @param $locale
+     * @param $key
+     * @param $value
+     * @return $this
+     */
     public function importOnHoldValue($locale, $key, $value)
     {
-        $stats = app(SingleTranslationImporter::class)
+        $stats = app(ImportSingleTranslation::class)
             ->disableOverwriteProtection()
             ->import($locale,$key,$value)
             ->getStats();
+
+        // TODO: need to test thisg
 
         $this->pushToStats(key($stats),reset($stats));
         $this->removeFromStats('updated_on_hold',$locale,$key);
@@ -88,7 +98,7 @@ class ImportTranslations
      */
     private function insertOrUpdateValue($locale, $key, $value)
     {
-        $stats = app(SingleTranslationImporter::class)
+        $stats = app(ImportSingleTranslation::class)
                     ->enableOverwriteProtection($this->overwriteProtection)
                     ->import($locale,$key,$value)
                     ->getStats();

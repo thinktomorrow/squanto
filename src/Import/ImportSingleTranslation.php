@@ -4,7 +4,7 @@ namespace Thinktomorrow\Squanto\Import;
 
 use Thinktomorrow\Squanto\Domain\Line;
 
-class SingleTranslationImporter
+class ImportSingleTranslation
 {
     private $overwriteProtection = true;
     private $dry = false;
