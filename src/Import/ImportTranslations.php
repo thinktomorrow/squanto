@@ -22,7 +22,7 @@ class ImportTranslations
 
     public function dry($enable = true)
     {
-        $this->dry = $enable;
+        $this->dry = !!$enable;
 
         return $this;
     }
@@ -53,6 +53,7 @@ class ImportTranslations
     {
         $stats = app(ImportSingleTranslation::class)
             ->disableOverwriteProtection()
+            ->dry($this->dry)
             ->import($locale,$key,$value)
             ->getStats();
 
@@ -100,6 +101,7 @@ class ImportTranslations
     {
         $stats = app(ImportSingleTranslation::class)
                     ->enableOverwriteProtection($this->overwriteProtection)
+                    ->dry($this->dry)
                     ->import($locale,$key,$value)
                     ->getStats();
 

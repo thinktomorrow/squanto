@@ -44,8 +44,39 @@ class ImportTranslationsCommand extends Command
 
         foreach($locales as $locale)
         {
+            $this->importer->dry()->import($locale);
+        }
+
+        // Insert new translations
+        if(($totalInserts = count($this->importer->getStats()->getInserts())) > 0)
+        {
+            $answer = $this->ask('Insert '. $totalInserts . ' new translations? (y,n,details,?)','n');
+
+            if(!$answer || $answer == 'n') return;
+
+            if($answer == 'details')
+            {
+                // Show details
+                $this->displayDetails('inserts');
+                $answer = $this->ask('Insert '. $totalInserts . ' new translations? (y,n,details,?)','n');
+            }
+dd($answer);
+            foreach($locales as $locale)
+            {
+                $this->importer->dry($this->option('dry'))->enableOverwriteProtection()->import($locale);
+            }
+        }
+
+        dd(count($this->importer->getStats()->getInserts()));
+
+        $this->info(($this->option('dry') ? 'Simulating' : 'Starting') . ' squanto import for locales ['.implode(',',$locales).']' . ($this->option('dry') ? ' (dry mode)' : null).'.');
+
+        foreach($locales as $locale)
+        {
             $this->importer->dry($this->option('dry'))->import($locale);
         }
+
+
 
         $this->info('Import finished with following results:');
         $this->displayStats();
@@ -55,6 +86,12 @@ class ImportTranslationsCommand extends Command
             'Superb. Now start cracking:',
             'Squanto loves your style.',
         ];
+
+
+
+        $answer = $this->ask('this is the question (y,n,details)','n');
+
+        dd($answer);
 
         // Options to go further on the table stats
         $choice = $this->choice($thanks[array_rand($thanks)], [
@@ -106,6 +143,24 @@ class ImportTranslationsCommand extends Command
             ['updates', count($stats->getUpdates())],
             ['remained the same', count($stats->getRemainedSame())],
         ]);
+
+        $table->render();
+    }
+
+    private function displayDetails($action)
+    {
+        $stats = $this->importer->getStats();
+
+        $table = new Table($this->output);
+        $table->setHeaders(['key', 'locale', 'original', 'new']);
+
+        $rows = [];
+        foreach($stats->{'get'.ucfirst($action)}() as $entry)
+        {
+            $rows[] = [$entry->key,$entry->locale,$entry->original_value,$entry->value];
+        }
+
+        $table->setRows($rows);
 
         $table->render();
     }
