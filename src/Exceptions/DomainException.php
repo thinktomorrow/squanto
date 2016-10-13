@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Domain;
+namespace Thinktomorrow\Squanto\Exceptions;
 
 use Exception;
 

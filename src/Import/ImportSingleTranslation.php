@@ -42,7 +42,8 @@ class ImportSingleTranslation
     private function insertTranslation($locale, $key, $value)
     {
         if (!$this->dry) {
-            Line::findOrCreateByKey($key)->saveValue($locale, $value);
+            $line = Line::findOrCreateByKey($key)->saveValue($locale, $value);
+            $line->saveSuggestedType();
         }
 
         $this->setStats('inserts', $locale, $key, $value);

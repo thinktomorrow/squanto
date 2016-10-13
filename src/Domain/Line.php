@@ -76,4 +76,28 @@ class Line extends Model
     {
         return self::where('key',$key)->first();
     }
+
+    public function saveSuggestedType()
+    {
+        // Based on first value found we will suggest a type
+        if(!$value = $this->getValue()) return;
+
+        $this->type = (new LineType($value))->suggest();
+        $this->save();
+    }
+
+    public function editInEditor()
+    {
+        return $this->type == LineType::EDITOR;
+    }
+
+    public function editInTextarea()
+    {
+        return $this->type == LineType::TEXTAREA;
+    }
+
+    public function editInTextinput()
+    {
+        return (!$this->type || $this->type == LineType::TEXT);
+    }
 }

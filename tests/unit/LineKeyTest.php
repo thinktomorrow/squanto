@@ -3,21 +3,21 @@
 namespace Thinktomorrow\Squanto\Tests;
 
 use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Domain\DomainException;
+use Thinktomorrow\Squanto\Exceptions\InvalidLineKeyException;
 
 class LineKeyTest extends TestCase
 {
     /** @test */
     public function block_unexpected_key_format()
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(InvalidLineKeyException::class);
         new LineKey('foo');
     }
 
     /** @test */
     public function block_non_string_key()
     {
-        $this->expectException(DomainException::class);
+        $this->expectException(InvalidLineKeyException::class);
         new LineKey(12.04);
     }
 

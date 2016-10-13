@@ -1,8 +1,8 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Services;
+namespace Thinktomorrow\Squanto\Domain;
 
-class SuggestType
+class LineType
 {
     const TEXT = 'text';
     const TEXTAREA = 'textarea';
@@ -10,9 +10,9 @@ class SuggestType
 
     private $value;
 
-    public function __construct(Line $line)
+    public function __construct($value)
     {
-        $this->value = $line->getValue();
+        $this->value = $value;
     }
 
     /**
