@@ -24,6 +24,7 @@ class Line extends Model
         $line->key = $linekey->get();
         $line->label = $linekey->getAsLabel();
         $line->page_id = Page::findOrCreateByKey($linekey->getPageKey())->id;
+
         $line->save();
 
         return $line;
@@ -45,10 +46,26 @@ class Line extends Model
      *
      * @param $locale
      * @param $value
+     * @return $this
      */
     public function saveValue($locale, $value)
     {
         $this->saveTranslation($locale,'value',$value);
+
+        return $this;
+    }
+
+    /**
+     * Save a translated value
+     *
+     * @param $locale
+     * @return $this
+     */
+    public function removeValue($locale)
+    {
+        $this->removeTranslation($locale);
+
+        return $this;
     }
 
     /**
