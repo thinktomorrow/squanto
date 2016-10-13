@@ -7,7 +7,10 @@
 [![Quality Score][ico-code-quality]][link-code-quality]
 [![Total Downloads][ico-downloads]][link-downloads]
 
-Text manager static laravel translations during and after development
+Manage the static translations of your Laravel application during and after development
+Squanto, based on one of the first [Native Indian interpreters](https://nl.wikipedia.org/wiki/Squanto), is an opinionated way to manage the translations in database.
+
+**NOTE: This package is still in development and the api will be subject to change. Please only use this package in production until a stable version is released. That being said, please do try this package out as feedback is much appreciated!**
 
 ## Install
 
@@ -19,10 +22,22 @@ $ composer require thinktomorrow/squanto
 
 ## Usage
 
-``` php
-$skeleton = new League\Skeleton();
-echo $skeleton->echoPhrase('Hello, League!');
+Publish the migrations and config file:
+``` bash
+$ php artisan vendor:publish --provider="Thinktomorrow\Squanto\SquantoServiceProvider"
 ```
+
+Make sure you set the settings in the squanto config file. Especially the locales to be maintained.
+Run the migrations
+``` bash
+$ php artisan migrate
+```
+
+Next you can import the existing translations from your lang files by following command:
+``` bash
+$ php artisan squanto:import
+```
+If you run this command with the `-dry` option it will simulate the impact of the import first.
 
 ## Change log
 
@@ -45,7 +60,6 @@ If you discover any security related issues, please email cavensben@gmail.com in
 ## Credits
 
 - [Ben Cavens][link-author]
-- [All Contributors][link-contributors]
 
 ## License
 

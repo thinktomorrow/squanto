@@ -1,7 +1,7 @@
 {
     "name": "thinktomorrow/squanto",
     "type": "library",
-    "description": "Text manager static laravel translations during and after development",
+    "description": "Text manager for static laravel translations during and after development",
     "keywords": [
         "thinktomorrow",
         "squanto"
@@ -46,7 +46,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "1.0-dev"
+            "dev-master": "0.1-dev"
         }
     },
     "config": {
