@@ -5,6 +5,7 @@ namespace Thinktomorrow\Squanto\Import;
 use Exception;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Helper\Table;
+use Symfony\Component\Console\Helper\TableSeparator;
 
 class ImportTranslationsCommand extends Command
 {
@@ -161,16 +162,11 @@ class ImportTranslationsCommand extends Command
                 $this->comment("New:");
                 $this->line($entry->value);
 
-                $confirm = $this->ask('Overwrite? (y,n,sync)','n');
+                $confirm = $this->ask('Overwrite? (y,n)','n');
 
                 if(in_array(strtolower($confirm),['y','yes']))
                 {
                     $this->importer->dry($this->option('dry'))->importOnHoldValue($entry->locale,$entry->key,$entry->value);
-                }
-
-                else if(in_array(strtolower($confirm),['sync']))
-                {
-                    // Feature TODO: update the translation file with the database content
                 }
             }
         }
@@ -187,9 +183,17 @@ class ImportTranslationsCommand extends Command
         $table->setHeaders(['key', 'locale', 'original', 'new']);
 
         $rows = [];
+        $currentpage = null;
         foreach($stats->{'get'.ucfirst($action)}() as $entry)
         {
-            $rows[] = [$entry->key,$entry->locale,$entry->original_value,$entry->value];
+            $original_value = wordwrap($entry->original_value,100);
+            $value = wordwrap($entry->value,100);
+
+            // Separate each page in the table with a row separator
+            if(!is_null($currentpage) && $currentpage !== $entry->pagekey) $rows[] = new TableSeparator();
+            $currentpage = $entry->pagekey;
+
+            $rows[] = [$entry->key,$entry->locale,$original_value,$value];
         }
 
         $table->setRows($rows);

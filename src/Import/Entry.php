@@ -2,6 +2,8 @@
 
 namespace Thinktomorrow\Squanto\Import;
 
+use Thinktomorrow\Squanto\Domain\LineKey;
+
 /**
  * Class ImportTranslation
  *
@@ -13,10 +15,8 @@ class Entry
     private $locale;
     private $key;
     private $value;
-    /**
-     * @var null
-     */
     private $original_value;
+    private $pagekey;
 
     public function __construct($locale, $key, $value, $original_value = null)
     {
@@ -24,6 +24,7 @@ class Entry
         $this->key = $key;
         $this->value = $value;
         $this->original_value = $original_value;
+        $this->pagekey = (new LineKey($key))->getPageKey();
     }
 
     public function __get($key)

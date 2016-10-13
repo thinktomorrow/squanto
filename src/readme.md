@@ -9,7 +9,7 @@
 
 - remove dimsav dependency
 
-# EXTRA
+# TODO
 - allow html
 - compare mode:  between langs (column mode vs stack mode)
 - only dev can delete a entire key
@@ -21,3 +21,14 @@
 - export / import from csv
 - import / export as translation files with overwrite security (confirm overwrites)
 - dev: change key and sync with usages in application
+
+- squanto:doctor = (should be using the @msaid langman package)
+ - check if keys are translated in all locales
+ - check if there are unused translation keys
+ - check if keys are used but without translation
+- squanto sync option: update the translation file with the database content
+- use table helper 3.1 for setting column widths: now we just linebreak after every 100 chars or so
+- use table separator
+- suggest type on first line / value creation
+- restrict redactor options based on column 'allowed_html'
+- how to allow for a 'view online' / 'preview online' option? Page can perhaps contain reference to a route/url?
