@@ -33,9 +33,9 @@ class Page extends Model
         return self::where('key', $key)->first();
     }
 
-    public function trans()
+    public function lines()
     {
-        return $this->hasMany(Trans::class, 'page_id');
+        return $this->hasMany(Line::class, 'page_id');
     }
 
     public static function getAll()
