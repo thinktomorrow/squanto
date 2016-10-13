@@ -5,6 +5,11 @@ namespace Thinktomorrow\Squanto\Domain;
 use Illuminate\Database\Eloquent\Model;
 use Dimsav\Translatable\Translatable as BaseTranslatable;
 
+/**
+ * Class Line
+ *
+ * @package Thinktomorrow\Squanto\Domain
+ */
 class Line extends Model
 {
     use BaseTranslatable, Translatable;

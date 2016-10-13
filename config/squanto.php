@@ -13,8 +13,7 @@ return [
      * Here you list all translations that should be maintained by the developer
      * @var array
      */
-//    'excluded_files' => ['auth','pagination','passwords','validation','app'],
-    'excluded_files' => ['app'],
+    'excluded_files' => ['auth','pagination','passwords','validation','app'],
 
     /**
      * Path where the cached language files should be stored
