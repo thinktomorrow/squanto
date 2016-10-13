@@ -57,7 +57,7 @@ class ImportTranslations
             ->import($locale,$key,$value)
             ->getStats();
 
-        // TODO: need to test thisg
+        // TODO: need to test this
 
         $this->pushToStats(key($stats),reset($stats));
         $this->removeFromStats('updated_on_hold',$locale,$key);
@@ -80,6 +80,11 @@ class ImportTranslations
     private function pushToStats($key,$value)
     {
         $this->stats->pushTranslation($key,$value);
+    }
+
+    private function removeFromStats($action, $locale, $key)
+    {
+        $this->stats->removeTranslation($action,$locale,$key);
     }
 
     private function pushSingleToStats($key,$value)
