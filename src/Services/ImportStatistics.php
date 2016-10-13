@@ -3,7 +3,6 @@
 
 namespace Thinktomorrow\Squanto\Services;
 
-
 use Illuminate\Support\Str;
 use Thinktomorrow\Squanto\Import\Entry;
 
@@ -23,32 +22,35 @@ class ImportStatistics
 
     public function pushTranslation($action, Entry $translation)
     {
-        return $this->push($action,$translation,false,$translation->locale.'.'.$translation->key);
+        return $this->push($action, $translation, false, $translation->locale.'.'.$translation->key);
     }
 
-    public function removeTranslation($action,$locale,$key)
+    public function removeTranslation($action, $locale, $key)
     {
         $k = $locale.'.'.$key;
 
-        if(!isset($this->attributes[$action]) || !isset($this->attributes[$action][$k])) return;
+        if (!isset($this->attributes[$action]) || !isset($this->attributes[$action][$k])) {
+            return;
+        }
 
         unset($this->attributes[$action][$k]);
     }
 
-    public function pushSingle($key,$value)
+    public function pushSingle($key, $value)
     {
-        return $this->push($key,$value,true);
+        return $this->push($key, $value, true);
     }
 
-    private function push($action,$value,$single = false,$key = null)
+    private function push($action, $value, $single = false, $key = null)
     {
-        if($single)
-        {
+        if ($single) {
             $this->attributes[$action] = $value;
             return $this;
         }
 
-        if(!isset($this->attributes[$action])) $this->attributes[$action] = [];
+        if (!isset($this->attributes[$action])) {
+            $this->attributes[$action] = [];
+        }
 
         ($key) ? $this->attributes[$action][$key] = $value : $this->attributes[$action][] = $value;
 
@@ -57,7 +59,7 @@ class ImportStatistics
 
     public function merge(self $stats)
     {
-        return new self( array_merge($this->attributes,$stats->get()) );
+        return new self(array_merge($this->attributes, $stats->get()));
     }
 
     /**
@@ -68,11 +70,13 @@ class ImportStatistics
      * @param $parameters
      * @return array
      */
-    public function __call($method,$parameters)
+    public function __call($method, $parameters)
     {
-        $key = (0 === strpos($method,'get')) ? Str::snake(substr($method,3),'_') : $method;
+        $key = (0 === strpos($method, 'get')) ? Str::snake(substr($method, 3), '_') : $method;
 
-        if(!isset($this->attributes[$key])) return [];
+        if (!isset($this->attributes[$key])) {
+            return [];
+        }
 
         return $this->attributes[$key];
     }

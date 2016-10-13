@@ -42,24 +42,24 @@ class ImportTranslationsCommand extends Command
      */
     public function handle()
     {
-        if(empty($this->locales))
-        {
+        if (empty($this->locales)) {
             throw new Exception('No locales set for the import. Make sure you set your locales in the squanto config file');
         }
 
-        $this->info(($this->option('dry') ? 'Simulating' : 'Starting') . ' squanto import for locales ['.implode(',',$this->locales).']' . ($this->option('dry') ? ' (dry mode)' : null).'.');
+        $this->info(($this->option('dry') ? 'Simulating' : 'Starting') . ' squanto import for locales ['.implode(',', $this->locales).']' . ($this->option('dry') ? ' (dry mode)' : null).'.');
 
         // Collect the statistics without modifying the database
-        foreach($this->locales as $locale)
-        {
+        foreach ($this->locales as $locale) {
             $this->importer->dry()->import($locale);
         }
 
         // Insert new translations modules
-        while(false === $this->handleInserts()){}
+        while (false === $this->handleInserts()) {
+        }
 
         // Update changed translations
-        while(false === $this->handleUpdatesOnHold()){}
+        while (false === $this->handleUpdatesOnHold()) {
+        }
 
         $this->info('Import finished with following results:');
         $this->displayStats();
@@ -78,26 +78,25 @@ class ImportTranslationsCommand extends Command
     private function handleInserts()
     {
         // if no inserts in pipeline we skip the inserts early on
-        if(($totalInserts = count($this->importer->getStats()->getInserts())) < 1)
-        {
+        if (($totalInserts = count($this->importer->getStats()->getInserts())) < 1) {
             $this->warn('No new translations found');
             return true;
         }
 
-        $answer = $this->ask(($this->option('dry') ? 'Simulate insertion of ' : 'Insert ') . $totalInserts . ' new translations? (y,n,details,?)','n');
+        $answer = $this->ask(($this->option('dry') ? 'Simulate insertion of ' : 'Insert ') . $totalInserts . ' new translations? (y,n,details,?)', 'n');
 
-        if(!$answer || in_array(strtolower($answer),['n','no'])) return true;
+        if (!$answer || in_array(strtolower($answer), ['n','no'])) {
+            return true;
+        }
 
-        if($answer == 'details')
-        {
-            // Show details and continue
+        if ($answer == 'details') {
+        // Show details and continue
             $this->displayDetails('inserts');
             return false;
         }
 
-        if($answer == '?')
-        {
-            // Show details and continue
+        if ($answer == '?') {
+        // Show details and continue
             $this->line('Your options on inserting new translations:');
             $this->line('- y (yes)  Insert the new translations into the database.');
             $this->line('- n (no)   Cancel the insert.');
@@ -106,43 +105,39 @@ class ImportTranslationsCommand extends Command
             return false;
         }
 
-        if(in_array(strtolower($answer),['y','yes']))
-        {
-            foreach($this->locales as $locale)
-            {
+        if (in_array(strtolower($answer), ['y','yes'])) {
+            foreach ($this->locales as $locale) {
                 // With overwrite protection enabled, we ensure only new inserts will be handled
                 $this->importer->dry($this->option('dry'))->enableOverwriteProtection()->import($locale);
             }
         }
 
         return true;
-
     }
 
 
     private function handleUpdatesOnHold()
     {
         // if no inserts in pipeline we skip the inserts early on
-        if(($totalUpdatesOnHold = count($this->importer->getStats()->getUpdatesOnHold())) < 1)
-        {
+        if (($totalUpdatesOnHold = count($this->importer->getStats()->getUpdatesOnHold())) < 1) {
             $this->warn('No changed translations found');
             return true;
         }
 
-        $answer = $this->ask(($this->option('dry') ? '(Simulation)' : null) . $totalUpdatesOnHold . ' translations differ from database. Process each one? (y,n,details,?)','n');
+        $answer = $this->ask(($this->option('dry') ? '(Simulation)' : null) . $totalUpdatesOnHold . ' translations differ from database. Process each one? (y,n,details,?)', 'n');
 
-        if(!$answer || in_array(strtolower($answer),['n','no'])) return true;
+        if (!$answer || in_array(strtolower($answer), ['n','no'])) {
+            return true;
+        }
 
-        if($answer == 'details')
-        {
-            // Show details and continue
+        if ($answer == 'details') {
+        // Show details and continue
             $this->displayDetails('updates_on_hold');
             return false;
         }
 
-        if($answer == '?')
-        {
-            // Show details and continue
+        if ($answer == '?') {
+        // Show details and continue
             $this->line('Your options on processing the changed translations:');
             $this->line('- y (yes)  Update the database translations with the new version from the language file.');
             $this->line('- n (no)   Cancel the update.');
@@ -151,22 +146,19 @@ class ImportTranslationsCommand extends Command
             return false;
         }
 
-        if(in_array(strtolower($answer),['y','yes']))
-        {
+        if (in_array(strtolower($answer), ['y','yes'])) {
             $i = 1;
-            foreach($this->importer->getStats()->getUpdatesOnHold() as $key => $entry)
-            {
+            foreach ($this->importer->getStats()->getUpdatesOnHold() as $key => $entry) {
                 $this->info($entry->key." [".strtoupper($entry->locale)."] has changed: (".$i++ ."/".$totalUpdatesOnHold.")");
                 $this->comment("Original:");
                 $this->line($entry->original_value);
                 $this->comment("New:");
                 $this->line($entry->value);
 
-                $confirm = $this->ask('Overwrite? (y,n)','n');
+                $confirm = $this->ask('Overwrite? (y,n)', 'n');
 
-                if(in_array(strtolower($confirm),['y','yes']))
-                {
-                    $this->importer->dry($this->option('dry'))->importOnHoldValue($entry->locale,$entry->key,$entry->value);
+                if (in_array(strtolower($confirm), ['y','yes'])) {
+                    $this->importer->dry($this->option('dry'))->importOnHoldValue($entry->locale, $entry->key, $entry->value);
                 }
             }
         }
@@ -184,13 +176,14 @@ class ImportTranslationsCommand extends Command
 
         $rows = [];
         $currentpage = null;
-        foreach($stats->{'get'.ucfirst($action)}() as $entry)
-        {
-            $original_value = wordwrap($entry->original_value,100);
-            $value = wordwrap($entry->value,100);
+        foreach ($stats->{'get'.ucfirst($action)}() as $entry) {
+            $original_value = wordwrap($entry->original_value, 100);
+            $value = wordwrap($entry->value, 100);
 
             // Separate each page in the table with a row separator
-            if(!is_null($currentpage) && $currentpage !== $entry->pagekey) $rows[] = new TableSeparator();
+            if (!is_null($currentpage) && $currentpage !== $entry->pagekey) {
+                $rows[] = new TableSeparator();
+            }
             $currentpage = $entry->pagekey;
 
             $rows[] = [$entry->key,$entry->locale,$original_value,$value];

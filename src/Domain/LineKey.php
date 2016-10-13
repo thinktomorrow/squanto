@@ -43,7 +43,7 @@ class LineKey
      */
     public function getPageKey()
     {
-        return substr($this->key,0,strpos($this->key,'.'));
+        return substr($this->key, 0, strpos($this->key, '.'));
     }
 
     private function sanitizeKey($key)

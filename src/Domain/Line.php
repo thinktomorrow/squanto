@@ -36,7 +36,9 @@ class Line extends Model
      */
     public static function findOrCreateByKey($key)
     {
-        if($line = self::findByKey($key)) return $line;
+        if ($line = self::findByKey($key)) {
+            return $line;
+        }
 
         return self::make($key);
     }
@@ -50,7 +52,7 @@ class Line extends Model
      */
     public function saveValue($locale, $value)
     {
-        $this->saveTranslation($locale,'value',$value);
+        $this->saveTranslation($locale, 'value', $value);
 
         return $this;
     }
@@ -75,14 +77,16 @@ class Line extends Model
      */
     public function getValue($locale = null, $fallback = true)
     {
-        return $this->getTranslationFor('value',$locale, $fallback);
+        return $this->getTranslationFor('value', $locale, $fallback);
     }
 
     public static function findValue($key, $locale)
     {
-        if(!$line = self::findByKey($key)) return null;
+        if (!$line = self::findByKey($key)) {
+            return null;
+        }
 
-        return $line->getValue($locale,false);
+        return $line->getValue($locale, false);
     }
 
     /**
@@ -91,13 +95,15 @@ class Line extends Model
      */
     public static function findByKey($key)
     {
-        return self::where('key',$key)->first();
+        return self::where('key', $key)->first();
     }
 
     public function saveSuggestedType()
     {
         // Based on first value found we will suggest a type
-        if(!$value = $this->getValue()) return;
+        if (!$value = $this->getValue()) {
+            return;
+        }
 
         $this->type = (new LineType($value))->suggest();
         $this->save();

@@ -25,12 +25,11 @@ class ImportSingleTranslation
      */
     public function import($locale, $key, $value)
     {
-        if($line = Line::findByKey($key))
-        {
-            return $this->updateTranslation($line,$locale,$key,$value);
+        if ($line = Line::findByKey($key)) {
+            return $this->updateTranslation($line, $locale, $key, $value);
         }
 
-        return $this->insertTranslation($locale,$key,$value);
+        return $this->insertTranslation($locale, $key, $value);
     }
 
     /**
@@ -73,15 +72,16 @@ class ImportSingleTranslation
             return $this;
         }
 
-        if ($translation)
-        {
-            if (!$this->dry) $line->saveValue($locale, $value);
+        if ($translation) {
+            if (!$this->dry) {
+                $line->saveValue($locale, $value);
+            }
             $this->setStats('updates', $locale, $key, $value, $translation);
 
             return $this;
         }
 
-        return $this->insertTranslation($locale,$key,$value);
+        return $this->insertTranslation($locale, $key, $value);
     }
 
     public function getStats()
@@ -98,7 +98,7 @@ class ImportSingleTranslation
      */
     private function setStats($action, $locale, $key, $new_value, $original_value = null)
     {
-        $this->stats = [$action => new Entry($locale,$key,$new_value,$original_value)];
+        $this->stats = [$action => new Entry($locale, $key, $new_value, $original_value)];
     }
 
     /**
@@ -128,6 +128,4 @@ class ImportSingleTranslation
         $this->dry = !!$enable;
         return $this;
     }
-
-
 }

@@ -66,11 +66,10 @@ class SquantoTranslator extends LaravelTranslator implements Translator
 
     private function getFromDatabase($key, array $replace = array(), $locale = null, $fallback = true)
     {
-        if(!isset($this->databaseTranslator))
-        {
+        if (!isset($this->databaseTranslator)) {
             $this->databaseTranslator = app(DatabaseTranslator::class);
         }
 
-        return $this->databaseTranslator->get($key,$replace,$locale,$fallback);
+        return $this->databaseTranslator->get($key, $replace, $locale, $fallback);
     }
 }

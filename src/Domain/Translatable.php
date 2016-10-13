@@ -16,8 +16,7 @@ trait Translatable
 {
     public function getDefaultTranslation($attribute)
     {
-        if (!($translation = $this->getTranslation(config('app.fallback_locale'))))
-        {
+        if (!($translation = $this->getTranslation(config('app.fallback_locale')))) {
             return null;
         }
 
@@ -32,8 +31,7 @@ trait Translatable
      */
     public function updateTranslation($locale, array $values)
     {
-        foreach ($values as $attribute => $value)
-        {
+        foreach ($values as $attribute => $value) {
             $this->setTranslation($locale, $attribute, $value);
         }
 
@@ -60,7 +58,7 @@ trait Translatable
      * @param bool $fallback | if locale not present, use fallback locale instead
      * @return string null
      */
-    public function getTranslationFor($attribute,$locale = null, $fallback = true)
+    public function getTranslationFor($attribute, $locale = null, $fallback = true)
     {
         return (!$trans = $this->getTranslation($locale, $fallback)) ? null : $trans->$attribute;
     }
@@ -82,8 +80,7 @@ trait Translatable
 
     public function removeTranslation($locale)
     {
-        if (!$this->hasTranslation($locale))
-        {
+        if (!$this->hasTranslation($locale)) {
             return;
         }
 
@@ -120,7 +117,7 @@ trait Translatable
      */
     public function getAvailableLocales()
     {
-        return config('squanto.locales',config('translatable.locales',[]));
+        return config('squanto.locales', config('translatable.locales', []));
     }
 
     /**
@@ -134,8 +131,7 @@ trait Translatable
         $available_locales = $this->getAvailableLocales();
         $current_locales = $this->translations()->lists('locale')->toArray();
 
-        return array_filter($available_locales, function ($v) use ($current_locales, $available)
-        {
+        return array_filter($available_locales, function ($v) use ($current_locales, $available) {
             return $available ? in_array($v, $current_locales) : !in_array($v, $current_locales);
         }, ARRAY_FILTER_USE_BOTH);
     }
@@ -147,8 +143,7 @@ trait Translatable
      */
     private function validateLocale($locale)
     {
-        if (!in_array($locale, $this->getAvailableLocales()))
-        {
+        if (!in_array($locale, $this->getAvailableLocales())) {
             throw new InvalidArgumentException('Improper locale [' . $locale . '] given or locale is not available');
         }
     }

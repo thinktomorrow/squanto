@@ -38,15 +38,14 @@ class SquantoServiceProvider extends BaseServiceProvider
     {
         $this->app['translator']->addNamespace('squanto', $this->getSquantoCachePath());
 
-        if ($this->app->runningInConsole())
-        {
+        if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/squanto.php' => config_path('squanto.php')
-            ],'config');
+            ], 'config');
 
             $this->publishes([
                 __DIR__.'/../database/migrations/create_squanto_tables.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_squanto_tables.php'),
-            ],'migrations');
+            ], 'migrations');
         }
     }
 
@@ -62,19 +61,19 @@ class SquantoServiceProvider extends BaseServiceProvider
 
         $this->registerTranslator();
 
-        $this->app->bind(ClearCacheTranslations::class, function($app){
+        $this->app->bind(ClearCacheTranslations::class, function ($app) {
             return new ClearCacheTranslations(
                 new Filesystem(new Local($this->getSquantoCachePath()))
             );
         });
 
-        $this->app->bind(WriteTranslationLineToDisk::class, function($app){
+        $this->app->bind(WriteTranslationLineToDisk::class, function ($app) {
             return new WriteTranslationLineToDisk(
                 new Filesystem(new Local($this->getSquantoCachePath()))
             );
         });
 
-        $this->app->bind(LaravelTranslationsReader::class, function($app) {
+        $this->app->bind(LaravelTranslationsReader::class, function ($app) {
             return new LaravelTranslationsReader(
                 new Filesystem(new Local($this->getSquantoLangPath()))
             );
@@ -84,7 +83,7 @@ class SquantoServiceProvider extends BaseServiceProvider
             ImportTranslationsCommand::class,
         ]);
 
-        $this->mergeConfigFrom(__DIR__.'/../config/squanto.php','squanto');
+        $this->mergeConfigFrom(__DIR__.'/../config/squanto.php', 'squanto');
     }
 
     private function registerTranslator()

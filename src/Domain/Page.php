@@ -23,7 +23,9 @@ class Page extends Model
 
     public static function findOrCreateByKey($key)
     {
-        if($page = self::findByKey($key)) return $page;
+        if ($page = self::findByKey($key)) {
+            return $page;
+        }
 
         return self::make($key);
     }

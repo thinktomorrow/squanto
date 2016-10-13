@@ -42,9 +42,10 @@ class LaravelTranslationsReader
 
         $files = $this->filesystem->listContents($locale);
 
-        foreach($files as $file)
-        {
-            if(in_array($file['filename'],$excluded)) continue;
+        foreach ($files as $file) {
+            if (in_array($file['filename'], $excluded)) {
+                continue;
+            }
 
             $this->translations[$file['filename']] = require $this->path . DIRECTORY_SEPARATOR . $file['path'];
         }
@@ -80,8 +81,8 @@ class LaravelTranslationsReader
      */
     public function flatten()
     {
-        return $this->translations->map(function($values,$groupkey){
-            return $this->prependGroupkey($values,$groupkey);
+        return $this->translations->map(function ($values, $groupkey) {
+            return $this->prependGroupkey($values, $groupkey);
         })->collapse();
     }
 
@@ -90,15 +91,16 @@ class LaravelTranslationsReader
      * @param $groupkey
      * @return array
      */
-    private function prependGroupkey($values,$groupkey)
+    private function prependGroupkey($values, $groupkey)
     {
         $values = Arr::dot($values);
         $combined = [];
 
         foreach ($values as $key => $value) {
-
             // Empty arrays will be ignored in our flattening
-            if(is_array($value) && empty($value)) continue;
+            if (is_array($value) && empty($value)) {
+                continue;
+            }
 
             $combined[$groupkey . '.' . $key] = $value;
         }
