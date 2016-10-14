@@ -43,11 +43,16 @@ class LaravelTranslationsReader
         $files = $this->filesystem->listContents($locale);
 
         foreach ($files as $file) {
-            if (in_array($file['filename'], $excluded)) {
+
+            $filename = substr($file['path'],strrpos($file['path'],'/'));
+            $filename = ltrim($filename,'/');
+            $filename = rtrim($filename,'.php');
+
+            if (in_array($filename, $excluded)) {
                 continue;
             }
 
-            $this->translations[$file['filename']] = require $this->path . DIRECTORY_SEPARATOR . $file['path'];
+            $this->translations[$filename] = require $this->path . DIRECTORY_SEPARATOR . $file['path'];
         }
 
         return $this;
