@@ -46,7 +46,7 @@ class LaravelTranslationsReader
 
             $filename = substr($file['path'],strrpos($file['path'],'/'));
             $filename = ltrim($filename,'/');
-            $filename = rtrim($filename,'.php');
+            $filename = str_replace('.php','',$filename);
 
             if (in_array($filename, $excluded)) {
                 continue;
