@@ -16,22 +16,23 @@ return [
     'excluded_files' => ['auth','pagination','passwords','validation','app'],
 
     /**
-     * Path where the cached language files should be stored
-     * @var string
-     */
-    'cache_path' => storage_path('app/lang'),
-
-    /**
-     * Path where the laravel language files are stored
-     * @var string
-     */
-    'lang_path' => null,
-
-    /**
      * In case the translation key cannot be translated, this option
      * allows to display null instead of the key itself. This differs
      * from native Laravel behaviour where always the key is returned.
      */
     'key_as_default' => true,
+    
+    /**
+     * Path where the laravel language files are stored
+     * Default is the /resources/lang folder
+     * @var string
+     */
+    'lang_path' => base_path('resources/lang'),
+
+    /**
+     * Path where the cached language files should be stored
+     * @var string
+     */
+    'cache_path' => storage_path('app/lang'),
 
 ];
