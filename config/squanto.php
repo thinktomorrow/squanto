@@ -6,7 +6,7 @@ return [
      * Allowed locales to be managed
      * @var array
      */
-    'locales' => ['en','nl'],
+    'locales' => ['nl'],
 
     /**
      * Exclude following lang groups from import
@@ -21,7 +21,7 @@ return [
      * from native Laravel behaviour where always the key is returned.
      */
     'key_as_default' => true,
-    
+
     /**
      * Path where the laravel language files are stored
      * Default is the /resources/lang folder
