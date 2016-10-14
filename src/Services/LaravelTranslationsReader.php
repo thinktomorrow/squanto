@@ -24,7 +24,7 @@ class LaravelTranslationsReader
     public function __construct(Filesystem $filesystem)
     {
         $this->filesystem = $filesystem;
-        $this->path = app('squanto.lang_path');
+        $this->path = config('squanto.lang_path');
         $this->translations = collect();
     }
 

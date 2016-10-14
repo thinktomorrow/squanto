@@ -3,8 +3,11 @@
 namespace Thinktomorrow\Squanto\Tests;
 
 use Illuminate\Support\Collection;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Import\ImportTranslations;
+use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 
 class ImportLaravelTranslationsTest extends TestCase
 {
@@ -80,19 +83,23 @@ class ImportLaravelTranslationsTest extends TestCase
 
     private function resetLanguageChange()
     {
-        // Reset language file
-        file_put_contents(app('path.lang') . '/nl/about.php', "<?php return [
-            'bar'   => 'bazz',
-            'hello' => 'hello :name, welcome back',
-        ];");
+        config()->set('squanto.lang_path',__DIR__.'/../../stubs/lang');
+
+        app()->bind(LaravelTranslationsReader::class, function ($app) {
+            return new LaravelTranslationsReader(
+                new Filesystem(new Local(__DIR__.'/../../stubs/lang'))
+            );
+        });
     }
 
     private function reflectLanguageChange()
     {
-        // Fake change 2 entries
-        file_put_contents(app('path.lang') . '/nl/about.php', "<?php return [
-            'bar'   => 'bazz CHANGED',
-            'hello' => 'hello :name, welcome back CHANGED',
-        ];");
+        config()->set('squanto.lang_path',__DIR__.'/../../stubs/langchanged');
+
+        app()->bind(LaravelTranslationsReader::class, function ($app) {
+            return new LaravelTranslationsReader(
+                new Filesystem(new Local(__DIR__.'/../../stubs/langchanged'))
+            );
+        });
     }
 }
