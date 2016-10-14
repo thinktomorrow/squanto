@@ -43,7 +43,7 @@ class LaravelTranslationsReader
         $files = $this->filesystem->listContents($locale);
 
         foreach ($files as $file) {
-            if (!isset($file['filename']) || in_array($file['filename'], $excluded)) {
+            if (in_array($file['filename'], $excluded)) {
                 continue;
             }
 
