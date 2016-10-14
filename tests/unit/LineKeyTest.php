@@ -10,14 +10,30 @@ class LineKeyTest extends TestCase
     /** @test */
     public function block_unexpected_key_format()
     {
-        $this->expectException(InvalidLineKeyException::class);
+        if(version_compare(phpversion(),'7.0','<'))
+        {
+            $this->setExpectedException(InvalidLineKeyException::class);
+        }
+        else
+        {
+            $this->expectException(InvalidLineKeyException::class);
+        }
+
         new LineKey('foo');
     }
 
     /** @test */
     public function block_non_string_key()
     {
-        $this->expectException(InvalidLineKeyException::class);
+        if(version_compare(phpversion(),'7.0','<'))
+        {
+            $this->setExpectedException(InvalidLineKeyException::class);
+        }
+        else
+        {
+            $this->expectException(InvalidLineKeyException::class);
+        }
+
         new LineKey(12.04);
     }
 
