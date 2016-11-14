@@ -3,9 +3,8 @@
 namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
+use Thinktomorrow\Squanto\Services\CachedTranslationFile;
 use Thinktomorrow\Squanto\Import\ImportTranslationsCommand;
-use Thinktomorrow\Squanto\Handlers\ClearCacheTranslations;
-use Thinktomorrow\Squanto\Handlers\WriteTranslationLineToDisk;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
@@ -64,14 +63,8 @@ class SquantoServiceProvider extends BaseServiceProvider
 
         $this->registerTranslator();
 
-        $this->app->bind(ClearCacheTranslations::class, function ($app) {
-            return new ClearCacheTranslations(
-                new Filesystem(new Local($this->getSquantoCachePath()))
-            );
-        });
-
-        $this->app->bind(WriteTranslationLineToDisk::class, function ($app) {
-            return new WriteTranslationLineToDisk(
+        $this->app->bind(CachedTranslationFile::class, function ($app) {
+            return new CachedTranslationFile(
                 new Filesystem(new Local($this->getSquantoCachePath()))
             );
         });

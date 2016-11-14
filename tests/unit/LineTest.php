@@ -50,4 +50,22 @@ class LineTest extends TestCase
         $this->assertEquals($line->page_id,$page->id);
     }
 
+    /** @test */
+    public function list_all_lines_per_locale()
+    {
+        Line::make('bozo.clown')
+            ->saveValue('nl','value-nl')
+            ->saveValue('fr','value-fr');
+        Line::make('bozo.clown2')
+            ->saveValue('nl','value-nl-2');
+
+        $lines = Line::getValuesByLocale('nl');
+
+        $this->assertCount(2,$lines);
+        $this->assertInternalType('array',$lines);
+
+        $lines = Line::getValuesByLocale('fr');
+        $this->assertCount(1,$lines);
+    }
+
 }

@@ -4,6 +4,7 @@ namespace Thinktomorrow\Squanto\Domain;
 
 use Illuminate\Database\Eloquent\Model;
 use Dimsav\Translatable\Translatable as BaseTranslatable;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class Line
@@ -127,5 +128,23 @@ class Line extends Model
     public function editInTextinput()
     {
         return (!$this->type || $this->type == LineType::TEXT);
+    }
+
+    /**
+     * Get key - value pairs for all lines per locale
+     *
+     * @param $locale
+     * @return mixed
+     */
+    public static function getValuesByLocale($locale)
+    {
+        // Since the dimsav translatable model trait injects its behaviour and overwrites our results
+        // with the current locale, we will need to fetch results straight from the db instead.
+        $lines = DB::table('squanto_lines')->join('squanto_line_translations','squanto_lines.id','=','squanto_line_translations.line_id')
+            ->select(['squanto_lines.*','squanto_line_translations.locale','squanto_line_translations.value'])
+            ->where('squanto_line_translations.locale',$locale)
+            ->get();
+
+        return $lines->pluck('value', 'key')->toArray();
     }
 }

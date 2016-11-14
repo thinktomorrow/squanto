@@ -83,22 +83,22 @@ class ImportLaravelTranslationsTest extends TestCase
 
     private function resetLanguageChange()
     {
-        config()->set('squanto.lang_path',__DIR__.'/../../stubs/lang');
+        config()->set('squanto.lang_path', __DIR__ . '/../../stubs/lang');
 
         app()->bind(LaravelTranslationsReader::class, function ($app) {
             return new LaravelTranslationsReader(
-                new Filesystem(new Local(__DIR__.'/../../stubs/lang'))
+                new Filesystem(new Local(__DIR__ . '/../../stubs/lang'))
             );
         });
     }
 
     private function reflectLanguageChange()
     {
-        config()->set('squanto.lang_path',__DIR__.'/../../stubs/langchanged');
+        config()->set('squanto.lang_path', __DIR__ . '/../../stubs/langchanged');
 
         app()->bind(LaravelTranslationsReader::class, function ($app) {
             return new LaravelTranslationsReader(
-                new Filesystem(new Local(__DIR__.'/../../stubs/langchanged'))
+                new Filesystem(new Local(__DIR__ . '/../../stubs/langchanged'))
             );
         });
     }
