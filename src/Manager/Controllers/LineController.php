@@ -7,6 +7,7 @@ use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Exceptions\InvalidLineKeyException;
+use Thinktomorrow\Squanto\Services\CachedTranslationFile;
 
 class LineController extends Controller
 {
@@ -43,6 +44,9 @@ class LineController extends Controller
             $line->saveSuggestedType();
 
             $message = $line->key. ' translation line created!' . (($page_is_created) ? ' Since the '.$linekey->getPageKey(). ' page didn\'t exist, it was added as well' : null);
+
+            // Rebuild the translations cache
+            app(CachedTranslationFile::class)->delete()->write();
 
             return redirect()->route('back.squanto.edit',$line->page_id)->with('messages.success',$message);
 
@@ -87,6 +91,9 @@ class LineController extends Controller
 
             $message = $line->key. ' translation line updated!' . (($page_is_created) ? ' Since the '.$linekey->getPageKey(). ' page didn\'t exist, it was added as well' : null);
 
+            // Rebuild the translations cache
+            app(CachedTranslationFile::class)->delete()->write();
+
             return redirect()->route('back.squanto.lines.edit',$line->id)->with('messages.success',$message);
 
         }catch(InvalidLineKeyException $e)
@@ -104,6 +111,9 @@ class LineController extends Controller
         $page = Page::find($line->page_id);
 
         $line->delete();
+
+        // Rebuild the translations cache
+        app(CachedTranslationFile::class)->delete()->write();
 
         // If page has no more lines, we delete it as well
         if($page->lines()->count() < 1)

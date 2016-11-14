@@ -5,6 +5,7 @@ namespace Thinktomorrow\Squanto\Manager\Controllers;
 use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Page;
+use Thinktomorrow\Squanto\Services\CachedTranslationFile;
 
 class TranslationController extends Controller
 {
@@ -32,7 +33,8 @@ class TranslationController extends Controller
 
         $this->saveValueTranslations($request->get('trans'));
 
-        // TODO: Resave our cached translation
+        // Rebuild the translations cache
+        app(CachedTranslationFile::class)->delete()->write();
 
         return redirect()->route('back.squanto.edit',$page->id)->with('messages.success', $page->label .' translations have been updated');
     }
