@@ -4,6 +4,7 @@ namespace Thinktomorrow\Squanto\Domain;
 
 use Illuminate\Database\Eloquent\Model;
 use Dimsav\Translatable\Translatable as BaseTranslatable;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 /**
@@ -144,6 +145,9 @@ class Line extends Model
             ->select(['squanto_lines.*','squanto_line_translations.locale','squanto_line_translations.value'])
             ->where('squanto_line_translations.locale',$locale)
             ->get();
+
+        // Assert we have a collection
+        $lines = $lines instanceof Collection ? $lines : collect($lines);
 
         return $lines->pluck('value', 'key')->toArray();
     }

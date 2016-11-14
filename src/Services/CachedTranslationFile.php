@@ -65,6 +65,8 @@ class CachedTranslationFile
                 $this->filesystem->delete($content['path']);
             }
         }
+
+        return $this;
     }
 
     private function convertToTree(array $lines = [])

@@ -6,6 +6,7 @@ use Exception;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
+use Thinktomorrow\Squanto\Services\CachedTranslationFile;
 
 class ImportTranslationsCommand extends Command
 {
@@ -64,12 +65,8 @@ class ImportTranslationsCommand extends Command
         $this->info('Import finished with following results:');
         $this->displayStats();
 
-        return;
-
-        // TODO: refresh cache translations from db to disk
-
         // Recache results
-        app(SaveTranslationsToDisk::class)->clear()->handle();
+        app(CachedTranslationFile::class)->delete()->write();
         $this->info('Translation cache refreshed.');
 
         $this->output->writeln('');

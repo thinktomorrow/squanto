@@ -7,6 +7,7 @@ use Thinktomorrow\Squanto\Services\CachedTranslationFile;
 use Thinktomorrow\Squanto\Import\ImportTranslationsCommand;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
+use Thinktomorrow\Squanto\Services\CacheTranslationsCommand;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
@@ -35,7 +36,8 @@ class SquantoServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->app['translator']->addNamespace('squanto', $this->getSquantoCachePath());
+        $this->loadTranslationsFrom($this->getSquantoCachePath(), 'squanto');
+//        $this->app['translator']->addNamespace('squanto', $this->getSquantoCachePath());
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -48,6 +50,11 @@ class SquantoServiceProvider extends BaseServiceProvider
                     __DIR__.'/../database/migrations/create_squanto_tables.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_squanto_tables.php'),
                 ], 'migrations');
             }
+
+            $this->commands([
+                ImportTranslationsCommand::class,
+                CacheTranslationsCommand::class,
+            ]);
         }
     }
 
@@ -74,10 +81,6 @@ class SquantoServiceProvider extends BaseServiceProvider
                 new Filesystem(new Local($this->getSquantoLangPath()))
             );
         });
-
-        $this->commands([
-            ImportTranslationsCommand::class,
-        ]);
 
         $this->mergeConfigFrom(__DIR__.'/../config/squanto.php', 'squanto');
     }
