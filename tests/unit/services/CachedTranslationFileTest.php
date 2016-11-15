@@ -17,6 +17,14 @@ class CachedTranslationFileTest extends TestCase
         $this->setTemporaryCacheDir();
     }
 
+    public function tearDown()
+    {
+        // Cleanup after each test (Ironically this is done with the class being tested)
+        app(CachedTranslationFile::class)->delete();
+
+        parent::tearDown();
+    }
+
     /** @test */
     public function it_can_cache_all_translations()
     {
