@@ -15,17 +15,26 @@ Squanto, based on one of the first [Native Indian interpreters](https://nl.wikip
 ## Install
 
 Via Composer
-
 ``` bash
 $ composer require thinktomorrow/squanto
 ```
 
-## Usage
 
-Publish the migrations and config file:
+Publish the migrations and run them:
 ``` bash
 $ php artisan vendor:publish --provider="Thinktomorrow\Squanto\SquantoServiceProvider"
 ```
+
+Add the service provider in your config/app.php providers array
+``` php
+'providers' => [
+    ...
+    Thinktomorrow\Squanto\SquantoServiceProvider::class,
+    Thinktomorrow\Squanto\SquantoManagerServiceProvider::class, // Optionally add the UI manager
+];
+```
+
+## Usage
 
 Make sure you set the settings in the squanto config file. Especially the locales to be maintained.
 Run the migrations

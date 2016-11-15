@@ -2,6 +2,7 @@
 
 namespace Thinktomorrow\Squanto\Translators;
 
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Translation\Translator as LaravelTranslator;
 
 class SquantoTranslator extends LaravelTranslator implements Translator
@@ -9,6 +10,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
     private $databaseTranslator;
 
     private $keyAsDefault = true;
+    private $isDatabaseAlreadyMigrated = null;
 
     public function setKeyAsDefault($keyAsDefault = true)
     {
@@ -66,10 +68,28 @@ class SquantoTranslator extends LaravelTranslator implements Translator
 
     private function getFromDatabase($key, array $replace = array(), $locale = null, $fallback = true)
     {
+        /**
+         * If database tables are not present we will soft ignore this call and delegate to the native
+         */
+        if(! $this->isDatabaseAlreadyMigrated()) return null;
+
         if (!isset($this->databaseTranslator)) {
             $this->databaseTranslator = app(DatabaseTranslator::class);
         }
 
         return $this->databaseTranslator->get($key, $replace, $locale, $fallback);
+    }
+
+    /**
+     * Verify that SQUANTO migrations are already run and present in this environment
+     * Allow for a soft install
+     *
+     * @return null
+     */
+    private function isDatabaseAlreadyMigrated()
+    {
+        if(!is_null($this->isDatabaseAlreadyMigrated)) return $this->isDatabaseAlreadyMigrated;
+
+        return ($this->isDatabaseAlreadyMigrated = Schema::hasTable('squanto_lines'));
     }
 }
