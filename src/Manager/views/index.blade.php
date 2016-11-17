@@ -20,6 +20,15 @@
             </tr>
             </thead>
             <tbody>
+
+            @if($pages->count() < 1)
+                <tr>
+                    <td>
+                        Hey there, you currently have no translations set. You can import them from your language files via the <code>artisan squanto:import</code> or add new with the + add translation button
+                    </td>
+                </tr>
+            @endif
+
             @foreach($pages as $page)
 
                 <tr>

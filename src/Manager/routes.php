@@ -5,7 +5,7 @@
  * ADMIN ROUTES
  * -----------------------------------------------------------------
  */
-Route::group(['prefix' => 'back','middleware' =>['web','auth']],function(){
+Route::group(['prefix' => 'admin','middleware' =>['web','auth']],function(){
 
     // Developer access
     Route::get('translations/lines/create',['middleware' => 'auth.superadmin', 'as' => 'back.squanto.lines.create','uses' => '\Thinktomorrow\Squanto\Manager\Controllers\LineController@create']);

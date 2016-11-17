@@ -3,6 +3,15 @@
 return [
 
     /**
+     * Enable specific translation source
+     * By default the cached translations will be fetched. If not found there the database is hit for each translation value.
+     * Here you can choose to force a specific source of translations without the default cascade
+     *
+     * possible values are: null (default), cache, database, lang
+     */
+    'source' => null,
+
+    /**
      * Allowed locales to be managed
      * @var array
      */
@@ -34,5 +43,17 @@ return [
      * @var string
      */
     'cache_path' => storage_path('app/lang'),
+
+    /**
+     * UI management settings
+     *
+     * It is advised to use custom routes to match your project settings
+     * As a start you can copy/paste the routes found in /src/Manager/routes.php
+     */
+    'manager' => [
+        'use_default_routes' => true,
+        'master_layout' => 'admin._layouts.master',
+    ],
+
 
 ];

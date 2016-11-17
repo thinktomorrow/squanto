@@ -31,6 +31,10 @@ class SquantoManagerServiceProvider extends ServiceProvider
         // allow to override them by making a view file under the resources/views/squanto location
         $this->loadViewsFrom(realpath(__DIR__ . '/Manager/views'), 'squanto');
 
+        $this->publishes([
+            realpath(__DIR__ . '/Manager/views') => base_path('resources/views/vendor/squanto'),
+        ],'views');
+
     }
 
     /**
