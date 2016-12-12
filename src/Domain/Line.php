@@ -141,9 +141,9 @@ class Line extends Model
     {
         // Since the dimsav translatable model trait injects its behaviour and overwrites our results
         // with the current locale, we will need to fetch results straight from the db instead.
-        $lines = DB::table('squanto_lines')->join('squanto_line_translations','squanto_lines.id','=','squanto_line_translations.line_id')
+        $lines = DB::table('squanto_lines')->join('squanto_line_translations', 'squanto_lines.id', '=', 'squanto_line_translations.line_id')
             ->select(['squanto_lines.*','squanto_line_translations.locale','squanto_line_translations.value'])
-            ->where('squanto_line_translations.locale',$locale)
+            ->where('squanto_line_translations.locale', $locale)
             ->get();
 
         // Assert we have a collection

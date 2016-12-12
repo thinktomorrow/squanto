@@ -13,7 +13,7 @@ class TranslationController extends Controller
     {
         $pages = Page::sequence()->get();
 
-        return view('squanto::index',compact('pages'));
+        return view('squanto::index', compact('pages'));
     }
 
     public function edit($id)
@@ -24,7 +24,7 @@ class TranslationController extends Controller
 
         $groupedLines = $this->groupLinesByKey($page);
 
-        return view('squanto::edit', compact('page','available_locales','groupedLines'));
+        return view('squanto::edit', compact('page', 'available_locales', 'groupedLines'));
     }
 
     public function update(Request $request, $page_id)
@@ -76,25 +76,20 @@ class TranslationController extends Controller
         $groupedLines = collect(['general' => []]);
         $groups = [];
 
-        foreach ($page->lines as $line)
-        {
+        foreach ($page->lines as $line) {
             $keysegment = $this->getFirstSegmentOfKey($line);
 
-            if (!isset($groups[$keysegment]))
-            {
+            if (!isset($groups[$keysegment])) {
                 $groups[$keysegment] = [];
             }
             $groups[$keysegment][] = $line;
         }
 
         // If firstkey occurs more than once, we will group it
-        foreach ($groups as $group => $lines)
-        {
-            if (count($lines) < 2)
-            {
+        foreach ($groups as $group => $lines) {
+            if (count($lines) < 2) {
                 $groupedLines['general'] = array_merge($groupedLines['general'], $lines);
-            } else
-            {
+            } else {
                 $groupedLines[$group] = $lines;
             }
         }

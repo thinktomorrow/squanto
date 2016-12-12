@@ -30,7 +30,6 @@ class SquantoManagerServiceProvider extends ServiceProvider
         // Register squanto viewfiles under squanto:: namespace
         // allow to override them by making a view file under the resources/views/squanto location
         $this->loadViewsFrom(realpath(__DIR__ . '/Manager/views'), 'squanto');
-
     }
 
     /**

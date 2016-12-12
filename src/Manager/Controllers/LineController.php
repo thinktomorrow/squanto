@@ -24,22 +24,22 @@ class LineController extends Controller
         $line = new Line();
         $available_locales = config('squanto.locales');
 
-        return view('squanto::create',compact('page','line','available_locales'));
+        return view('squanto::create', compact('page', 'line', 'available_locales'));
     }
 
     public function store(Request $request)
     {
-        $this->validate($request,[
+        $this->validate($request, [
             'key' => 'required|min:3|max:100|unique:squanto_lines,key',
         ]);
 
-        try{
+        try {
             $linekey = new LineKey($request->get('key'));
 
             $page_is_created = !(Page::findByKey($linekey->getPageKey()));
 
             $line = Line::make($linekey->get());
-            $this->saveValueTranslations($line,$request->get('trans'));
+            $this->saveValueTranslations($line, $request->get('trans'));
 
             $line->saveSuggestedType();
 
@@ -48,15 +48,12 @@ class LineController extends Controller
             // Rebuild the translations cache
             app(CachedTranslationFile::class)->delete()->write();
 
-            return redirect()->route('back.squanto.edit',$line->page_id)->with('messages.success',$message);
-
-        }catch(InvalidLineKeyException $e)
-        {
+            return redirect()->route('back.squanto.edit', $line->page_id)->with('messages.success', $message);
+        } catch (InvalidLineKeyException $e) {
             return redirect()->back()->withInput()->withErrors('Invalid format for key. Must contain at least one dot as divider of the page identifier and the key itself: e.g. foo.bar');
         }
 
         return redirect()->back()->withInput()->withErrors('The line could not be created due to an unknown error.');
-
     }
 
     public function edit($id)
@@ -64,25 +61,24 @@ class LineController extends Controller
         $available_locales = config('squanto.locales');
         $line = Line::find($id);
 
-        return view('squanto::lines.edit', compact('line','available_locales'));
+        return view('squanto::lines.edit', compact('line', 'available_locales'));
     }
 
     public function update(Request $request, $id)
     {
         $line = Line::find($id);
 
-        $this->validate($request,[
+        $this->validate($request, [
             'key' => 'required|min:3|max:100|unique:squanto_lines,key,'.$line->id,
         ]);
 
-        try{
-
+        try {
             $line->key = $request->get('key'); // Note that the page connection will not get updated!
             $line->type = $request->get('type');
             $line->label = $request->get('label');
             $line->description = $request->get('description');
             $line->save();
-            $this->saveValueTranslations($line,$request->get('trans'));
+            $this->saveValueTranslations($line, $request->get('trans'));
 
             $linekey = new LineKey($line->key);
             $page_is_created = !(Page::findByKey($linekey->getPageKey()));
@@ -94,10 +90,8 @@ class LineController extends Controller
             // Rebuild the translations cache
             app(CachedTranslationFile::class)->delete()->write();
 
-            return redirect()->route('back.squanto.lines.edit',$line->id)->with('messages.success',$message);
-
-        }catch(InvalidLineKeyException $e)
-        {
+            return redirect()->route('back.squanto.lines.edit', $line->id)->with('messages.success', $message);
+        } catch (InvalidLineKeyException $e) {
             return redirect()->back()->withInput()->withErrors('Invalid format for key. Must contain at least one dot as divider of the page identifier and the key itself: e.g. foo.bar');
         }
 
@@ -116,28 +110,24 @@ class LineController extends Controller
         app(CachedTranslationFile::class)->delete()->write();
 
         // If page has no more lines, we delete it as well
-        if($page->lines()->count() < 1)
-        {
+        if ($page->lines()->count() < 1) {
             $page->delete();
-            return redirect()->route('back.squanto.index')->with('messages.warning','Line '.$key.' is verwijderd');
+            return redirect()->route('back.squanto.index')->with('messages.warning', 'Line '.$key.' is verwijderd');
         }
 
-        return redirect()->route('back.squanto.edit',$page->id)->with('messages.warning','Line '.$key.' is verwijderd');
+        return redirect()->route('back.squanto.edit', $page->id)->with('messages.warning', 'Line '.$key.' is verwijderd');
     }
 
     private function saveValueTranslations(Line $line, array $translations)
     {
-        collect($translations)->map(function($value,$locale) use($line){
+        collect($translations)->map(function ($value, $locale) use ($line) {
 
             $value = cleanupHTML($value);
 
-            if(is_null($value) || "" === $value)
-            {
+            if (is_null($value) || "" === $value) {
                 $line->removeValue($locale);
-            }
-            else
-            {
-                $line->saveValue($locale,$value);
+            } else {
+                $line->saveValue($locale, $value);
             }
         });
     }

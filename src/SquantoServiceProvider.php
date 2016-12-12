@@ -44,8 +44,7 @@ class SquantoServiceProvider extends BaseServiceProvider
                 __DIR__.'/../config/squanto.php' => config_path('squanto.php')
             ], 'config');
 
-            if(!class_exists('CreateSquantoTables'))
-            {
+            if (!class_exists('CreateSquantoTables')) {
                 $this->publishes([
                     __DIR__.'/../database/migrations/create_squanto_tables.php' => database_path('migrations/'.date('Y_m_d_His', time()).'_create_squanto_tables.php'),
                 ], 'migrations');

@@ -71,7 +71,9 @@ class SquantoTranslator extends LaravelTranslator implements Translator
         /**
          * If database tables are not present we will soft ignore this call and delegate to the native
          */
-        if(! $this->isDatabaseAlreadyMigrated()) return null;
+        if (! $this->isDatabaseAlreadyMigrated()) {
+            return null;
+        }
 
         if (!isset($this->databaseTranslator)) {
             $this->databaseTranslator = app(DatabaseTranslator::class);
@@ -88,7 +90,9 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      */
     private function isDatabaseAlreadyMigrated()
     {
-        if(!is_null($this->isDatabaseAlreadyMigrated)) return $this->isDatabaseAlreadyMigrated;
+        if (!is_null($this->isDatabaseAlreadyMigrated)) {
+            return $this->isDatabaseAlreadyMigrated;
+        }
 
         return ($this->isDatabaseAlreadyMigrated = Schema::hasTable('squanto_lines'));
     }

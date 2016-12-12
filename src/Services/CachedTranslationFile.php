@@ -25,9 +25,8 @@ class CachedTranslationFile
      */
     public function write()
     {
-        foreach(config('squanto.locales',[]) as $locale)
-        {
-            $this->writeLocale($locale,Line::getValuesByLocale($locale));
+        foreach (config('squanto.locales', []) as $locale) {
+            $this->writeLocale($locale, Line::getValuesByLocale($locale));
         }
 
         return $this;
@@ -43,8 +42,7 @@ class CachedTranslationFile
     {
         $translations = $this->convertToTree($lines);
 
-        foreach($translations as $section => $trans)
-        {
+        foreach ($translations as $section => $trans) {
             $this->filesystem->put(
                 $locale.'/'.$section.'.php',
                 "<?php\n\n return ".var_export($trans, true).";\n"
