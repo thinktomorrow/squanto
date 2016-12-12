@@ -45,6 +45,7 @@ class TranslationController extends Controller
             collect($translation)->map(function($value,$id) use($locale){
 
                 $value = cleanupHTML($value);
+                $value = $this->replaceParagraphsByLinebreaks($value);
                 $line = Line::find($id);
 
                 // If line value is not meant to contain tags, we should strip them
@@ -112,5 +113,13 @@ class TranslationController extends Controller
         $key = substr($key,0,$length);
 
         return $key;
+    }
+
+    private function replaceParagraphsByLinebreaks($value)
+    {
+        $value = preg_replace('/<p[^>]*?>/','',$value);
+        $value = str_replace('</p>','<br>',$value);
+
+        return $value;
     }
 }
