@@ -36,30 +36,33 @@ class TranslationController extends Controller
         // Rebuild the translations cache
         app(CachedTranslationFile::class)->delete()->write();
 
-        return redirect()->route('back.squanto.edit',$page->id)->with('messages.success', $page->label .' translations have been updated');
+        return redirect()->route('back.squanto.edit', $page->id)->with('messages.success', $page->label .' translations have been updated');
     }
 
     private function saveValueTranslations(array $translations)
     {
-        collect($translations)->map(function($translation,$locale){
-            collect($translation)->map(function($value,$id) use($locale){
+        collect($translations)->map(function ($translation, $locale) {
+            collect($translation)->map(function ($value, $id) use ($locale) {
 
-                $value = cleanupHTML($value);
-                $value = $this->replaceParagraphsByLinebreaks($value);
                 $line = Line::find($id);
 
+                $value = cleanupHTML($value);
+
+                if(false == config('squanto.paragraphize') && !$line->areParagraphsAllowed())
+                {
+                    $value = $this->replaceParagraphsByLinebreaks($value);
+                }
+
                 // If line value is not meant to contain tags, we should strip them
-                if(!$line->editInEditor()) $value = cleanupString($value);
+                if (!$line->editInEditor()) {
+                    $value = cleanupString($value);
+                }
 
-                if(is_null($value) || "" === $value)
-                {
+                if (is_null($value) || "" === $value) {
                     $line->removeValue($locale);
+                } else {
+                    $line->saveValue($locale, $value);
                 }
-                else
-                {
-                    $line->saveValue($locale,$value);
-                }
-
             });
         });
     }
@@ -110,15 +113,21 @@ class TranslationController extends Controller
         $key = substr($line->key, strpos($line->key, '.')+1);
 
         $length = strpos($key, '.')?: strlen($key);
-        $key = substr($key,0,$length);
+        $key = substr($key, 0, $length);
 
         return $key;
     }
 
     private function replaceParagraphsByLinebreaks($value)
     {
-        $value = preg_replace('/<p[^>]*?>/','',$value);
-        $value = str_replace('</p>','<br>',$value);
+        $value = preg_replace('/<p[^>]*?>/', '', $value);
+
+        // Last paragraph is just removed, not a linebreak
+        if (substr($value, -mb_strlen('</p>')) === '</p>') {
+            $value = substr($value, 0, -mb_strlen('</p>'));
+        }
+
+        $value = str_replace('</p>', '<br>', $value);
 
         return $value;
     }

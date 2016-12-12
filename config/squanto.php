@@ -16,6 +16,15 @@ return [
     'excluded_files' => ['auth','pagination','passwords','validation','app'],
 
     /**
+     * Paragraphize
+     *
+     * By default the redactor editor uses <p> tags for each line. With this setting you can
+     * remove this behaviour. This also means that linebreaks are interpreted as <br>
+     * Note that is a specific line has <p> as an allowed html element, this rule will not apply
+     */
+    'paragraphize' => false,
+
+    /**
      * In case the translation key cannot be translated, this option
      * allows to display null instead of the key itself. This differs
      * from native Laravel behaviour where always the key is returned.
