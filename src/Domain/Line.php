@@ -131,6 +131,11 @@ class Line extends Model
         return (!$this->type || $this->type == LineType::TEXT);
     }
 
+    public function areParagraphsAllowed()
+    {
+        return (false !== strpos($this->allowed_html,'<p>'));
+    }
+
     /**
      * Get key - value pairs for all lines per locale
      *
