@@ -6,6 +6,7 @@ use Thinktomorrow\Squanto\Exceptions\InvalidLineKeyException;
 
 class LineKey
 {
+    private static $excludedSources;
     private $key;
 
     public function __construct($key)
@@ -13,6 +14,11 @@ class LineKey
         $this->validateKey($key);
 
         $this->key = $this->sanitizeKey($key);
+    }
+
+    public static function fromString($key)
+    {
+        return new self($key);
     }
 
     public function get()
@@ -46,6 +52,13 @@ class LineKey
         return substr($this->key, 0, strpos($this->key, '.'));
     }
 
+    public function isExcludedSource()
+    {
+        $excluded = $this->getExcludedSources();
+
+        return in_array($this->getPageKey(),$excluded);
+    }
+
     private function sanitizeKey($key)
     {
         return strtolower($key);
@@ -57,4 +70,15 @@ class LineKey
             throw new InvalidLineKeyException('Invalid LineKey format ['.$key.', type: '.gettype($key).'] given. Must be a string containing at least two dot separated segments. E.g. about.title');
         }
     }
+
+    private function getExcludedSources()
+    {
+        if(!self::$excludedSources)
+        {
+            self::$excludedSources = config('squanto.excluded_files',[]);
+        }
+
+        return self::$excludedSources;
+    }
+
 }

@@ -2,6 +2,9 @@
 
 namespace Thinktomorrow\Squanto\Tests;
 
+use Mockery;
+use Mockery\Mock;
+
 class SquantoTranslatorTest extends TestCase
 {
     private $translator;
@@ -45,6 +48,14 @@ class SquantoTranslatorTest extends TestCase
         $this->assertEquals('bazzz',$this->translator->get('foo.bam',[],'fr',true));
         $this->assertEquals('bazzz',$this->translator->get('foo.bam',[],'fr')); // Default is true
         $this->assertEquals('foo.bam',$this->translator->get('foo.bam',[],'fr',false));
+    }
+
+    /** @test */
+    public function it_uses_original_source_for_non_managed_lines()
+    {
+        config()->set('squanto.excluded_files', ['foo']);
+
+        $this->assertEquals('bazz',$this->translator->get('foo.bar'));
     }
 
 }

@@ -7,6 +7,8 @@ use Thinktomorrow\Squanto\SquantoServiceProvider;
 
 class TestCase extends BaseTestCase
 {
+    private $database = __DIR__.'/tmp/database.sqlite';
+
     public function setUp()
     {
         parent::setUp();
@@ -57,13 +59,17 @@ class TestCase extends BaseTestCase
      */
     public function createTestDatabase()
     {
-        $database = __DIR__.'/tmp/database.sqlite';
-
         // Create new sqlite database for the total of our tests
-        if(file_exists($database)) unlink($database);
+        $this->removeTestDatabase();
+
         if(!is_dir(__DIR__.'/tmp')) mkdir('./tests/tmp',0775);
 
-        touch($database);
+        touch($this->database);
+    }
+
+    protected function removeTestDatabase()
+    {
+        if(file_exists($this->database)) unlink($this->database);
     }
 
     private function migrate()

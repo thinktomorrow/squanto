@@ -9,5 +9,5 @@ return [
             'first'     => 'Thuis',
             'second'    => 'Over',
         ]
-    ]
+    ],
 ];

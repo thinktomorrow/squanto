@@ -4,6 +4,7 @@ namespace Thinktomorrow\Squanto\Translators;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Translation\Translator as LaravelTranslator;
+use Thinktomorrow\Squanto\Domain\LineKey;
 
 class SquantoTranslator extends LaravelTranslator implements Translator
 {
@@ -34,6 +35,10 @@ class SquantoTranslator extends LaravelTranslator implements Translator
     {
         $locale = $locale ?: $this->getLocale();
 
+        if($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback)) {
+            return $result;
+        }
+
         if ($result = $this->getFromCache($key, $replace, $locale, $fallback)) {
             return $result;
         }
@@ -45,6 +50,23 @@ class SquantoTranslator extends LaravelTranslator implements Translator
         $result = parent::get($key, $replace, $locale, $fallback);
 
         return ($this->keyAsDefault || $result !== $key) ? $result : null;
+    }
+
+    /**
+     * Get from excluded sources. This is used here to make retrieval of these
+     * non-managed translations a lot faster by going straight to source
+     *
+     * @param $key
+     * @param $replace
+     * @param $locale
+     * @param $fallback
+     * @return array|null|string
+     */
+    private function getFromExcludedSource($key, $replace, $locale, $fallback)
+    {
+        if(!LineKey::fromString($key)->isExcludedSource()) return null;
+
+        return parent::get($key, $replace, $locale, $fallback);
     }
 
     /**

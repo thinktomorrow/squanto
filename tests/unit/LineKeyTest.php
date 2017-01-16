@@ -50,4 +50,23 @@ class LineKeyTest extends TestCase
         $lineid = new LineKey('foo.bar');
         $this->assertEquals('foo',$lineid->getPageKey());
     }
+
+    /** @test */
+    public function it_can_check_if_linekey_comes_from_excluded_source()
+    {
+        $existing = config()->get('squanto.excluded_files');
+        config()->set('squanto.excluded_files',['foo']);
+
+        $this->assertTrue(LineKey::fromString('foo.bar')->isExcludedSource());
+        $this->assertFalse(LineKey::fromString('foobar.test')->isExcludedSource());
+
+        config()->set('squanto.excluded_files',$existing);
+
+        // Reset the static Linekey property of the excluded files
+        $lineKey = new LineKey('foo.bar');
+        $reflection = new \ReflectionObject($lineKey);
+        $excluded_reflection = $reflection->getProperty('excludedSources');
+        $excluded_reflection->setAccessible(true);
+        $excluded_reflection->setValue($existing);
+    }
 }
