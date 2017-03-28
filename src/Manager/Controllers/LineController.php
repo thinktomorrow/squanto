@@ -122,7 +122,7 @@ class LineController extends Controller
     {
         collect($translations)->map(function ($value, $locale) use ($line) {
 
-            $value = cleanupHTML($value);
+            $value = squantoCleanupHTML($value);
 
             if (is_null($value) || "" === $value) {
                 $line->removeValue($locale);

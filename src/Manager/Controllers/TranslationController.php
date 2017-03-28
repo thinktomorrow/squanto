@@ -46,7 +46,7 @@ class TranslationController extends Controller
 
                 $line = Line::find($id);
 
-                $value = cleanupHTML($value);
+                $value = squantoCleanupHTML($value);
 
                 if(false == config('squanto.paragraphize') && !$line->areParagraphsAllowed())
                 {
@@ -55,7 +55,7 @@ class TranslationController extends Controller
 
                 // If line value is not meant to contain tags, we should strip them
                 if (!$line->editInEditor()) {
-                    $value = cleanupString($value);
+                    $value = squantoCleanupString($value);
                 }
 
                 if (is_null($value) || "" === $value) {

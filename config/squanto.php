@@ -18,9 +18,9 @@ return [
     /**
      * Paragraphize
      *
-     * By default the redactor editor uses <p> tags for each line. With this setting you can
-     * remove this behaviour. This also means that linebreaks are interpreted as <br>
-     * Note that is a specific line has <p> as an allowed html element, this rule will not apply
+     * By default the redactor editor uses <p> tags for each line.
+     * With this setting, squanto will interpret <p></p> as <br> on write changes.
+     * Note that this can be overruled by the allowed html settings of a translation record
      */
     'paragraphize' => false,
 
@@ -30,6 +30,13 @@ return [
      * from native Laravel behaviour where always the key is returned.
      */
     'key_as_default' => true,
+
+    /**
+     * Master template filepath.
+     * This is relative to the default viewpath
+     * @var string
+     */
+    'template' => '_layouts.master',
 
     /**
      * Path where the laravel language files are stored

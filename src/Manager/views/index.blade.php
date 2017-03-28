@@ -1,4 +1,4 @@
-@extends('back._layouts.master')
+@extends(config('squanto.template','back._layouts.master'))
 
 @section('page-title')
     Translations

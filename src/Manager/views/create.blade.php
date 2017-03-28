@@ -1,4 +1,4 @@
-@extends('back._layouts.master')
+@extends(config('squanto.template','back._layouts.master'))
 
 @section('custom-styles')
     <link rel="stylesheet" href="{{ asset('assets/back/vendor/redactor/redactor.css') }}">
