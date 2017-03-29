@@ -40,7 +40,7 @@ class CachedTranslationFile
      */
     protected function writeLocale($locale, array $lines = [])
     {
-        $translations = $this->convertToTree($lines);
+        $translations = ConvertToTree::fromFlattened($lines);
 
         foreach ($translations as $section => $trans) {
             $this->filesystem->put(
@@ -65,16 +65,5 @@ class CachedTranslationFile
         }
 
         return $this;
-    }
-
-    private function convertToTree(array $lines = [])
-    {
-        $translations = [];
-
-        foreach ($lines as $key => $value) {
-            array_set($translations, $key, $value);
-        }
-
-        return $translations;
     }
 }

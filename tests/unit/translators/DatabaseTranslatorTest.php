@@ -3,6 +3,7 @@
 namespace Thinktomorrow\Squanto\Tests;
 
 use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Translators\DatabaseTranslator;
 
 class DatabaseTranslatorTest extends TestCase
@@ -23,6 +24,24 @@ class DatabaseTranslatorTest extends TestCase
         $line->saveValue('nl','bazz');
 
         $this->assertEquals('bazz',$this->translator->get('foo.bar'));
+    }
+
+    /** @test */
+    public function it_can_get_a_translation_collection()
+    {
+        $line = Line::make('foo.bar');
+        $line->saveValue('nl','bazz');
+        $line = Line::make('foo.bar2');
+        $line->saveValue('nl','bazzz');
+
+        $this->assertEquals(['bar' => 'bazz','bar2' => 'bazzz'],$this->translator->get('foo'));
+
+        // Change locale
+        app()->setLocale('en');
+        $line = Line::make('foo.bav');
+        $line->saveValue('en','bazz');
+
+        $this->assertEquals(['bav' => 'bazz'],$this->translator->get('foo'));
     }
 
     /** @test */

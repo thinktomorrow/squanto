@@ -23,6 +23,14 @@ class SquantoTranslatorTest extends TestCase
     }
 
     /** @test */
+    public function it_can_get_a_translation_collection()
+    {
+        $foo = require __DIR__.'/../../stubs/cached/nl/foo.php';
+
+        $this->assertEquals($foo,$this->translator->get('foo'));
+    }
+
+    /** @test */
     public function it_can_get_a_translation_with_placeholders()
     {
         $this->assertEquals('hello Ben, welcome back',$this->translator->get('foo.hello',['name' => 'Ben']));

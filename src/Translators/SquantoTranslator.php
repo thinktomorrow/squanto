@@ -5,6 +5,7 @@ namespace Thinktomorrow\Squanto\Translators;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Translation\Translator as LaravelTranslator;
 use Thinktomorrow\Squanto\Domain\LineKey;
+use Thinktomorrow\Squanto\Domain\PageKey;
 
 class SquantoTranslator extends LaravelTranslator implements Translator
 {
@@ -64,7 +65,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      */
     private function getFromExcludedSource($key, $replace, $locale, $fallback)
     {
-        if(!LineKey::fromString($key)->isExcludedSource()) return null;
+        if(!PageKey::fromLineKeyString($key)->isExcludedSource()) return null;
 
         return parent::get($key, $replace, $locale, $fallback);
     }
