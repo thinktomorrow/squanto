@@ -36,9 +36,6 @@ class SquantoServiceProvider extends BaseServiceProvider
      */
     public function boot()
     {
-        $this->loadTranslationsFrom($this->getSquantoCachePath(), 'squanto');
-//        $this->app['translator']->addNamespace('squanto', $this->getSquantoCachePath());
-
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/squanto.php' => config_path('squanto.php')
@@ -82,6 +79,10 @@ class SquantoServiceProvider extends BaseServiceProvider
         });
 
         $this->mergeConfigFrom(__DIR__.'/../config/squanto.php', 'squanto');
+
+        // Load translations in the register method because since 5.4 the boot method for the translation service provider
+        // doesn't seem to be triggered by the calls to the translator anymore.
+        $this->loadTranslationsFrom($this->getSquantoCachePath(), 'squanto');
     }
 
     private function registerTranslator()
