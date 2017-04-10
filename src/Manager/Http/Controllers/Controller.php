@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Manager\Controllers;
+namespace Thinktomorrow\Squanto\Manager\Http\Controllers;
 
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Foundation\Validation\ValidatesRequests;

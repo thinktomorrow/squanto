@@ -33,7 +33,7 @@ return [
 
     /**
      * Master template filepath.
-     * This is relative to the default viewpath
+     * This is relative to the default viewpath.
      * @var string
      */
     'template' => '_layouts.master',

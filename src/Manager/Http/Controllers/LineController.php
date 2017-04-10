@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Manager\Controllers;
+namespace Thinktomorrow\Squanto\Manager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\Line;
@@ -48,7 +48,7 @@ class LineController extends Controller
             // Rebuild the translations cache
             app(CachedTranslationFile::class)->delete()->write();
 
-            return redirect()->route('back.squanto.edit', $line->page_id)->with('messages.success', $message);
+            return redirect()->route('squanto.edit', $line->page_id)->with('messages.success', $message);
         } catch (InvalidLineKeyException $e) {
             return redirect()->back()->withInput()->withErrors('Invalid format for key. Must contain at least one dot as divider of the page identifier and the key itself: e.g. foo.bar');
         }
@@ -90,7 +90,7 @@ class LineController extends Controller
             // Rebuild the translations cache
             app(CachedTranslationFile::class)->delete()->write();
 
-            return redirect()->route('back.squanto.lines.edit', $line->id)->with('messages.success', $message);
+            return redirect()->route('squanto.lines.edit', $line->id)->with('messages.success', $message);
         } catch (InvalidLineKeyException $e) {
             return redirect()->back()->withInput()->withErrors('Invalid format for key. Must contain at least one dot as divider of the page identifier and the key itself: e.g. foo.bar');
         }
@@ -112,10 +112,10 @@ class LineController extends Controller
         // If page has no more lines, we delete it as well
         if ($page->lines()->count() < 1) {
             $page->delete();
-            return redirect()->route('back.squanto.index')->with('messages.warning', 'Line '.$key.' is verwijderd');
+            return redirect()->route('squanto.index')->with('messages.warning', 'Line '.$key.' is verwijderd');
         }
 
-        return redirect()->route('back.squanto.edit', $page->id)->with('messages.warning', 'Line '.$key.' is verwijderd');
+        return redirect()->route('squanto.edit', $page->id)->with('messages.warning', 'Line '.$key.' is verwijderd');
     }
 
     private function saveValueTranslations(Line $line, array $translations)

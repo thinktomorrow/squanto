@@ -24,30 +24,28 @@
     </script>
 @endpush
 
-@section('page-title','Translations for '.$page->label)
+@section('page-title')
+    <a href="{{ route('squanto.index') }}">Translations</a> <span class="subtle"> > {{ $page->label }}</span>
+@stop
 
 @section('topbar-right')
-    @if(Auth::user()->isSuperAdmin())
-        <a type="button" href="{{ route('back.squanto.lines.create',$page->id) }}" class="btn btn-success btn-sm btn-rounded"><i class="fa fa-plus"></i> add new line</a>
+    @if(Auth::user()->isSquantoDeveloper())
+        <a type="button" href="{{ route('squanto.lines.create',$page->id) }}" class="btn btn-default btn-sm btn-rounded"><i class="fa fa-plus"></i> add new line</a>
     @endif
 @stop
 
 @section('content')
 
-    {!! Form::open(['method' => 'PUT', 'route' => ['back.squanto.update',$page->id],'files' => false,'role' => 'form','class'=>'form-horizontal admin-form']) !!}
-    <div class="row">
+    <form method="POST" action="{{ route('squanto.update',$page->id) }}" role="form" class="form-horizontal">
+        {{ csrf_field() }}
+        <input type="hidden" name="_method" value="PUT">
 
         @include('squanto::_formtabs')
 
-        <div class="col-md-3">
-            <div class="form-group">
-                <div class="bs-component text-center">
-                    <button class="btn btn-success btn-lg" type="submit"><i class="fa fa-check"></i> Save your changes</button>
-                </div>
-            </div>
-        </div><!-- end sidebar column -->
-    </div>
-    {!! Form::close() !!}
+        <div class="text-right">
+            <button class="btn btn-success btn-lg" type="submit"><i class="fa fa-check"></i> Save your changes</button>
+        </div>
+    </form>
 
 
 @stop

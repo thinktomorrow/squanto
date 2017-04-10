@@ -10,7 +10,7 @@
 Manage the static translations of your Laravel application during and after development
 Squanto, based on one of the first [Native Indian interpreters](https://nl.wikipedia.org/wiki/Squanto), is an opinionated way to manage the translations in database.
 
-**NOTE: This package is still in development and the api will be subject to change. Please only use this package in production until a stable version is released. That being said, please do try this package out as feedback is much appreciated!**
+**NOTE: This package is still in development and the api will be subject to change. Also note that it is tailor made for Think Tomorrow projects but you are free to use it. Please only use this package in production until a stable version is released. That being said, please do try this package out as feedback is much appreciated!**
 
 ## Install
 
@@ -25,6 +25,19 @@ Publish the migrations and run them:
 $ php artisan vendor:publish --provider="Thinktomorrow\Squanto\SquantoServiceProvider"
 ```
 
+Basic development protection
+Add the `ThinkTomorrow\Squanto\Manager\ManagesSquanto` trait to your User model. This will expose a public
+method 'isThinkTomorrowDeveloper' to be used inside your views and middleware.
+
+Managing squanto via the interface also requires a middleware `squanto.develop` which should protect 
+the routes responsible for adding, editing and deleting translation lines. A insecure default is 
+available but for production you must setup your own permissions logic on these routes.
+``` php
+protected $routeMiddleware = [
+    'squanto.developer' => \Thinktomorrow\Squanto\Manager\Http\Middleware\Developer::class,
+],
+```
+
 Add the service provider in your config/app.php providers array
 ``` php
 'providers' => [
@@ -33,6 +46,10 @@ Add the service provider in your config/app.php providers array
     Thinktomorrow\Squanto\SquantoManagerServiceProvider::class, // Optionally add the UI manager
 ];
 ```
+
+## Editor
+The redactor editor is required so you'll need to include the css and js assets. This is not provided since you'll need a licence.
+Feel free to switch editors. The textareas that require a wysiwyg a assigned a `redactor-editor` class.
 
 ## Usage
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Manager\Controllers;
+namespace Thinktomorrow\Squanto\Manager\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\Line;
@@ -36,7 +36,7 @@ class TranslationController extends Controller
         // Rebuild the translations cache
         app(CachedTranslationFile::class)->delete()->write();
 
-        return redirect()->route('back.squanto.edit', $page->id)->with('messages.success', $page->label .' translations have been updated');
+        return redirect()->route('squanto.edit', $page->id)->with('messages.success', $page->label .' translations have been updated');
     }
 
     private function saveValueTranslations(array $translations)
