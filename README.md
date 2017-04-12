@@ -19,35 +19,35 @@ Via Composer
 $ composer require thinktomorrow/squanto
 ```
 
+## Setup
+1. Publish the migrations and run them:
+    ``` bash
+    $ php artisan vendor:publish --provider="Thinktomorrow\Squanto\SquantoServiceProvider"
+    ```
 
-Publish the migrations and run them:
-``` bash
-$ php artisan vendor:publish --provider="Thinktomorrow\Squanto\SquantoServiceProvider"
-```
-
-Basic development protection
+2. Basic development protectiong
 Add the `ThinkTomorrow\Squanto\Manager\ManagesSquanto` trait to your User model. This will expose a public
-method 'isThinkTomorrowDeveloper' to be used inside your views and middleware.
+method 'isSquantoDeveloper' to be used inside your views and middleware.
 
-Managing squanto via the interface also requires a middleware `squanto.develop` which should protect 
+3. Managing squanto via the interface also requires a middleware `squanto.develop` which should protect 
 the routes responsible for adding, editing and deleting translation lines. A insecure default is 
 available but for production you must setup your own permissions logic on these routes.
-``` php
-protected $routeMiddleware = [
-    'squanto.developer' => \Thinktomorrow\Squanto\Manager\Http\Middleware\Developer::class,
-],
-```
+    ``` php
+    protected $routeMiddleware = [
+        'squanto.developer' => \Thinktomorrow\Squanto\Manager\Http\Middleware\Developer::class,
+    ],
+    ```
 
-Add the service provider in your config/app.php providers array
-``` php
-'providers' => [
-    ...
-    Thinktomorrow\Squanto\SquantoServiceProvider::class,
-    Thinktomorrow\Squanto\SquantoManagerServiceProvider::class, // Optionally add the UI manager
-];
-```
+4. Add the service provider in your config/app.php providers array
+    ``` php
+    'providers' => [
+        ...
+        Thinktomorrow\Squanto\SquantoServiceProvider::class,
+        Thinktomorrow\Squanto\SquantoManagerServiceProvider::class, // Optionally add the UI manager
+    ];
+    ```
 
-## Editor
+5. editor
 The redactor editor is required so you'll need to include the css and js assets. This is not provided since you'll need a licence.
 Feel free to switch editors. The textareas that require a wysiwyg a assigned a `redactor-editor` class.
 
