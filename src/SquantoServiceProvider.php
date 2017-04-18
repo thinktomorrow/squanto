@@ -3,6 +3,7 @@
 namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
+use Thinktomorrow\Squanto\Application\Rename\RenameKeysInFiles;
 use Thinktomorrow\Squanto\Services\CachedTranslationFile;
 use Thinktomorrow\Squanto\Application\Import\ImportTranslationsCommand;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
@@ -75,6 +76,12 @@ class SquantoServiceProvider extends BaseServiceProvider
         $this->app->bind(LaravelTranslationsReader::class, function ($app) {
             return new LaravelTranslationsReader(
                 new Filesystem(new Local($this->getSquantoLangPath()))
+            );
+        });
+
+        $this->app->bind(RenameKeysInFiles::class, function ($app) {
+            return new RenameKeysInFiles(
+                new Filesystem(new Local(base_path()))
             );
         });
 
