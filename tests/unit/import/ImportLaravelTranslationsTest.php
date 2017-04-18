@@ -6,7 +6,7 @@ use Illuminate\Support\Collection;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Import\ImportTranslations;
+use Thinktomorrow\Squanto\Application\Import\ImportTranslations;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 
 class ImportLaravelTranslationsTest extends TestCase

@@ -37,6 +37,17 @@ class Line extends Model
         return $line;
     }
 
+    public function changeKey($key)
+    {
+        $linekey = new LineKey($key);
+
+        $this->key = $linekey->get();
+        $this->label = $linekey->getAsLabel();
+        $this->page_id = Page::findOrCreateByKey($linekey->getPageKey())->id;
+
+        $this->save();
+    }
+
     /**
      * @param $key
      * @return Line
@@ -134,6 +145,11 @@ class Line extends Model
     public function areParagraphsAllowed()
     {
         return (false !== strpos($this->allowed_html,'<p>'));
+    }
+
+    public function page()
+    {
+        return $this->belongsTo(Page::class,'page_id');
     }
 
     /**

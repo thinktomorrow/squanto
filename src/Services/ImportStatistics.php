@@ -4,7 +4,7 @@
 namespace Thinktomorrow\Squanto\Services;
 
 use Illuminate\Support\Str;
-use Thinktomorrow\Squanto\Import\Entry;
+use Thinktomorrow\Squanto\Application\Import\Entry;
 
 class ImportStatistics
 {

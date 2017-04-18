@@ -4,8 +4,6 @@ namespace Thinktomorrow\Squanto\Services;
 
 use Exception;
 use Illuminate\Console\Command;
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
 
 class CacheTranslationsCommand extends Command
 {

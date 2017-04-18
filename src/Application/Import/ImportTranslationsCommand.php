@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Import;
+namespace Thinktomorrow\Squanto\Application\Import;
 
 use Exception;
 use Illuminate\Console\Command;

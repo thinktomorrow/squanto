@@ -4,7 +4,7 @@ namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Services\CachedTranslationFile;
-use Thinktomorrow\Squanto\Import\ImportTranslationsCommand;
+use Thinktomorrow\Squanto\Application\Import\ImportTranslationsCommand;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
 use Thinktomorrow\Squanto\Services\CacheTranslationsCommand;
