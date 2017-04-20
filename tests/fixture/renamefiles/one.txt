@@ -1,0 +1,13 @@
+<html>
+<body>
+    <!-- foo.bar this is a comment -->
+    <h2>{{ trans('freggle.title') }}</h2>
+    <p> ... </p>
+    <h2>{{ Lang::get('frezzie.titleee') }}</h2>
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Ad autem dolores earum eius enim ex, expedita hic impedit magnam modi, molestiae nulla odit pariatur praesentium reiciendis ullam vel voluptate. Sequi.</body>p>
+
+    <!-- {{ Lang::get("freggle.title") }} ->
+    <!-- {{ Lang::get("foo.bar") }} ->
+</body>
+</html>
+

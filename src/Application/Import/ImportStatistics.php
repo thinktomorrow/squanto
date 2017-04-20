@@ -1,10 +1,9 @@
 <?php
 
 
-namespace Thinktomorrow\Squanto\Services;
+namespace Thinktomorrow\Squanto\Application\Import;
 
 use Illuminate\Support\Str;
-use Thinktomorrow\Squanto\Application\Import\Entry;
 
 class ImportStatistics
 {

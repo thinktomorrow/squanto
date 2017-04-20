@@ -1,9 +1,10 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Services;
+namespace Thinktomorrow\Squanto\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
+use Thinktomorrow\Squanto\Application\Cache\CachedTranslationFile;
 
 class CacheTranslationsCommand extends Command
 {

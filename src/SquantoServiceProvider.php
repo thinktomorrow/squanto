@@ -3,13 +3,16 @@
 namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
+use Symfony\Component\Finder\Finder;
 use Thinktomorrow\Squanto\Application\Rename\RenameKeysInFiles;
-use Thinktomorrow\Squanto\Services\CachedTranslationFile;
-use Thinktomorrow\Squanto\Application\Import\ImportTranslationsCommand;
+use Thinktomorrow\Squanto\Application\Cache\CachedTranslationFile;
+use Thinktomorrow\Squanto\Commands\ImportTranslationsCommand;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
-use Thinktomorrow\Squanto\Services\CacheTranslationsCommand;
+use Thinktomorrow\Squanto\Commands\CacheTranslationsCommand;
+use Thinktomorrow\Squanto\Commands\RenameKeyCommand;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
+use Thinktomorrow\Squanto\Services\LineUsage;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider
@@ -24,8 +27,10 @@ class SquantoServiceProvider extends BaseServiceProvider
         return [
             'translator',
             'translation.loader',
+            'Thinktomorrow\\Squanto\\Application\\Rename\\RenameKeysInFiles',
             'Thinktomorrow\\Squanto\\Handlers\\ClearCacheTranslations',
             'Thinktomorrow\\Squanto\\Handlers\\WriteTranslationLineToDisk',
+            'Thinktomorrow\\Squanto\\Services\\LineUsage',
             'Thinktomorrow\\Squanto\\Services\\LaravelTranslationsReader',
         ];
     }
@@ -51,6 +56,7 @@ class SquantoServiceProvider extends BaseServiceProvider
             $this->commands([
                 ImportTranslationsCommand::class,
                 CacheTranslationsCommand::class,
+                RenameKeyCommand::class,
             ]);
         }
     }
@@ -79,9 +85,16 @@ class SquantoServiceProvider extends BaseServiceProvider
             );
         });
 
+        $this->app->bind(LineUsage::class, function ($app) {
+            return new LineUsage(
+                new Finder(),
+                array_merge($app['config']->get('view.paths'), [$app['path']])
+            );
+        });
+
         $this->app->bind(RenameKeysInFiles::class, function ($app) {
             return new RenameKeysInFiles(
-                new Filesystem(new Local(base_path()))
+                $app->make(LineUsage::class)
             );
         });
 

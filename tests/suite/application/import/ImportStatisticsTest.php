@@ -3,7 +3,7 @@
 namespace Thinktomorrow\Squanto\Tests;
 
 use Thinktomorrow\Squanto\Application\Import\Entry;
-use Thinktomorrow\Squanto\Services\ImportStatistics;
+use Thinktomorrow\Squanto\Application\Import\ImportStatistics;
 
 class ImportStatisticsTest extends TestCase
 {

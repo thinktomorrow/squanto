@@ -7,7 +7,7 @@ use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Exceptions\InvalidLineKeyException;
-use Thinktomorrow\Squanto\Services\CachedTranslationFile;
+use Thinktomorrow\Squanto\Application\Cache\CachedTranslationFile;
 
 class LineController extends Controller
 {

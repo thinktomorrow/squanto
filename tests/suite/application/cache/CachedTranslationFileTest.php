@@ -4,7 +4,7 @@ namespace Thinktomorrow\Squanto\Tests;
 
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use Thinktomorrow\Squanto\Services\CachedTranslationFile;
+use Thinktomorrow\Squanto\Application\Cache\CachedTranslationFile;
 use Thinktomorrow\Squanto\Domain\Line;
 
 class CachedTranslationFileTest extends TestCase
@@ -83,11 +83,11 @@ class CachedTranslationFileTest extends TestCase
 
     private function setTemporaryCacheDir()
     {
-        config()->set('squanto.cache_path', __DIR__ . '/../../stubs/cachedchanged');
+        config()->set('squanto.cache_path', $this->getFixtureDirectory('cachedchanged'));
 
         app()->bind(CachedTranslationFile::class, function ($app) {
             return new CachedTranslationFile(
-                new Filesystem(new Local(__DIR__ . '/../../stubs/cachedchanged'))
+                new Filesystem(new Local($this->getFixtureDirectory('cachedchanged')))
             );
         });
     }

@@ -1,9 +1,10 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Services;
+namespace Thinktomorrow\Squanto\Application\Cache;
 
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Services\ConvertToTree;
 
 class CachedTranslationFile
 {

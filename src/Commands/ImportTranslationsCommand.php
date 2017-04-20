@@ -1,12 +1,13 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Application\Import;
+namespace Thinktomorrow\Squanto\Commands;
 
 use Exception;
 use Illuminate\Console\Command;
 use Symfony\Component\Console\Helper\Table;
 use Symfony\Component\Console\Helper\TableSeparator;
-use Thinktomorrow\Squanto\Services\CachedTranslationFile;
+use Thinktomorrow\Squanto\Application\Cache\CachedTranslationFile;
+use Thinktomorrow\Squanto\Application\Import\ImportTranslations;
 
 class ImportTranslationsCommand extends Command
 {

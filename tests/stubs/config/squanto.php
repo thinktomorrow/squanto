@@ -19,13 +19,13 @@ return [
      * Path where the cached language files should be stored
      * @var string
      */
-    'cache_path' => __DIR__.'/../cached',
+    'cache_path' => __DIR__ . '/../../fixture/cached',
 
     /**
      * Path where the laravel language files are stored
      * @var string
      */
-    'lang_path' => __DIR__.'/../lang',
+    'lang_path' => __DIR__ . '/../../fixture/lang',
 
     /**
      * In case the translation key cannot be translated, this option

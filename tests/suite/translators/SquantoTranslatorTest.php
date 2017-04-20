@@ -25,7 +25,7 @@ class SquantoTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_translation_collection()
     {
-        $foo = require __DIR__.'/../../stubs/cached/nl/foo.php';
+        $foo = require $this->getFixtureDirectory('cached/nl/foo.php');
 
         $this->assertEquals($foo,$this->translator->get('foo'));
     }

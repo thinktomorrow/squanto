@@ -5,7 +5,7 @@ namespace Thinktomorrow\Squanto\Manager\Http\Controllers;
 use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Page;
-use Thinktomorrow\Squanto\Services\CachedTranslationFile;
+use Thinktomorrow\Squanto\Application\Cache\CachedTranslationFile;
 
 class TranslationController extends Controller
 {

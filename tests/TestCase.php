@@ -30,7 +30,7 @@ class TestCase extends BaseTestCase
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['path.lang'] = $this->getStubDirectory('lang');
+        $app['path.lang'] = $this->getFixtureDirectory('lang');
 
         $this->createTestDatabase();
         $app['config']->set('database.connections.sqlite', [
@@ -49,11 +49,16 @@ class TestCase extends BaseTestCase
         $app['config']->set('translatable.fallback_locale','en');
 
         $app["config"]->set('view.paths',[
-            __DIR__.'/fixture/resources/views',
+            __DIR__ . '/fixture/renamefiles',
         ]);
     }
 
-    private function getStubDirectory($dir = null)
+    protected function getFixtureDirectory($dir = null)
+    {
+        return __DIR__.'/fixture/' . $dir;
+    }
+
+    protected function getStubDirectory($dir = null)
     {
         return __DIR__.'/stubs/' . $dir;
     }
