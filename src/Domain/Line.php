@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Dimsav\Translatable\Translatable as BaseTranslatable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
+use LogicException;
 
 /**
  * Class Line
@@ -41,8 +42,12 @@ class Line extends Model
     {
         $linekey = new LineKey($key);
 
+        if(self::findByKey($key))
+        {
+            throw new LogicException('Translation key ['.$key.'] already exists on another line.');
+        }
+
         $this->key = $linekey->get();
-        $this->label = $linekey->getAsLabel();
         $this->page_id = Page::findOrCreateByKey($linekey->getPageKey())->id;
 
         $this->save();

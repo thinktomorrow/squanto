@@ -2,8 +2,6 @@
 
 namespace Thinktomorrow\Squanto\Application\Rename;
 
-use League\Flysystem\Filesystem;
-use Symfony\Component\Finder\Finder;
 use Thinktomorrow\Squanto\Services\LineUsage;
 
 final class RenameKeysInFiles

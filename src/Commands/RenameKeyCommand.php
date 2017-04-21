@@ -2,15 +2,14 @@
 
 namespace Thinktomorrow\Squanto\Commands;
 
-use Exception;
 use Illuminate\Console\Command;
 use InvalidArgumentException;
 use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
 use Thinktomorrow\Squanto\Application\Cache\CachedTranslationFile;
 use Thinktomorrow\Squanto\Application\Rename\RenameKey;
 use Thinktomorrow\Squanto\Application\Rename\RenameKeysInFiles;
 use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Services\LineUsage;
 
 class RenameKeyCommand extends Command
 {
@@ -24,12 +23,18 @@ class RenameKeyCommand extends Command
      */
     private $renameKeysInFiles;
 
-    public function __construct(RenameKey $renameKey, RenameKeysInFiles $renameKeysInFiles)
+    /**
+     * @var LineUsage
+     */
+    private $usage;
+
+    public function __construct(RenameKey $renameKey, RenameKeysInFiles $renameKeysInFiles, LineUsage $usage)
     {
         parent::__construct();
 
         $this->renameKey = $renameKey;
         $this->renameKeysInFiles = $renameKeysInFiles;
+        $this->usage = $usage;
     }
 
     /**
@@ -69,19 +74,45 @@ class RenameKeyCommand extends Command
         // Rename key in database
         $this->renameKey->handle($line, $newKey);
 
-        // Optionally rename occurrences in application
-        if($this->option('files'))
+        $usages = $this->usage->getByKey($oldKey);
+        $usageCount = count($usages);
+        if($usageCount < 1)
         {
-            $this->renameKeysInFiles->handle($oldKey, $newKey);
+            $this->info('No usages found of the ['.$oldKey.'] translation key.');
+        }
+        else{
+            $this->displayUsages($oldKey, $usages);
+
+            // Optionally rename occurrences in application
+            if($this->option('files'))
+            {
+                $this->renameKeysInFiles->handle($oldKey, $newKey);
+            }
         }
 
-        $this->info('Key renamed to '. $newKey);
+        $this->info('Translation Key renamed to '. $newKey.'.' .($usageCount > 0) ? ' Also changed the '.$usageCount.' usage'.$usageCount<2?'':'s'.' found in the application files.' : '');
 
         // Recache results
         app(CachedTranslationFile::class)->delete()->write();
         $this->info('Translation cache refreshed.');
 
         $this->output->writeln('');
+    }
+
+    private function displayUsages($key, $usages)
+    {
+        $rows = [];
+        foreach($usages as $usage)
+        {
+            $rows[] = [$usage['path'], $usage['function']];
+        }
+
+        $this->info('Found '. count($usages) . ' usages of the ['.$key.'] translation key.');
+        $table = new Table($this->output);
+        $table->setHeaders(['File', 'function']);
+        $table->setHeaders(['File', 'function']);
+        $table->setRows($rows);
+        $table->render();
     }
 
 }
