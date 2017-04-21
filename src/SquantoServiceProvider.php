@@ -11,6 +11,7 @@ use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
 use Thinktomorrow\Squanto\Commands\CacheTranslationsCommand;
 use Thinktomorrow\Squanto\Commands\RenameKeyCommand;
+use Thinktomorrow\Squanto\Commands\UsageCommand;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 use Thinktomorrow\Squanto\Services\LineUsage;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
@@ -57,6 +58,7 @@ class SquantoServiceProvider extends BaseServiceProvider
                 ImportTranslationsCommand::class,
                 CacheTranslationsCommand::class,
                 RenameKeyCommand::class,
+                UsageCommand::class,
             ]);
         }
     }
