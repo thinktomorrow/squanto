@@ -10,7 +10,7 @@ class LineKeyTest extends TestCase
     /** @test */
     public function block_unexpected_key_format()
     {
-        $this->setExpectedException(InvalidLineKeyException::class);
+        $this->expectException(InvalidLineKeyException::class);
 
         new LineKey('foo');
     }
@@ -18,7 +18,7 @@ class LineKeyTest extends TestCase
     /** @test */
     public function block_non_string_key()
     {
-        $this->setExpectedException(InvalidLineKeyException::class);
+        $this->expectException(InvalidLineKeyException::class);
 
         new LineKey(12.04);
     }

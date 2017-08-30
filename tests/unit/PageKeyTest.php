@@ -10,7 +10,7 @@ class PageKeyTest extends TestCase
     /** @test */
     public function block_unexpected_key_format()
     {
-        $this->setExpectedException(InvalidPageKeyException::class);
+        $this->expectException(InvalidPageKeyException::class);
 
         new PageKey('foo.title');
     }
@@ -18,7 +18,7 @@ class PageKeyTest extends TestCase
     /** @test */
     public function block_non_string_key()
     {
-        $this->setExpectedException(InvalidPageKeyException::class);
+        $this->expectException(InvalidPageKeyException::class);
 
         new PageKey(12);
     }
