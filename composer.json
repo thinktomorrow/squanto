@@ -17,8 +17,8 @@
         }
     ],
     "require": {
-        "php": "~5.6|~7.0",
-        "dimsav/laravel-translatable": "~5.4|~6.0|7.*",
+        "php": ">=7.0",
+        "dimsav/laravel-translatable": "~8.0",
         "illuminate/contracts": "~5.5",
         "illuminate/database": "~5.5",
         "illuminate/support": "~5.5",
