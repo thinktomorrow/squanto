@@ -81,6 +81,16 @@ class ImportLaravelTranslationsTest extends TestCase
 
     }
 
+    /**
+    * @test
+    */
+    public function it_throws_a_useful_error_if_a_lang_file_is_empty()
+    {
+        $this->expectExceptionMessage('The file "foo.php" seems empty. Make sure every lang file returns an array.');
+
+        app(ImportTranslations::class)->import('fr');
+    }
+
     private function resetLanguageChange()
     {
         config()->set('squanto.lang_path', __DIR__ . '/../../stubs/lang');

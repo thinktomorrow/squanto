@@ -4,6 +4,7 @@ namespace Thinktomorrow\Squanto\Services;
 
 use Illuminate\Support\Arr;
 use League\Flysystem\Filesystem;
+use Thinktomorrow\Squanto\Exceptions\EmptyTranslationFileException;
 
 class LaravelTranslationsReader
 {
@@ -53,6 +54,8 @@ class LaravelTranslationsReader
 
             $this->translations[$filename] = require $this->path . DIRECTORY_SEPARATOR . $file['path'];
         }
+
+        $this->validateTranslations();
 
         return $this;
     }
@@ -116,5 +119,15 @@ class LaravelTranslationsReader
     {
         $path = config('squanto.lang_path');
         return is_null($path) ? app('path.lang') : $path;
+    }
+
+    public function validateTranslations()
+    {
+        $this->translations->each(function($translation, $key){
+            if(!is_array($translation))
+            {
+                throw new EmptyTranslationFileException('The file "' . $key . '.php" seems empty. Make sure every lang file returns an array.');
+            }
+        });
     }
 }
