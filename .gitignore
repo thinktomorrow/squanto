@@ -1,4 +1,8 @@
-build
+
+!/build
+/build/*
+!/build/logs
+
 composer.lock
 docs
 vendor
