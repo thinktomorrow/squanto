@@ -17,7 +17,11 @@ checks:
         fix_identation_4spaces: true
         fix_doc_comments: true
 
-tools:
-    external_code_coverage:
-        timeout: 600
-        runs: 3
+build:
+    tests:
+        override:
+            -
+                command: 'vendor/bin/phpunit --coverage-clover=build/logs/clover.xml --configuration phpunit.xml.dist'
+                coverage:
+                    file: 'build/logs/clover.xml'
+                    format: 'clover'
