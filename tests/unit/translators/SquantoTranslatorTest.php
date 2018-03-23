@@ -19,7 +19,7 @@ class SquantoTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_translation()
     {
-        $this->assertEquals('bazz',$this->translator->get('foo.bar'));
+        $this->assertEquals('bazz', $this->translator->get('foo.bar'));
     }
 
     /** @test */
@@ -27,19 +27,19 @@ class SquantoTranslatorTest extends TestCase
     {
         $foo = require __DIR__.'/../../stubs/cached/nl/foo.php';
 
-        $this->assertEquals($foo,$this->translator->get('foo'));
+        $this->assertEquals($foo, $this->translator->get('foo'));
     }
 
     /** @test */
     public function it_can_get_a_translation_with_placeholders()
     {
-        $this->assertEquals('hello Ben, welcome back',$this->translator->get('foo.hello',['name' => 'Ben']));
+        $this->assertEquals('hello Ben, welcome back', $this->translator->get('foo.hello', ['name' => 'Ben']));
     }
 
     /** @test */
     public function it_can_get_a_translation_for_specific_locale()
     {
-        $this->assertEquals('bash',$this->translator->get('foo.bar',[],'fr'));
+        $this->assertEquals('bash', $this->translator->get('foo.bar', [], 'fr'));
     }
 
     /** @test */
@@ -47,15 +47,15 @@ class SquantoTranslatorTest extends TestCase
     {
         app('translator')->setKeyAsDefault(false);
 
-        $this->assertEquals(null,$this->translator->get('unknown.key'));
+        $this->assertEquals(null, $this->translator->get('unknown.key'));
     }
 
     /** @test */
     public function it_can_get_a_fallback_translation()
     {
-        $this->assertEquals('bazzz',$this->translator->get('foo.bam',[],'fr',true));
-        $this->assertEquals('bazzz',$this->translator->get('foo.bam',[],'fr')); // Default is true
-        $this->assertEquals('foo.bam',$this->translator->get('foo.bam',[],'fr',false));
+        $this->assertEquals('bazzz', $this->translator->get('foo.bam', [], 'fr', true));
+        $this->assertEquals('bazzz', $this->translator->get('foo.bam', [], 'fr')); // Default is true
+        $this->assertEquals('foo.bam', $this->translator->get('foo.bam', [], 'fr', false));
     }
 
     /** @test */
@@ -63,7 +63,6 @@ class SquantoTranslatorTest extends TestCase
     {
         config()->set('squanto.excluded_files', ['foo']);
 
-        $this->assertEquals('bazz',$this->translator->get('foo.bar'));
+        $this->assertEquals('bazz', $this->translator->get('foo.bar'));
     }
-
 }
