@@ -6,24 +6,24 @@ class Completion
 {
     public static function getPageCompletion($pageid)
     {
-        $page = Page::find($pageid);
-        $total = $page->lines->count();
-        $results = collect([]);
-
         foreach (config('squanto.locales') as $locale) {
-            $results->push(collect(Line::getValuesByLocaleAndPage($locale, $page->key))->count());
+            if ((Integer)self::getPageCompletionPercentage($pageid, $locale) != 100) {
+                return false;
+            }
         }
-
-        return $results->contains($total);
+        return true;
     }
 
-    public static function getPageCompletionPerLocale($pageid, $locale)
+    public static function getPageCompletionPercentage($pageid, $locale)
     {
         $page   = Page::find($pageid);
-        $total  = $page->lines->where('locale', $locale)->count();
+        $total  = $page->lines->count();
 
-        $results->push(collect(Line::getValuesByLocaleAndPage($locale, $page->key))->count());
+        if ($total == 0) {
+            return 100;
+        }
 
-        return $results->contains($total);
+        $translated = collect(Line::getValuesByLocaleAndPage($locale, $page->key))->count();
+        return $translated / $total * 100;
     }
 }

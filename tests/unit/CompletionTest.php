@@ -23,12 +23,15 @@ class CompletionTest extends TestCase
         $line->saveValue('fr', 'bazz');
         $this->assertTrue(Completion::getPageCompletion($page->id));
 
-        $line = Line::make('foo.vaz');
-        $page = Page::findByKey('foo');
+        $line = Line::make('fooo.vaz');
+        $page = Page::findByKey('fooo');
         $line->saveValue('fr', 'bazz');
-        Line::make('foo.va');
-        Line::make('foo.baz');
-        Line::make('foo.ba');
+        $line = Line::make('fooo.va');
+        $line->saveValue('fr', 'bazz');
+        $line = Line::make('fooo.baz');
+        $line->saveValue('fr', 'bazz');
+        $line = Line::make('fooo.ba');
+        $line->saveValue('fr', 'bazz');
 
         $this->assertFalse(Completion::getPageCompletion($page->id));
     }
@@ -41,15 +44,29 @@ class CompletionTest extends TestCase
         $line->saveValue('nl', 'bazz');
         $line->saveValue('en', 'bazz');
         $line->saveValue('fr', 'bazz');
-        $this->assertEquals(100, Completion::getPageCompletionPerLocale($page->id, 'en'));
+        $this->assertEquals(100.0, Completion::getPageCompletionPercentage($page->id, 'en'));
 
-        $line = Line::make('foo.vaz');
-        $page = Page::findByKey('foo');
+        $line = Line::make('fooo.vaz');
+        $page = Page::findByKey('fooo');
         $line->saveValue('fr', 'bazz');
-        Line::make('foo.va');
-        Line::make('foo.baz');
-        Line::make('foo.ba');
+        Line::make('fooo.va');
+        Line::make('fooo.baz');
+        Line::make('fooo.ba');
 
-        $this->assertFalse(25, Completion::getPageCompletionPerLocale($page->id, 'fr'));
+        $this->assertEquals(25.0, Completion::getPageCompletionPercentage($page->id, 'fr'));
+    }
+
+    /** @test */
+    public function it_returns_true_if_there_are_no_lines()
+    {
+        $page = Page::make('foo');
+        $this->assertTrue(Completion::getPageCompletion($page->id));
+    }
+
+    /** @test */
+    public function it_returns_100_if_there_are_no_lines()
+    {
+        $page = Page::make('foo');
+        $this->assertEquals(100, Completion::getPageCompletionPercentage($page->id, 'fr'));
     }
 }
