@@ -133,7 +133,7 @@ class Line extends Model
 
     public function areParagraphsAllowed()
     {
-        return (false !== strpos($this->allowed_html,'<p>'));
+        return (false !== strpos($this->allowed_html, '<p>'));
     }
 
     /**
@@ -158,8 +158,7 @@ class Line extends Model
             ->select(['squanto_lines.*','squanto_line_translations.locale','squanto_line_translations.value'])
             ->where('squanto_line_translations.locale', $locale);
 
-        if($pagekey)
-        {
+        if ($pagekey) {
             $lines = $lines
                 ->join('squanto_pages', 'squanto_lines.page_id', '=', 'squanto_pages.id')
                 ->where('squanto_pages.key', $pagekey);
