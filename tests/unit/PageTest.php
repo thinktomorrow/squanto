@@ -6,7 +6,7 @@ use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Domain\Completion;
 
-class CompletionTest extends TestCase
+class PageTest extends TestCase
 {
     public function setUp()
     {
@@ -14,14 +14,14 @@ class CompletionTest extends TestCase
     }
 
     /** @test */
-    public function it_can_get_completion_stats_per_page()
+    public function it_can_get_completion_stats_on_page_object()
     {
         $line = Line::make('foo.bar');
         $page = Page::findByKey('foo');
         $line->saveValue('nl', 'bazz');
         $line->saveValue('en', 'bazz');
         $line->saveValue('fr', 'bazz');
-        $this->assertTrue(Completion::check($page));
+        $this->assertTrue($page->isCompleted());
 
         $line = Line::make('fooo.vaz');
         $page = Page::findByKey('fooo');
@@ -33,18 +33,18 @@ class CompletionTest extends TestCase
         $line = Line::make('fooo.ba');
         $line->saveValue('fr', 'bazz');
 
-        $this->assertFalse(Completion::check($page));
+        $this->assertFalse($page->isCompleted());
     }
 
     /** @test */
-    public function it_can_get_completion_stats_per_page_per_locale()
+    public function it_can_get_completion_stats_per_page_per_locale_on_page_object()
     {
         $line = Line::make('foo.bar');
         $page = Page::findByKey('foo');
         $line->saveValue('nl', 'bazz');
         $line->saveValue('en', 'bazz');
         $line->saveValue('fr', 'bazz');
-        $this->assertEquals(100.0, Completion::asPercentage($page, 'en'));
+        $this->assertEquals(100.0, $page->completionPercentage('en'));
 
         $line = Line::make('fooo.vaz');
         $page = Page::findByKey('fooo');
@@ -53,20 +53,20 @@ class CompletionTest extends TestCase
         Line::make('fooo.baz');
         Line::make('fooo.ba');
 
-        $this->assertEquals(25.0, Completion::asPercentage($page, 'fr'));
+        $this->assertEquals(25.0, $page->completionPercentage('fr'));
     }
 
     /** @test */
-    public function it_returns_true_if_there_are_no_lines()
+    public function it_returns_true_if_there_are_no_lines_on_page_object()
     {
         $page = Page::make('foo');
-        $this->assertTrue(Completion::check($page));
+        $this->assertTrue($page->isCompleted());
     }
 
     /** @test */
-    public function it_returns_100_if_there_are_no_lines()
+    public function it_returns_100_if_there_are_no_lines_on_page_object()
     {
         $page = Page::make('foo');
-        $this->assertEquals(100, Completion::asPercentage($page, 'fr'));
+        $this->assertEquals(100, $page->completionPercentage('fr'));
     }
 }
