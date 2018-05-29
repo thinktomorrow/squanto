@@ -45,8 +45,10 @@
         "format": "phpcbf --standard=psr2 src/"
     },
     "extra": {
-        "branch-alias": {
-            "dev-master": "0.1-dev"
+        "laravel": {
+            "providers": [
+                "Thinktomorrow\\Squanto\\SquantoServiceProvider"
+            ]
         }
     },
     "config": {
