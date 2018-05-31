@@ -49,4 +49,13 @@ class Page extends Model
     {
         return $query->orderBy('sequence', 'ASC');
     }
+
+    public function isCompleted()
+    {
+        return Completion::check($this);
+    }
+    public function completionPercentage($locale)
+    {
+        return Completion::asPercentage($this, $locale);
+    }
 }

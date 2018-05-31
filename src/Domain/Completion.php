@@ -2,18 +2,17 @@
 namespace Thinktomorrow\Squanto\Domain;
 class Completion
 {
-    public static function getPageCompletion($pageid)
+    public static function check(Page $page)
     {
         foreach (config('squanto.locales') as $locale) {
-            if ((Integer)self::getPageCompletionPercentage($pageid, $locale) != 100) {
+            if ((Integer)self::asPercentage($page, $locale) != 100) {
                 return false;
             }
         }
         return true;
     }
-    public static function getPageCompletionPercentage($pageid, $locale)
+    public static function asPercentage(Page $page, $locale)
     {
-        $page   = Page::find($pageid);
         $total  = $page->lines->count();
         if ($total == 0) {
             return 100;
