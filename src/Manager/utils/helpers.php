@@ -35,7 +35,10 @@ if(!function_exists('squantoCleanupHTML'))
 {
     function squantoCleanupHTML( $value, $whitelist = null )
     {
-        require_once __DIR__ . '/vendors/htmlLawed.php';
+        if(!function_exists('htmLawed'))
+        {
+            require_once __DIR__ . '/vendors/htmlLawed.php';
+        }
 
         if(is_null($whitelist))
         {
