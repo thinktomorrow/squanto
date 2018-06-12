@@ -24,8 +24,7 @@ class SquantoManagerServiceProvider extends ServiceProvider
     public function boot()
     {
         // Require helper files
-        if(!function_exists('htmLawed'))
-        {
+        if(!function_exists('htmLawed')) {
             require_once dirname(__FILE__) . "/Manager/utils/vendors/htmlLawed.php";
         }
 
