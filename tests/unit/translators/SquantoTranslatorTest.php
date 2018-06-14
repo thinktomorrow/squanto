@@ -23,6 +23,12 @@ class SquantoTranslatorTest extends TestCase
     }
 
     /** @test */
+    public function retrieving_translation_is_case_insensitive()
+    {
+        $this->assertEquals('bazz', $this->translator->get('foo.BAR'));
+    }
+
+    /** @test */
     public function it_can_get_a_translation_collection()
     {
         $foo = require __DIR__.'/../../stubs/cached/nl/foo.php';
