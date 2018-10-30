@@ -53,6 +53,9 @@ if(!function_exists('squantoCleanupHTML'))
         if(false !== $whitelist) $value = strip_tags($value, $whitelist);
         // cleanup HTML and any unwanted attributes
         $value = htmLawed($value);
+
+        $value  = str_replace('&amp;', '&', $value);
+
         return $value;
     }
 }
