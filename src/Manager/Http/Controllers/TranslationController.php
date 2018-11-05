@@ -71,7 +71,7 @@ class TranslationController extends Controller
      * @param $page
      * @return \Illuminate\Support\Collection
      */
-    private function groupLinesByKey($page)
+    protected function groupLinesByKey($page)
     {
         $groupedLines = collect(['general' => []]);
         $groups = [];

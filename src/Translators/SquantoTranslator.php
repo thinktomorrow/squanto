@@ -36,6 +36,9 @@ class SquantoTranslator extends LaravelTranslator implements Translator
     {
         $locale = $locale ?: $this->getLocale();
 
+        // The key is always stored as lowercase so make sure our key input is sanitized as well.
+        $key = strtolower($key);
+
         if($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback)) {
             return $result;
         }
