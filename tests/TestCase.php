@@ -4,16 +4,18 @@ namespace Thinktomorrow\Squanto\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Thinktomorrow\Squanto\SquantoServiceProvider;
+use Thinktomorrow\Squanto\SquantoManagerServiceProvider;
+use Thinktomorrow\Squanto\Tests\DatabaseTransactions;
+use Thinktomorrow\Squanto\Tests\TestHelpers;
 
 class TestCase extends BaseTestCase
 {
-    private $database = __DIR__.'/tmp/database.sqlite';
+    use DatabaseTransactions,
+        TestHelpers;
 
     public function setUp()
     {
         parent::setUp();
-
-        $this->migrate();
     }
 
     /**
@@ -25,22 +27,25 @@ class TestCase extends BaseTestCase
     {
         return [
             SquantoServiceProvider::class,
+            SquantoManagerServiceProvider::class,
         ];
     }
 
     protected function getEnvironmentSetUp($app)
     {
-        $app['path.lang'] = $this->getStubDirectory('lang');
+        //copy stubs to temp folder
+        $this->recurse_copy($this->getStubDirectory(), $this->getTempDirectory());
+        $app['path.lang'] = $this->getTempDirectory('lang');
 
-        $this->createTestDatabase();
-        $app['config']->set('database.connections.sqlite', [
+        // Connection is defined in the phpunit config xml
+        $app['config']->set('database.connections.testing', [
             'driver' => 'sqlite',
-            'database' => __DIR__.'/tmp/database.sqlite',
+            'database' => env('DB_DATABASE', __DIR__.'/../database/testing.sqlite'),
             'prefix' => '',
         ]);
 
-        $app['config']->set('database.default', 'sqlite');
-        $app['config']->set('squanto',require __DIR__.'/stubs/config/squanto.php');
+        $app['config']->set('database.default', 'testing');
+        $app['config']->set('squanto', require $this->getTempDirectory('config/squanto.php'));
         $app['config']->set('app.locale','nl');
         $app['config']->set('app.fallback_locale','en');
 
@@ -54,34 +59,8 @@ class TestCase extends BaseTestCase
         return __DIR__.'/stubs/' . $dir;
     }
 
-    /**
-     * Create fresh test database and hydrate with migrations
-     */
-    public function createTestDatabase()
+    private function getTempDirectory($dir = null)
     {
-        // Create new sqlite database for the total of our tests
-        $this->removeTestDatabase();
-
-        if(!is_dir(__DIR__.'/tmp')) mkdir('./tests/tmp',0775);
-
-        touch($this->database);
-    }
-
-    protected function removeTestDatabase()
-    {
-        if(file_exists($this->database)) unlink($this->database);
-    }
-
-    private function migrate()
-    {
-        $migrations = [
-            'CreateSquantoTables' => 'create_squanto_tables.php',
-        ];
-
-        foreach($migrations as $class => $file)
-        {
-            include_once __DIR__.'/../database/migrations/'.$file;
-            (new $class)->up();
-        }
+        return __DIR__.'/tmp/' . $dir;
     }
 }

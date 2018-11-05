@@ -10,6 +10,8 @@ class LineTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+
+        $this->setUpDatabase();
     }
 
     /** @test */

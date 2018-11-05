@@ -4,13 +4,14 @@ namespace Thinktomorrow\Squanto\Tests;
 
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Page;
-use Thinktomorrow\Squanto\Domain\Completion;
 
 class PageTest extends TestCase
 {
     public function setUp()
     {
         parent::setUp();
+
+        $this->setUpDatabase();
     }
 
     /** @test */
