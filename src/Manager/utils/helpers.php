@@ -49,11 +49,17 @@ if(!function_exists('squantoCleanupHTML'))
             '@<script[^>]*?>.*?</script>@si',
             '@onclick=[^ ].*? @si'
         ),'',$value);
+
         // strip unwanted tags via whitelist...
         if(false !== $whitelist) $value = strip_tags($value, $whitelist);
+
         // cleanup HTML and any unwanted attributes
         $value = htmLawed($value);
 
+        /**
+         * htmlLawed converts characters to their encode equivalents. This is something
+         * that we need to reverse after the htmlLawed cleanup.
+         */
         $value  = str_replace('&amp;', '&', $value);
 
         return $value;
