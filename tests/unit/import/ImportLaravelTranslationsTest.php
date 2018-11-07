@@ -78,7 +78,16 @@ class ImportLaravelTranslationsTest extends TestCase
     {
         app(ImportTranslations::class)->import('nl');
         app(ImportTranslations::class)->disableOverwriteProtection()->import('en');
+    }
 
+    /**
+    * @test
+    */
+    public function it_throws_a_useful_error_if_a_lang_file_is_empty()
+    {
+        $this->expectExceptionMessage('The file "empty.php" seems empty. Make sure every lang file returns an array.');
+
+        app(ImportTranslations::class)->import('de');
     }
 
     private function resetLanguageChange()
