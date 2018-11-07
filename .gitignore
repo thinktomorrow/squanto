@@ -1,7 +1,5 @@
 
-!/build
-/build/*
-!/build/logs
+/build
 
 composer.lock
 docs
