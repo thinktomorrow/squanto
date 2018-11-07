@@ -15,6 +15,8 @@ class ImportLaravelTranslationsTest extends TestCase
     {
         parent::setUp();
 
+        $this->setUpDatabase();
+
         // Reset language file because this language file is changed within these tests to reflect a change
         $this->resetLanguageChange();
     }

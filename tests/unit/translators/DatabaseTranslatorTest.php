@@ -3,7 +3,7 @@
 namespace Thinktomorrow\Squanto\Tests;
 
 use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Domain\Page;
+use Thinktomorrow\Squanto\Tests\TestCase;
 use Thinktomorrow\Squanto\Translators\DatabaseTranslator;
 
 class DatabaseTranslatorTest extends TestCase
@@ -13,6 +13,8 @@ class DatabaseTranslatorTest extends TestCase
     public function setUp()
     {
         parent::setUp();
+
+        $this->setUpDatabase();
 
         $this->translator = new DatabaseTranslator;
     }

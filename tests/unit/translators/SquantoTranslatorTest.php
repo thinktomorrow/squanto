@@ -13,6 +13,8 @@ class SquantoTranslatorTest extends TestCase
     {
         parent::setUp();
 
+        $this->setUpDatabase();
+
         $this->translator = app('translator');
     }
 
