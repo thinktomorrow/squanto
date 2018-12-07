@@ -37,7 +37,7 @@ class Page extends Model
 
     public function lines()
     {
-        return $this->hasMany(Line::class, 'page_id');
+        return $this->hasMany(Line::class, 'page_id')->orderBy('sequence', 'ASC');
     }
 
     public static function getAll()
