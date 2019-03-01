@@ -63,12 +63,16 @@ class PageKey
 
     private function getExcludedSources()
     {
-        if(!self::$excludedSources)
-        {
+        if(!self::$excludedSources) {
             self::$excludedSources = config('squanto.excluded_files',[]);
         }
 
         return self::$excludedSources;
+    }
+
+    public static function refreshExcludedSources()
+    {
+        self::$excludedSources = null;
     }
 
 }

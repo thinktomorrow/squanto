@@ -50,6 +50,8 @@ class PageKeyTest extends TestCase
     /** @test */
     public function it_can_check_if_linekey_comes_from_excluded_source()
     {
+        PageKey::refreshExcludedSources();
+
         $existing = config()->get('squanto.excluded_files');
         config()->set('squanto.excluded_files', ['foo']);
 
