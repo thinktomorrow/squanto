@@ -1,22 +1,6 @@
 # Changelog
 
-All Notable changes to `squanto` will be documented in this file.
+## unreleased
 
-Updates should follow the [Keep a CHANGELOG](http://keepachangelog.com/) principles.
-
-## NEXT - YYYY-MM-DD
-
-### Added
-- Nothing
-
-### Deprecated
-- Nothing
-
-### Fixed
-- Nothing
-
-### Removed
-- Nothing
-
-### Security
-- Nothing
+### 0.5.5 - 2019-03-01
+- Change: empty string in database would not be considered as a valid translation. This is now kept as an intentional value.

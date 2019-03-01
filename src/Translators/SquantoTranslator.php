@@ -4,7 +4,6 @@ namespace Thinktomorrow\Squanto\Translators;
 
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Translation\Translator as LaravelTranslator;
-use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Domain\PageKey;
 
 class SquantoTranslator extends LaravelTranslator implements Translator
@@ -39,15 +38,15 @@ class SquantoTranslator extends LaravelTranslator implements Translator
         // The key is always stored as lowercase so make sure our key input is sanitized as well.
         $key = strtolower($key);
 
-        if($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback)) {
+        if( null !== ($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback))) {
             return $result;
         }
 
-        if ($result = $this->getFromCache($key, $replace, $locale, $fallback)) {
+        if ( null !== ($result = $this->getFromCache($key, $replace, $locale, $fallback))) {
             return $result;
         }
 
-        if ($result = $this->getFromDatabase($key, $replace, $locale, $fallback)) {
+        if (null !== ($result = $this->getFromDatabase($key, $replace, $locale, $fallback))) {
             return $result;
         }
 

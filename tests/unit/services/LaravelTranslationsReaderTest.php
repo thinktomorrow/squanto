@@ -14,7 +14,7 @@ class LaravelTranslationsReaderTest extends TestCase
         $translations = $reader->read('nl')->get();
 
         $this->assertInstanceOf(Collection::class,$translations);
-        $this->assertCount(3,$translations['foo']); // foo lang file contains 3 entries
+        $this->assertCount(4,$translations['foo']); // foo lang file contains 4 entries
         $this->assertCount(2,$translations['foo']['intro']);
     }
 
@@ -25,7 +25,7 @@ class LaravelTranslationsReaderTest extends TestCase
         $translations = $reader->read('nl')->flattenPerFile();
 
         $this->assertInstanceOf(Collection::class,$translations);
-        $this->assertCount(5,$translations['foo']); // foo lang file contains 5 entries
+        $this->assertCount(6,$translations['foo']); // flattened foo lang file contains 6 entries
         $this->assertEquals(app('translator')->get('foo.intro.title'),$translations['foo']['intro.title']);
     }
 

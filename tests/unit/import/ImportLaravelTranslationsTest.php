@@ -27,8 +27,8 @@ class ImportLaravelTranslationsTest extends TestCase
         $importer = app(ImportTranslations::class)->import('nl');
 
         $this->assertInstanceOf(Collection::class,Line::all());
-        $this->assertCount(7,Line::all());
-        $this->assertCount(7,$importer->getStats()->getInserts());
+        $this->assertCount(8,Line::all());
+        $this->assertCount(8,$importer->getStats()->getInserts());
         $this->assertCount(0,$importer->getStats()->getUpdates());
         $this->assertCount(0,$importer->getStats()->getUpdatesOnHold());
         $this->assertTrue($importer->getStats()->getOverwriteProtection());
@@ -45,11 +45,11 @@ class ImportLaravelTranslationsTest extends TestCase
 
         $importer = app(ImportTranslations::class)->enableOverwriteProtection()->import('nl');
 
-        $this->assertCount(7,Line::all());
+        $this->assertCount(8,Line::all());
         $this->assertCount(0,$importer->getStats()->getInserts());
         $this->assertCount(0,$importer->getStats()->getUpdates());
         $this->assertCount(2,$importer->getStats()->getUpdatesOnHold());
-        $this->assertCount(5,$importer->getStats()->getRemainedSame());
+        $this->assertCount(6,$importer->getStats()->getRemainedSame());
         $this->assertTrue($importer->getStats()->getOverwriteProtection());
 
         $this->resetLanguageChange();
@@ -65,11 +65,11 @@ class ImportLaravelTranslationsTest extends TestCase
 
         $importer = app(ImportTranslations::class)->disableOverwriteProtection()->import('nl');
 
-        $this->assertCount(7,Line::all());
+        $this->assertCount(8,Line::all());
         $this->assertCount(0,$importer->getStats()->getInserts());
         $this->assertCount(2,$importer->getStats()->getUpdates());
         $this->assertCount(0,$importer->getStats()->getUpdatesOnHold());
-        $this->assertCount(5,$importer->getStats()->getRemainedSame());
+        $this->assertCount(6,$importer->getStats()->getRemainedSame());
         $this->assertFalse($importer->getStats()->getOverwriteProtection());
 
         $this->resetLanguageChange();

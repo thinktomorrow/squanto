@@ -34,8 +34,10 @@ class DatabaseTranslator implements Translator
             return null;
         }
 
+        // Return null or '' as is, because null will result in trying to fetch the translation
+        // from the file source and an intentional empty string does not.
         if (!$value = $line->getValue($locale, $fallback)) {
-            return null;
+            return $value;
         }
 
         foreach ($replace as $key => $replacer) {

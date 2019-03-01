@@ -10,4 +10,5 @@ return [
             'second'    => 'Over',
         ]
     ],
+    'fourth' => 'fourth-lang',
 ];

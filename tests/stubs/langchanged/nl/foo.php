@@ -9,5 +9,6 @@ return [
             'first'     => 'Thuis',
             'second'    => 'Over',
         ]
-    ]
+    ],
+    'fourth' => 'fourth-lang',
 ];

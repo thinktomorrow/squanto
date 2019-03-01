@@ -3,7 +3,6 @@
 namespace Thinktomorrow\Squanto\Tests;
 
 use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Tests\TestCase;
 use Thinktomorrow\Squanto\Translators\DatabaseTranslator;
 
 class DatabaseTranslatorTest extends TestCase
