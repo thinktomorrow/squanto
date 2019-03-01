@@ -58,7 +58,7 @@ class TranslationController extends Controller
                     $value = squantoCleanupString($value);
                 }
 
-                if (is_null($value) || "" === $value) {
+                if (null === $value) {
                     $line->removeValue($locale);
                 } else {
                     $line->saveValue($locale, $value);

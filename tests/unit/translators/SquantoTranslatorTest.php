@@ -86,6 +86,6 @@ class SquantoTranslatorTest extends TestCase
     {
         Line::make('foo.fourth')->saveValue('nl','');
 
-        $this->assertEquals('', $this->translator->get('foo.fourth'));
+        $this->assertSame('', $this->translator->get('foo.fourth'));
     }
 }

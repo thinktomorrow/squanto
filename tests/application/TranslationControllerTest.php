@@ -31,4 +31,20 @@ class TranslationControllerTest extends TestCase
         $this->assertEquals('bazz & foo', Line::findByKey('foo.bar')->value);           
     }
 
+    /** @test */
+    public function an_empty_line_is_intentionally_kept_empty()
+    {
+        $page = Page::make('foo');
+        $line = Line::make('foo.fourth');
+        $line->saveValue('nl','bazz');
+
+        //mocking a request + call since we have no full laravel application in this package
+        $request = Request::capture()->replace(["trans" => [ "nl" => [$line->id => '']]]);
+
+        app(TranslationController::class)->update($request, $page->id);
+
+        $this->assertSame('', Line::findByKey('foo.fourth')->value);
+        $this->assertSame('', app('translator')->get('foo.fourth'));
+    }
+
 }
