@@ -76,7 +76,13 @@ class SquantoServiceProvider extends BaseServiceProvider
             );
         });
 
-        $this->mergeConfigFrom(__DIR__.'/../config/squanto.php', 'squanto');
+        $this->publishes([
+            __DIR__.'/../config/squanto.php' => config_path('thinktomorrow/squanto.php'),
+        ]);
+        
+        $this->mergeConfigFrom(
+            __DIR__.'/../config/squanto.php', 'thinktomorrow.squanto'
+        );
     }
 
     private function registerTranslator()

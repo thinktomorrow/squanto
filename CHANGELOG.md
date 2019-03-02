@@ -40,5 +40,8 @@ when trying to sync from or to both sources. There are a couple of actions that 
 - subcommands needed for the syncing: move / reorder keys, add missing keys with their translations, remove keys, *rename* keys
 - after the sync command, there should be a clear report on what has happened.
 
+### Changes
+- Publish config to `config/thinktomorrow/squanto.php` instead of `config/squanto.php` to conform with other think tomorrow packages.
+
 ### 0.5.5 - 2019-03-01
 - Change: empty string in database would not be considered as a valid translation. This is now kept as an intentional value.
