@@ -3,26 +3,43 @@
 namespace Thinktomorrow\Squanto\Tests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
+use League\Flysystem\Adapter\Local;
+use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\SquantoServiceProvider;
 use Thinktomorrow\Squanto\SquantoManagerServiceProvider;
-use Thinktomorrow\Squanto\Tests\DatabaseTransactions;
-use Thinktomorrow\Squanto\Tests\TestHelpers;
 
 class TestCase extends BaseTestCase
 {
+    /** @var \Thinktomorrow\Squanto\Translators\SquantoTranslator */
+    protected $translator;
+
+    /** @var string */
+    protected $langDirectory;
+
+    /** @var string */
+    private $tempDirectory;
+
     use DatabaseTransactions,
         TestHelpers;
 
     public function setUp()
     {
         parent::setUp();
+
+        $this->createLangDirectories();
+
+        $this->rebindTranslator();
     }
 
-    /**
-     * @param \Illuminate\Foundation\Application $app
-     *
-     * @return array
-     */
+    public function tearDown()
+    {
+        $this->tempDirectory->delete();
+
+        parent::tearDown();
+    }
+
     protected function getPackageProviders($app)
     {
         return [
@@ -35,6 +52,7 @@ class TestCase extends BaseTestCase
     {
         //copy stubs to temp folder
         $this->recurse_copy($this->getStubDirectory(), $this->getTempDirectory());
+
         $app['path.lang'] = $this->getTempDirectory('lang');
 
         // Connection is defined in the phpunit config xml
@@ -52,6 +70,28 @@ class TestCase extends BaseTestCase
         // Dimsav package dependency requires us to set the fallback locale via this config
         // It should if config not set be using the default laravel fallback imo
         $app['config']->set('translatable.fallback_locale','en');
+    }
+
+    // Register our translator again so any changes on the lang files are reflected in the translator
+    protected function rebindTranslator()
+    {
+        (new SquantoServiceProvider($this->app))->register();
+
+        $this->translator = app('translator');
+
+        app()->bind(LaravelTranslationsReader::class, function ($app) {
+            return new LaravelTranslationsReader(
+                new Filesystem(new Local($this->getTempDirectory('lang')))
+            );
+        });
+    }
+
+    private function createLangDirectories()
+    {
+        $this->tempDirectory = new TemporaryDirectory($this->getTempDirectory());
+        $this->langDirectory = new TemporaryDirectory($this->getTempDirectory('lang'));
+
+        config()->set('squanto.lang_path', $this->getTempDirectory('lang'));
     }
 
     private function getStubDirectory($dir = null)

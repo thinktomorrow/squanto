@@ -16,9 +16,6 @@ class ImportLaravelTranslationsTest extends TestCase
         parent::setUp();
 
         $this->setUpDatabase();
-
-        // Reset language file because this language file is changed within these tests to reflect a change
-        $this->resetLanguageChange();
     }
 
     /** @test */
@@ -90,17 +87,6 @@ class ImportLaravelTranslationsTest extends TestCase
         $this->expectExceptionMessage('The file "empty.php" seems empty. Make sure every lang file returns an array.');
 
         app(ImportTranslations::class)->import('de');
-    }
-
-    private function resetLanguageChange()
-    {
-        config()->set('squanto.lang_path', __DIR__ . '/../../stubs/lang');
-
-        app()->bind(LaravelTranslationsReader::class, function ($app) {
-            return new LaravelTranslationsReader(
-                new Filesystem(new Local(__DIR__ . '/../../stubs/lang'))
-            );
-        });
     }
 
     private function reflectLanguageChange()

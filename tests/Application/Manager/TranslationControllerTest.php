@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Tests;
+namespace Thinktomorrow\Squanto\Tests\Application;
 
 use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\Line;

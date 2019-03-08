@@ -1,11 +1,12 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Tests;
+namespace Thinktomorrow\Squanto\Tests\Unit;
 
 use Thinktomorrow\Squanto\Import\Entry;
 use Thinktomorrow\Squanto\Services\ImportStatistics;
+use Thinktomorrow\Squanto\Tests\TestCase;
 
-class ImportStatisticsTest extends TestCase
+class StatisticsTest extends TestCase
 {
     /** @test */
     public function it_has_by_default_no_items()

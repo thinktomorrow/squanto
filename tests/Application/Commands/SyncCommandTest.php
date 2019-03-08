@@ -1,6 +1,6 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Tests;
+namespace Thinktomorrow\Squanto\Tests\Commands;
 
 use Illuminate\Support\Facades\Artisan;
 

@@ -41,7 +41,9 @@ when trying to sync from or to both sources. There are a couple of actions that 
 - after the sync command, there should be a clear report on what has happened.
 
 ### Changes
-- Publish config to `config/thinktomorrow/squanto.php` instead of `config/squanto.php` to conform with other think tomorrow packages.
+- Change: minimum requirement is laravel 5.7
+- Change: Publish config to `config/thinktomorrow/squanto.php` instead of `config/squanto.php` to conform with other think tomorrow packages.
+- Change: `LaravelTranslationsReader::read()` has been changed to `LaravelTranslationsReader::readAll()`.
 
 ### 0.5.5 - 2019-03-01
 - Change: empty string in database would not be considered as a valid translation. This is now kept as an intentional value.
