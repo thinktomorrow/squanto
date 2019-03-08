@@ -5,7 +5,7 @@ namespace Thinktomorrow\Squanto\Tests;
 use Illuminate\Support\Collection;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Import\ImportTranslations;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 
@@ -23,8 +23,8 @@ class ImportLaravelTranslationsTest extends TestCase
     {
         $importer = app(ImportTranslations::class)->import('nl');
 
-        $this->assertInstanceOf(Collection::class,Line::all());
-        $this->assertCount(8,Line::all());
+        $this->assertInstanceOf(Collection::class,DatabaseLine::all());
+        $this->assertCount(8,DatabaseLine::all());
         $this->assertCount(8,$importer->getStats()->getInserts());
         $this->assertCount(0,$importer->getStats()->getUpdates());
         $this->assertCount(0,$importer->getStats()->getUpdatesOnHold());
@@ -42,14 +42,12 @@ class ImportLaravelTranslationsTest extends TestCase
 
         $importer = app(ImportTranslations::class)->enableOverwriteProtection()->import('nl');
 
-        $this->assertCount(8,Line::all());
+        $this->assertCount(8,DatabaseLine::all());
         $this->assertCount(0,$importer->getStats()->getInserts());
         $this->assertCount(0,$importer->getStats()->getUpdates());
         $this->assertCount(2,$importer->getStats()->getUpdatesOnHold());
         $this->assertCount(6,$importer->getStats()->getRemainedSame());
         $this->assertTrue($importer->getStats()->getOverwriteProtection());
-
-        $this->resetLanguageChange();
     }
 
     /** @test */
@@ -62,14 +60,12 @@ class ImportLaravelTranslationsTest extends TestCase
 
         $importer = app(ImportTranslations::class)->disableOverwriteProtection()->import('nl');
 
-        $this->assertCount(8,Line::all());
+        $this->assertCount(8,DatabaseLine::all());
         $this->assertCount(0,$importer->getStats()->getInserts());
         $this->assertCount(2,$importer->getStats()->getUpdates());
         $this->assertCount(0,$importer->getStats()->getUpdatesOnHold());
         $this->assertCount(6,$importer->getStats()->getRemainedSame());
         $this->assertFalse($importer->getStats()->getOverwriteProtection());
-
-        $this->resetLanguageChange();
     }
 
     /** @test */

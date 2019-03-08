@@ -1,8 +1,8 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Tests;
+namespace Thinktomorrow\Squanto\Tests\Application;
 
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 
 class SquantoTranslatorTest extends TestCase
 {
@@ -76,7 +76,7 @@ class SquantoTranslatorTest extends TestCase
     /** @test */
     public function it_takes_file_source_if_database_line_is_null()
     {
-        Line::make('foo.fourth')->saveValue('nl',null);
+        DatabaseLine::make('foo.fourth')->saveValue('nl',null);
 
         $this->assertEquals('fourth-lang', $this->translator->get('foo.fourth'));
     }
@@ -84,7 +84,7 @@ class SquantoTranslatorTest extends TestCase
     /** @test */
     public function it_takes_database_source_if_database_line_is_intentional_empty_string()
     {
-        Line::make('foo.fourth')->saveValue('nl','');
+        DatabaseLine::make('foo.fourth')->saveValue('nl','');
 
         $this->assertSame('', $this->translator->get('foo.fourth'));
     }

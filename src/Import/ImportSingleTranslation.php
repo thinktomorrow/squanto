@@ -2,7 +2,7 @@
 
 namespace Thinktomorrow\Squanto\Import;
 
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 
 class ImportSingleTranslation
 {
@@ -25,7 +25,7 @@ class ImportSingleTranslation
      */
     public function import($locale, $key, $value)
     {
-        if ($line = Line::findByKey($key)) {
+        if ($line = DatabaseLine::findByKey($key)) {
             return $this->updateTranslation($line, $locale, $key, $value);
         }
 
@@ -41,7 +41,7 @@ class ImportSingleTranslation
     private function insertTranslation($locale, $key, $value)
     {
         if (!$this->dry) {
-            $line = Line::findOrCreateByKey($key)->saveValue($locale, $value);
+            $line = DatabaseLine::findOrCreateByKey($key)->saveValue($locale, $value);
             $line->saveSuggestedType();
         }
 
@@ -51,13 +51,13 @@ class ImportSingleTranslation
     }
 
     /**
-     * @param Line $line
+     * @param DatabaseLine $line
      * @param $locale
      * @param $key
      * @param $value
      * @return $this
      */
-    private function updateTranslation(Line $line, $locale, $key, $value)
+    private function updateTranslation(DatabaseLine $line, $locale, $key, $value)
     {
         $translation = $line->getValue($locale, false);
 

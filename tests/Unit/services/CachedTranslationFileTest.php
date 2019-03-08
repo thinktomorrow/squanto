@@ -5,7 +5,7 @@ namespace Thinktomorrow\Squanto\Tests;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Services\CachedTranslationFile;
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 
 class CachedTranslationFileTest extends TestCase
 {
@@ -32,8 +32,8 @@ class CachedTranslationFileTest extends TestCase
     {
         $filename = 'foo_'.time();
         $filepath = config('squanto.cache_path').'/nl/'.$filename.'.php';
-        Line::make($filename.'.bar')->saveValue('nl','foobar-nl');
-        Line::make($filename.'.baz')->saveValue('nl','foobaz-nl');
+        DatabaseLine::make($filename.'.bar')->saveValue('nl','foobar-nl');
+        DatabaseLine::make($filename.'.baz')->saveValue('nl','foobaz-nl');
 
         app(CachedTranslationFile::class)->write();
 
@@ -51,8 +51,8 @@ class CachedTranslationFileTest extends TestCase
     {
         $filename = 'foo_'.time();
         $filepath = config('squanto.cache_path').'/nl/'.$filename.'.php';
-        Line::make($filename.'.bar')->saveValue('nl','foobar-nl');
-        Line::make($filename.'.baz')->saveValue('nl','foobaz-nl');
+        DatabaseLine::make($filename.'.bar')->saveValue('nl','foobar-nl');
+        DatabaseLine::make($filename.'.baz')->saveValue('nl','foobaz-nl');
 
         app(CachedTranslationFile::class)->write();
         $this->assertFileExists($filepath);
@@ -66,11 +66,11 @@ class CachedTranslationFileTest extends TestCase
     {
         $filename = 'foo_'.time();
         $filepath = config('squanto.cache_path').'/nl/'.$filename.'.php';
-        Line::make($filename.'.bar')->saveValue('nl','foobar-nl');
-        Line::make($filename.'.hello')->saveValue('nl','hallo :name, welkom terug');
-        Line::make($filename.'.intro.title')->saveValue('nl','Dit is een introductie!');
-        Line::make($filename.'.intro.header.first')->saveValue('nl','Thuis');
-        Line::make($filename.'.intro.header.second')->saveValue('nl','Over');
+        DatabaseLine::make($filename.'.bar')->saveValue('nl','foobar-nl');
+        DatabaseLine::make($filename.'.hello')->saveValue('nl','hallo :name, welkom terug');
+        DatabaseLine::make($filename.'.intro.title')->saveValue('nl','Dit is een introductie!');
+        DatabaseLine::make($filename.'.intro.header.first')->saveValue('nl','Thuis');
+        DatabaseLine::make($filename.'.intro.header.second')->saveValue('nl','Over');
 
         app(CachedTranslationFile::class)->write();
 

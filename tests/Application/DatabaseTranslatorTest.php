@@ -1,8 +1,8 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Tests;
+namespace Thinktomorrow\Squanto\Tests\Application;
 
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Translators\DatabaseTranslator;
 
 class DatabaseTranslatorTest extends TestCase
@@ -21,7 +21,7 @@ class DatabaseTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_translation()
     {
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $line->saveValue('nl','bazz');
 
         $this->assertEquals('bazz',$this->translator->get('foo.bar'));
@@ -30,16 +30,16 @@ class DatabaseTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_translation_collection()
     {
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $line->saveValue('nl','bazz');
-        $line = Line::make('foo.bar2');
+        $line = DatabaseLine::make('foo.bar2');
         $line->saveValue('nl','bazzz');
 
         $this->assertEquals(['bar' => 'bazz','bar2' => 'bazzz'],$this->translator->get('foo'));
 
         // Change locale
         app()->setLocale('en');
-        $line = Line::make('foo.bav');
+        $line = DatabaseLine::make('foo.bav');
         $line->saveValue('en','bazz');
 
         $this->assertEquals(['bav' => 'bazz'],$this->translator->get('foo'));
@@ -48,7 +48,7 @@ class DatabaseTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_translation_with_placeholders()
     {
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $line->saveValue('nl','hello :name, welcome back');
 
         $this->assertEquals('hello Ben, welcome back',$this->translator->get('foo.bar',['name' => 'Ben']));
@@ -57,7 +57,7 @@ class DatabaseTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_translation_for_specific_locale()
     {
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $line->saveValue('nl','bazz');
         $line->saveValue('fr','bash');
 
@@ -67,7 +67,7 @@ class DatabaseTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_fallback_translation()
     {
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $line->saveValue('en','bazz');
 
         $this->assertEquals('bazz',$this->translator->get('foo.bar',[],'fr',true));

@@ -1,9 +1,9 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Tests\Application;
+namespace Thinktomorrow\Squanto\Tests\Application\Manager;
 
 use Illuminate\Http\Request;
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Manager\Http\Controllers\TranslationController;
 
@@ -20,7 +20,7 @@ class TranslationControllerTest extends TestCase
     public function it_can_store_a_translation()
     {
         $page = Page::make('foo');
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $line->saveValue('nl','bazz');
 
         //mocking a request + call since we have no full laravel application in this package
@@ -28,14 +28,14 @@ class TranslationControllerTest extends TestCase
 
         app(TranslationController::class)->update($request, $page->id);
         
-        $this->assertEquals('bazz & foo', Line::findByKey('foo.bar')->value);           
+        $this->assertEquals('bazz & foo', DatabaseLine::findByKey('foo.bar')->value);
     }
 
     /** @test */
     public function an_empty_line_is_intentionally_kept_empty()
     {
         $page = Page::make('foo');
-        $line = Line::make('foo.fourth');
+        $line = DatabaseLine::make('foo.fourth');
         $line->saveValue('nl','bazz');
 
         //mocking a request + call since we have no full laravel application in this package
@@ -43,7 +43,7 @@ class TranslationControllerTest extends TestCase
 
         app(TranslationController::class)->update($request, $page->id);
 
-        $this->assertSame('', Line::findByKey('foo.fourth')->value);
+        $this->assertSame('', DatabaseLine::findByKey('foo.fourth')->value);
         $this->assertSame('', app('translator')->get('foo.fourth'));
     }
 

@@ -3,7 +3,7 @@
 namespace Thinktomorrow\Squanto\Services;
 
 use League\Flysystem\Filesystem;
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 
 class CachedTranslationFile
 {
@@ -26,7 +26,7 @@ class CachedTranslationFile
     public function write()
     {
         foreach (config('squanto.locales', []) as $locale) {
-            $this->writeLocale($locale, Line::getValuesByLocale($locale));
+            $this->writeLocale($locale, DatabaseLine::getValuesByLocale($locale));
         }
 
         return $this;

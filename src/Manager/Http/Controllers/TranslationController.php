@@ -3,7 +3,7 @@
 namespace Thinktomorrow\Squanto\Manager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Services\CachedTranslationFile;
 
@@ -44,7 +44,7 @@ class TranslationController extends Controller
         collect($translations)->map(function ($translation, $locale) {
             collect($translation)->map(function ($value, $id) use ($locale) {
 
-                $line = Line::find($id);
+                $line = DatabaseLine::find($id);
 
                 $value = squantoCleanupHTML($value);
 
@@ -102,7 +102,7 @@ class TranslationController extends Controller
      * e.g. foo.bar.title return bar
      * @return string
      */
-    private function getFirstSegmentOfKey(Line $line)
+    private function getFirstSegmentOfKey(DatabaseLine $line)
     {
         // Remove first part since that part equals the page
         $key = substr($line->key, strpos($line->key, '.')+1);

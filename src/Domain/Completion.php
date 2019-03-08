@@ -22,7 +22,7 @@ class Completion
             return 100;
         }
 
-        $translated = collect(Line::getValuesByLocaleAndPage($locale, $page->key))->count();
+        $translated = collect(DatabaseLine::getValuesByLocaleAndPage($locale, $page->key))->count();
         return $translated / $total * 100;
     }
 }

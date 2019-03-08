@@ -2,7 +2,7 @@
 
 namespace Thinktomorrow\Squanto\Tests;
 
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Page;
 
 class PageTest extends TestCase
@@ -17,21 +17,21 @@ class PageTest extends TestCase
     /** @test */
     public function it_can_get_completion_stats_on_page_object()
     {
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $page = Page::findByKey('foo');
         $line->saveValue('nl', 'bazz');
         $line->saveValue('en', 'bazz');
         $line->saveValue('fr', 'bazz');
         $this->assertTrue($page->isCompleted());
 
-        $line = Line::make('fooo.vaz');
+        $line = DatabaseLine::make('fooo.vaz');
         $page = Page::findByKey('fooo');
         $line->saveValue('fr', 'bazz');
-        $line = Line::make('fooo.va');
+        $line = DatabaseLine::make('fooo.va');
         $line->saveValue('fr', 'bazz');
-        $line = Line::make('fooo.baz');
+        $line = DatabaseLine::make('fooo.baz');
         $line->saveValue('fr', 'bazz');
-        $line = Line::make('fooo.ba');
+        $line = DatabaseLine::make('fooo.ba');
         $line->saveValue('fr', 'bazz');
 
         $this->assertFalse($page->isCompleted());
@@ -40,19 +40,19 @@ class PageTest extends TestCase
     /** @test */
     public function it_can_get_completion_stats_per_page_per_locale_on_page_object()
     {
-        $line = Line::make('foo.bar');
+        $line = DatabaseLine::make('foo.bar');
         $page = Page::findByKey('foo');
         $line->saveValue('nl', 'bazz');
         $line->saveValue('en', 'bazz');
         $line->saveValue('fr', 'bazz');
         $this->assertEquals(100.0, $page->completionPercentage('en'));
 
-        $line = Line::make('fooo.vaz');
+        $line = DatabaseLine::make('fooo.vaz');
         $page = Page::findByKey('fooo');
         $line->saveValue('fr', 'bazz');
-        Line::make('fooo.va');
-        Line::make('fooo.baz');
-        Line::make('fooo.ba');
+        DatabaseLine::make('fooo.va');
+        DatabaseLine::make('fooo.baz');
+        DatabaseLine::make('fooo.ba');
 
         $this->assertEquals(25.0, $page->completionPercentage('fr'));
     }

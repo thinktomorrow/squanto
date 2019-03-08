@@ -2,7 +2,7 @@
 
 namespace Thinktomorrow\Squanto\Translators;
 
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
 
@@ -19,7 +19,7 @@ class DatabaseTranslator implements Translator
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
-        if (!$line = Line::findByKey($key)) {
+        if (!$line = DatabaseLine::findByKey($key)) {
 
             /**
              * If no line is requested,
@@ -27,7 +27,7 @@ class DatabaseTranslator implements Translator
              */
             if($page = Page::findByKey($key))
             {
-                $lines = Line::getValuesByLocaleAndPage($locale, $key);
+                $lines = DatabaseLine::getValuesByLocaleAndPage($locale, $key);
                 return ConvertToTree::fromFlattened($lines, false);
             }
 

@@ -3,7 +3,7 @@
 namespace Thinktomorrow\Squanto\Manager\Http\Controllers;
 
 use Illuminate\Http\Request;
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Exceptions\InvalidLineKeyException;
@@ -21,7 +21,7 @@ class LineController extends Controller
     {
         // If pageid is passed, the first key (pagekey) is prefilled
         $page = $page_id ? Page::find($page_id) : null;
-        $line = new Line();
+        $line = new DatabaseLine();
         $available_locales = config('squanto.locales');
 
         return view('squanto::create', compact('page', 'line', 'available_locales'));
@@ -38,7 +38,7 @@ class LineController extends Controller
 
             $page_is_created = !(Page::findByKey($linekey->getPageKey()));
 
-            $line = Line::make($linekey->get());
+            $line = DatabaseLine::make($linekey->get());
             $this->saveValueTranslations($line, $request->get('trans'));
 
             $line->saveSuggestedType();
@@ -59,14 +59,14 @@ class LineController extends Controller
     public function edit($id)
     {
         $available_locales = config('squanto.locales');
-        $line = Line::find($id);
+        $line = DatabaseLine::find($id);
 
         return view('squanto::lines.edit', compact('line', 'available_locales'));
     }
 
     public function update(Request $request, $id)
     {
-        $line = Line::find($id);
+        $line = DatabaseLine::find($id);
 
         $this->validate($request, [
             'key' => 'required|min:3|max:100|unique:squanto_lines,key,'.$line->id,
@@ -100,7 +100,7 @@ class LineController extends Controller
 
     public function destroy($id)
     {
-        $line = Line::findOrFail($id);
+        $line = DatabaseLine::findOrFail($id);
         $key = $line->key;
         $page = Page::find($line->page_id);
 
@@ -118,7 +118,7 @@ class LineController extends Controller
         return redirect()->route('squanto.edit', $page->id)->with('messages.warning', 'Line '.$key.' is verwijderd');
     }
 
-    private function saveValueTranslations(Line $line, array $translations)
+    private function saveValueTranslations(DatabaseLine $line, array $translations)
     {
         collect($translations)->map(function ($value, $locale) use ($line) {
 

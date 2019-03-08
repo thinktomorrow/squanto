@@ -7,12 +7,7 @@ use Dimsav\Translatable\Translatable as BaseTranslatable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
-/**
- * Class Line
- *
- * @package Thinktomorrow\Squanto\Domain
- */
-class Line extends Model
+class DatabaseLine extends Model
 {
     use BaseTranslatable, Translatable;
 
@@ -21,7 +16,7 @@ class Line extends Model
 
     /**
      * @param $key
-     * @return Line
+     * @return DatabaseLine
      */
     public static function make($key)
     {
@@ -39,7 +34,7 @@ class Line extends Model
 
     /**
      * @param $key
-     * @return Line
+     * @return DatabaseLine
      */
     public static function findOrCreateByKey($key)
     {
