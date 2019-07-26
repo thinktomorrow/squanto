@@ -45,7 +45,6 @@ class TranslationController extends Controller
             collect($translation)->map(function ($value, $id) use ($locale) {
 
                 $line = Line::find($id);
-
                 $value = squantoCleanupHTML($value);
 
                 if(false == config('squanto.paragraphize') && !$line->areParagraphsAllowed())

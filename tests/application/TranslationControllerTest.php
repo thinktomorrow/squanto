@@ -5,6 +5,7 @@ namespace Thinktomorrow\Squanto\Tests;
 use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Page;
+use Thinktomorrow\Squanto\Domain\LineType;
 use Thinktomorrow\Squanto\Manager\Http\Controllers\TranslationController;
 
 class TranslationControllerTest extends TestCase
@@ -45,6 +46,56 @@ class TranslationControllerTest extends TestCase
 
         $this->assertSame('', Line::findByKey('foo.fourth')->value);
         $this->assertSame('', app('translator')->get('foo.fourth'));
+    }
+
+
+    /** @test */
+    public function malicious_code_is_stripped()
+    {
+        $page = Page::make('foo');
+        $line = Line::make('foo.fourth');
+        $line->saveValue('nl','<div>bazz</div>');
+        $line->saveSuggestedType();
+
+        //mocking a request + call since we have no full laravel application in this package
+        $request = Request::capture()->replace(["trans" => [ "nl" => [$line->id => 'bazz<img src="javascript:evil();" onload="evil();" />']]]);
+
+        app(TranslationController::class)->update($request, $page->id);
+
+        $this->assertSame('bazz', Line::findByKey('foo.fourth')->value);
+    }
+
+    /** @test */
+    public function html_is_added()
+    {
+        $page = Page::make('foo');
+        $line = Line::make('foo.fourth');
+        $line->saveValue('nl','<b>bazz</b>');
+        $line->saveSuggestedType();
+
+        //mocking a request + call since we have no full laravel application in this package
+        $request = Request::capture()->replace(["trans" => [ "nl" => [$line->id => '<div>Centered</div>']]]);
+
+        app(TranslationController::class)->update($request, $page->id);
+
+        $this->assertSame('<div>Centered</div>', Line::findByKey('foo.fourth')->value);
+    }
+
+
+    /** @test */
+    public function missing_end_tags_are_added()
+    {
+        $page = Page::make('foo');
+        $line = Line::make('foo.fourth');
+        $line->saveValue('nl','<div>bazz</div>');
+        $line->saveSuggestedType();
+
+        //mocking a request + call since we have no full laravel application in this package
+        $request = Request::capture()->replace(["trans" => [ "nl" => [$line->id => '<div>Centered']]]);
+
+        app(TranslationController::class)->update($request, $page->id);
+
+        $this->assertSame('<div>Centered</div>', Line::findByKey('foo.fourth')->value);
     }
 
 }
