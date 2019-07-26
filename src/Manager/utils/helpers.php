@@ -55,7 +55,7 @@ if(!function_exists('squantoCleanupHTML'))
 
         /**
          * htmlPurifier converts characters to their encode equivalents. This is something
-         * that we need to reverse after the htmlLawed cleanup.
+         * that we need to reverse after the htmlPurifier cleanup.
          */
         $value  = str_replace('&amp;', '&', $value);
 
