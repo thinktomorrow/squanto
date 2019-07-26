@@ -12,6 +12,7 @@
     <testsuites>
         <testsuite name="squanto">
             <directory>tests/unit/</directory>
+            <directory>tests/application/</directory>
         </testsuite>
     </testsuites>
     <filter>
