@@ -40,7 +40,7 @@ class SquantoServiceProvider extends BaseServiceProvider
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/squanto.php' => config_path('squanto.php'),
+                __DIR__.'/../config/squanto.php' => config_path('squanto.php')
             ], 'config');
 
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
