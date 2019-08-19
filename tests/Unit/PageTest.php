@@ -17,21 +17,21 @@ class PageTest extends TestCase
     /** @test */
     public function it_can_get_completion_stats_on_page_object()
     {
-        $line = DatabaseLine::make('foo.bar');
+        $line = DatabaseLine::createFromKey('foo.bar');
         $page = Page::findByKey('foo');
         $line->saveValue('nl', 'bazz');
         $line->saveValue('en', 'bazz');
         $line->saveValue('fr', 'bazz');
         $this->assertTrue($page->isCompleted());
 
-        $line = DatabaseLine::make('fooo.vaz');
+        $line = DatabaseLine::createFromKey('fooo.vaz');
         $page = Page::findByKey('fooo');
         $line->saveValue('fr', 'bazz');
-        $line = DatabaseLine::make('fooo.va');
+        $line = DatabaseLine::createFromKey('fooo.va');
         $line->saveValue('fr', 'bazz');
-        $line = DatabaseLine::make('fooo.baz');
+        $line = DatabaseLine::createFromKey('fooo.baz');
         $line->saveValue('fr', 'bazz');
-        $line = DatabaseLine::make('fooo.ba');
+        $line = DatabaseLine::createFromKey('fooo.ba');
         $line->saveValue('fr', 'bazz');
 
         $this->assertFalse($page->isCompleted());
@@ -40,19 +40,19 @@ class PageTest extends TestCase
     /** @test */
     public function it_can_get_completion_stats_per_page_per_locale_on_page_object()
     {
-        $line = DatabaseLine::make('foo.bar');
+        $line = DatabaseLine::createFromKey('foo.bar');
         $page = Page::findByKey('foo');
         $line->saveValue('nl', 'bazz');
         $line->saveValue('en', 'bazz');
         $line->saveValue('fr', 'bazz');
         $this->assertEquals(100.0, $page->completionPercentage('en'));
 
-        $line = DatabaseLine::make('fooo.vaz');
+        $line = DatabaseLine::createFromKey('fooo.vaz');
         $page = Page::findByKey('fooo');
         $line->saveValue('fr', 'bazz');
-        DatabaseLine::make('fooo.va');
-        DatabaseLine::make('fooo.baz');
-        DatabaseLine::make('fooo.ba');
+        DatabaseLine::createFromKey('fooo.va');
+        DatabaseLine::createFromKey('fooo.baz');
+        DatabaseLine::createFromKey('fooo.ba');
 
         $this->assertEquals(25.0, $page->completionPercentage('fr'));
     }
@@ -60,14 +60,14 @@ class PageTest extends TestCase
     /** @test */
     public function it_returns_true_if_there_are_no_lines_on_page_object()
     {
-        $page = Page::make('foo');
+        $page = Page::createFromKey('foo');
         $this->assertTrue($page->isCompleted());
     }
 
     /** @test */
     public function it_returns_100_if_there_are_no_lines_on_page_object()
     {
-        $page = Page::make('foo');
+        $page = Page::createFromKey('foo');
         $this->assertEquals(100, $page->completionPercentage('fr'));
     }
 }

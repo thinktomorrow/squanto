@@ -39,6 +39,23 @@ when trying to sync from or to both sources. There are a couple of actions that 
 - option for sync to only update one source: --only-database or --only-file
 - subcommands needed for the syncing: move / reorder keys, add missing keys with their translations, remove keys, *rename* keys
 - after the sync command, there should be a clear report on what has happened.
+- rename / move lines should be via a command so that this can be tracked as a 'migration'.
+
+squanto:export -> exports current lines as csv, markdown.
+
+squanto:assist -> assists in changing translation files + adds these to migration file
+banners.title is used but not set yet.
+// pages.show
+dfqdf qdf dfdf qdmskfj qmd kmqfj d{{ trans('banners.title') }}
+
+1. create translation line (provide default translation)
+2. replace with <key>
+3. skip for now
+
+banners.title is set but not used yet.
+1. use it for replacing <key> occurrences
+2. remove the key in language files
+3. skip for now
 
 ### Changes
 - Change: minimum requirement is laravel 5.7

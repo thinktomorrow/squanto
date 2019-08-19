@@ -8,31 +8,31 @@ class Page extends Model
 {
     public $table = 'squanto_pages';
 
-    public static function make($key)
+    public static function createFromKey(PageKey $pageKey)
     {
         // TODO: assert unique key
         // TODO: sanitize and validate key
 
-        $page = new self;
-        $page->key = $key; // TODO: assert unique slug
-        $page->label = ucfirst($key);
+        $page = new static;
+        $page->key = $pageKey->get(); // TODO: assert unique slug
+        $page->label = $pageKey->getAsLabel();
         $page->save();
 
         return $page;
     }
 
-    public static function findOrCreateByKey($key)
+    public static function findOrCreateByKey(PageKey $pageKey)
     {
-        if ($page = self::findByKey($key)) {
+        if ($page = static::findByKey($pageKey)) {
             return $page;
         }
 
-        return self::make($key);
+        return static::createFromKey($pageKey);
     }
 
-    public static function findByKey($key)
+    public static function findByKey(PageKey $pageKey)
     {
-        return self::where('key', $key)->first();
+        return static::where('key', $pageKey->get())->first();
     }
 
     public function lines()
@@ -42,7 +42,7 @@ class Page extends Model
 
     public static function getAll()
     {
-        return self::sequence()->get();
+        return static::sequence()->get();
     }
 
     public function scopeSequence($query)

@@ -13,19 +13,17 @@ class DatabaseLine extends Model
 
     public $table = 'squanto_lines';
     public $translatedAttributes = ['value'];
+    public $translationForeignKey = 'line_id';
 
     /**
-     * @param $key
      * @return DatabaseLine
      */
-    public static function make($key)
+    public static function createFromKey(LineKey $lineKey)
     {
-        $linekey = new LineKey($key);
-
-        $line = new self;
-        $line->key = $linekey->get();
-        $line->label = $linekey->getAsLabel();
-        $line->page_id = Page::findOrCreateByKey($linekey->getPageKey())->id;
+        $line = new static;
+        $line->key = $lineKey->get();
+        $line->label = $lineKey->getAsLabel();
+        $line->page_id = Page::findOrCreateByKey($lineKey->getPageKey())->id;
 
         $line->save();
 
@@ -33,16 +31,30 @@ class DatabaseLine extends Model
     }
 
     /**
-     * @param $key
+     * @param $lineKey
      * @return DatabaseLine
      */
-    public static function findOrCreateByKey($key)
+    public static function findOrCreateFromKey(LineKey $lineKey)
     {
-        if ($line = self::findByKey($key)) {
+        if ($line = static::findByKey($lineKey)) {
             return $line;
         }
 
-        return self::make($key);
+        return static::createFromKey($lineKey);
+    }
+
+    public static function findByKey(LineKey $lineKey)
+    {
+        return self::where('key', $lineKey->get())->first();
+    }
+
+    public function saveValues(array $pairs)
+    {
+        // Dimsav expects inserting mutliple translations into the database with using the locale as array key.
+        $this->fill(array_map(function($value){ return ['value' => $value]; }, $pairs));
+        $this->save();
+
+        return $this;
     }
 
     /**
@@ -89,15 +101,6 @@ class DatabaseLine extends Model
         }
 
         return $line->getValue($locale, false);
-    }
-
-    /**
-     * @param $key
-     * @return mixed
-     */
-    public static function findByKey($key)
-    {
-        return self::where('key', $key)->first();
     }
 
     public function saveSuggestedType()

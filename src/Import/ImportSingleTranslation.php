@@ -41,7 +41,7 @@ class ImportSingleTranslation
     private function insertTranslation($locale, $key, $value)
     {
         if (!$this->dry) {
-            $line = DatabaseLine::findOrCreateByKey($key)->saveValue($locale, $value);
+            $line = DatabaseLine::findOrCreateFromKey($key)->saveValue($locale, $value);
             $line->saveSuggestedType();
         }
 

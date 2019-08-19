@@ -69,6 +69,7 @@ class TestCase extends BaseTestCase
 
         // Dimsav package dependency requires us to set the fallback locale via this config
         // It should if config not set be using the default laravel fallback imo
+        $app['config']->set('translatable.locales',['nl','fr','en']);
         $app['config']->set('translatable.fallback_locale','en');
     }
 

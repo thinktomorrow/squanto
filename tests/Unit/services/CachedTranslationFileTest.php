@@ -32,8 +32,8 @@ class CachedTranslationFileTest extends TestCase
     {
         $filename = 'foo_'.time();
         $filepath = config('squanto.cache_path').'/nl/'.$filename.'.php';
-        DatabaseLine::make($filename.'.bar')->saveValue('nl','foobar-nl');
-        DatabaseLine::make($filename.'.baz')->saveValue('nl','foobaz-nl');
+        DatabaseLine::createFromKey($filename.'.bar')->saveValue('nl','foobar-nl');
+        DatabaseLine::createFromKey($filename.'.baz')->saveValue('nl','foobaz-nl');
 
         app(CachedTranslationFile::class)->write();
 
@@ -51,8 +51,8 @@ class CachedTranslationFileTest extends TestCase
     {
         $filename = 'foo_'.time();
         $filepath = config('squanto.cache_path').'/nl/'.$filename.'.php';
-        DatabaseLine::make($filename.'.bar')->saveValue('nl','foobar-nl');
-        DatabaseLine::make($filename.'.baz')->saveValue('nl','foobaz-nl');
+        DatabaseLine::createFromKey($filename.'.bar')->saveValue('nl','foobar-nl');
+        DatabaseLine::createFromKey($filename.'.baz')->saveValue('nl','foobaz-nl');
 
         app(CachedTranslationFile::class)->write();
         $this->assertFileExists($filepath);
@@ -66,11 +66,11 @@ class CachedTranslationFileTest extends TestCase
     {
         $filename = 'foo_'.time();
         $filepath = config('squanto.cache_path').'/nl/'.$filename.'.php';
-        DatabaseLine::make($filename.'.bar')->saveValue('nl','foobar-nl');
-        DatabaseLine::make($filename.'.hello')->saveValue('nl','hallo :name, welkom terug');
-        DatabaseLine::make($filename.'.intro.title')->saveValue('nl','Dit is een introductie!');
-        DatabaseLine::make($filename.'.intro.header.first')->saveValue('nl','Thuis');
-        DatabaseLine::make($filename.'.intro.header.second')->saveValue('nl','Over');
+        DatabaseLine::createFromKey($filename.'.bar')->saveValue('nl','foobar-nl');
+        DatabaseLine::createFromKey($filename.'.hello')->saveValue('nl','hallo :name, welkom terug');
+        DatabaseLine::createFromKey($filename.'.intro.title')->saveValue('nl','Dit is een introductie!');
+        DatabaseLine::createFromKey($filename.'.intro.header.first')->saveValue('nl','Thuis');
+        DatabaseLine::createFromKey($filename.'.intro.header.second')->saveValue('nl','Over');
 
         app(CachedTranslationFile::class)->write();
 

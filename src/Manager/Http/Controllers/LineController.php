@@ -38,7 +38,7 @@ class LineController extends Controller
 
             $page_is_created = !(Page::findByKey($linekey->getPageKey()));
 
-            $line = DatabaseLine::make($linekey->get());
+            $line = DatabaseLine::createFromKey($linekey->get());
             $this->saveValueTranslations($line, $request->get('trans'));
 
             $line->saveSuggestedType();

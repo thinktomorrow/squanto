@@ -34,9 +34,9 @@ class LaravelTranslationsReader
      *
      * @param $locale
      * @param array $excluded filenames that should be excluded from the read
-     * @return \Illuminate\Support\Collection
+     * @return self
      */
-    public function read($locale, array $excluded = [])
+    public function readAll($locale, array $excluded = [])
     {
         // Empty our translations for a new read
         $this->translations = collect();

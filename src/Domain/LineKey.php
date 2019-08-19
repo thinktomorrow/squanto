@@ -35,7 +35,7 @@ class LineKey
         // Remove first part since that part equals the page
         $key = substr($this->key, strpos($this->key, '.')+1);
 
-        $label = str_replace('.', ' ', $key);
+        $label = str_replace(['.','-'], ' ', $key);
 
         return ucfirst($label);
     }
@@ -44,11 +44,22 @@ class LineKey
      * Get Page identifier.
      * This is the first segment of the key
      *
-     * @return string
+     * @return PageKey
      */
-    public function getPageKey()
+    public function getPageKey(): PageKey
     {
-        return substr($this->key, 0, strpos($this->key, '.'));
+        // substr($this->key, 0, strpos($this->key, '.'));
+        return PageKey::fromLineKeyString($this->get());
+    }
+
+    public function getWithoutPageKey()
+    {
+        return substr($this->key, strpos($this->key, '.') + 1 );
+    }
+
+    public function equals($other)
+    {
+        return (get_class($this) === get_class($other) && $this->get() === $other->get());
     }
 
     private function sanitizeKey($key)

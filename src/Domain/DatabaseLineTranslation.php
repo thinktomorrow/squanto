@@ -8,4 +8,5 @@ class DatabaseLineTranslation extends Model
 {
     public $table = 'squanto_line_translations';
     public $timestamps = false;
+    public $fillable = ['value'];
 }

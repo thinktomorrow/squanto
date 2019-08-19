@@ -17,7 +17,7 @@ class LineTest extends TestCase
     /** @test */
     public function it_can_store_a_translation()
     {
-        $line = DatabaseLine::make('foo.bar');
+        $line = DatabaseLine::createFromKey('foo.bar');
         $line->saveValue('nl', 'bazz');
 
         $this->assertEquals('bazz', $line->value);
@@ -26,7 +26,7 @@ class LineTest extends TestCase
     /** @test */
     public function it_can_retrieve_a_translation()
     {
-        DatabaseLine::make('foo.bar')->saveValue('nl', 'bazz');
+        DatabaseLine::createFromKey('foo.bar')->saveValue('nl', 'bazz');
 
         $this->assertInstanceOf(DatabaseLine::class, DatabaseLine::findByKey('foo.bar'));
         $this->assertEquals('bazz', DatabaseLine::findByKey('foo.bar')->value);
@@ -35,7 +35,7 @@ class LineTest extends TestCase
     /** @test */
     public function on_creation_it_creates_a_page_based_on_the_key()
     {
-        $line = DatabaseLine::make('funky.fungi');
+        $line = DatabaseLine::createFromKey('funky.fungi');
         $page = Page::findByKey('funky');
 
         $this->assertInstanceOf(Page::class, $page);
@@ -45,8 +45,8 @@ class LineTest extends TestCase
     /** @test */
     public function on_creation_it_attaches_an_existing_page()
     {
-        $page = Page::make('bozo');
-        $line = DatabaseLine::make('bozo.clown');
+        $page = Page::createFromKey('bozo');
+        $line = DatabaseLine::createFromKey('bozo.clown');
 
         $this->assertInstanceOf(Page::class, $page);
         $this->assertEquals($line->page_id, $page->id);
@@ -55,10 +55,10 @@ class LineTest extends TestCase
     /** @test */
     public function list_all_lines_per_locale()
     {
-        DatabaseLine::make('bozo.clown')
+        DatabaseLine::createFromKey('bozo.clown')
             ->saveValue('nl', 'value-nl')
             ->saveValue('fr', 'value-fr');
-        DatabaseLine::make('bozo.clown2')
+        DatabaseLine::createFromKey('bozo.clown2')
             ->saveValue('nl', 'value-nl-2');
 
         $lines = DatabaseLine::getValuesByLocale('nl');

@@ -24,7 +24,8 @@ class PageKey
     public static function fromLineKeyString($key)
     {
         $key = false !== strpos($key,'.') ? substr($key, 0, strpos($key, '.')) : $key;
-        return new self($key);
+
+        return new static($key);
     }
 
     public function get()
@@ -39,7 +40,9 @@ class PageKey
      */
     public function getAsLabel()
     {
-        return ucfirst($this->key);
+        $label = str_replace(['.','-'], ' ', $this->key);
+
+        return ucfirst($label);
     }
 
     public function isExcludedSource()
@@ -47,6 +50,11 @@ class PageKey
         $excluded = $this->getExcludedSources();
 
         return in_array($this->key,$excluded);
+    }
+
+    public function equals($other)
+    {
+        return (get_class($this) === get_class($other) && $this->get() === $other->get());
     }
 
     private function sanitizeKey($key)

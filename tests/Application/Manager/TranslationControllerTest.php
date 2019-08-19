@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Manager\Http\Controllers\TranslationController;
+use Thinktomorrow\Squanto\Tests\TestCase;
 
 class TranslationControllerTest extends TestCase
 {
@@ -19,8 +20,8 @@ class TranslationControllerTest extends TestCase
     /** @test */
     public function it_can_store_a_translation()
     {
-        $page = Page::make('foo');
-        $line = DatabaseLine::make('foo.bar');
+        $page = Page::createFromKey('foo');
+        $line = DatabaseLine::createFromKey('foo.bar');
         $line->saveValue('nl','bazz');
 
         //mocking a request + call since we have no full laravel application in this package
@@ -34,8 +35,8 @@ class TranslationControllerTest extends TestCase
     /** @test */
     public function an_empty_line_is_intentionally_kept_empty()
     {
-        $page = Page::make('foo');
-        $line = DatabaseLine::make('foo.fourth');
+        $page = Page::createFromKey('foo');
+        $line = DatabaseLine::createFromKey('foo.fourth');
         $line->saveValue('nl','bazz');
 
         //mocking a request + call since we have no full laravel application in this package

@@ -31,7 +31,7 @@ class ImportTranslations
     {
         $this->pushSingleToStats('overwrite_protection', $this->overwriteProtection);
 
-        $translations = $this->reader->read($locale, $this->excluded_files)->flatten();
+        $translations = $this->reader->readAll($locale, $this->excluded_files)->flatten();
 
         foreach ($translations as $key => $value) {
             $this->insertOrUpdateValue($locale, $key, $value);
