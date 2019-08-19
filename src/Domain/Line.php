@@ -3,7 +3,7 @@
 namespace Thinktomorrow\Squanto\Domain;
 
 use Illuminate\Database\Eloquent\Model;
-use Dimsav\Translatable\Translatable as BaseTranslatable;
+use Astrotomic\Translatable\Translatable as BaseTranslatable;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 

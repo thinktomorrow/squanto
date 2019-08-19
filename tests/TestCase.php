@@ -52,6 +52,7 @@ class TestCase extends BaseTestCase
         // Dimsav package dependency requires us to set the fallback locale via this config
         // It should if config not set be using the default laravel fallback imo
         $app['config']->set('translatable.fallback_locale','en');
+        $app['config']->set('translatable.locales',['en']);
     }
 
     private function getStubDirectory($dir = null)
