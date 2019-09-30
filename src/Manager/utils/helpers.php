@@ -50,7 +50,10 @@ if(!function_exists('squantoCleanupHTML'))
         if(false !== $whitelist) $value = strip_tags($value, $whitelist);
 
         // cleanup HTML and any unwanted attributes
-        $purifier = new HTMLPurifier();
+        $config = \HTMLPurifier_Config::createDefault();
+        $config->set('Cache.SerializerPath', config('squanto.htmlPurifierCache' ));
+
+        $purifier = new \HTMLPurifier($config);
         $value = $purifier->purify( $value );
 
         /**

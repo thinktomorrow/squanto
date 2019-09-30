@@ -51,4 +51,10 @@ return [
      */
     'cache_path' => storage_path('app/lang'),
 
+    /**
+     * Squanto utilises the htmlPurifier class to cleanup any submitted html.
+     * You can here set the temp directory required for this package.
+     */
+    'htmlPurifierCache' => storage_path('app/htmlPurifierCache'),
+
 ];
