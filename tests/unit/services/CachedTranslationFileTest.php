@@ -9,7 +9,7 @@ use Thinktomorrow\Squanto\Domain\Line;
 
 class CachedTranslationFileTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -19,7 +19,7 @@ class CachedTranslationFileTest extends TestCase
         $this->setTemporaryCacheDir();
     }
 
-    public function tearDown()
+    public function tearDown(): void
     {
         // Cleanup after each test (Ironically this is done with the class being tested)
         app(CachedTranslationFile::class)->delete();
@@ -40,7 +40,7 @@ class CachedTranslationFileTest extends TestCase
         $this->assertFileExists($filepath);
 
         $translations = require $filepath;
-        $this->assertInternalType('array',$translations);
+        $this->assertIsArray($translations);
         $this->assertCount(2,$translations);
         $this->assertEquals('foobar-nl',$translations['bar']);
         $this->assertEquals('foobaz-nl',$translations['baz']);
