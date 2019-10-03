@@ -40,7 +40,7 @@ class CachedTranslationFileTest extends TestCase
         $this->assertFileExists($filepath);
 
         $translations = require $filepath;
-        $this->assertIsArray($translations);
+        $this->assertInternalType('array',$translations);
         $this->assertCount(2,$translations);
         $this->assertEquals('foobar-nl',$translations['bar']);
         $this->assertEquals('foobaz-nl',$translations['baz']);
