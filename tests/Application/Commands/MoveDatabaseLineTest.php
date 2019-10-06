@@ -2,6 +2,9 @@
 
 namespace Thinktomorrow\Squanto\Tests\Application\Commands;
 
+use Thinktomorrow\Squanto\Domain\Page;
+use Thinktomorrow\Squanto\Domain\PageKey;
+use Thinktomorrow\Squanto\Exceptions\InvalidLineKeyException;
 use Thinktomorrow\Squanto\Application\Commands\MoveDatabaseLine;
 use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\LineKey;
@@ -27,22 +30,16 @@ class MoveDatabaseLineTest extends TestCase
         $movedDatabaseLine = DatabaseLine::find($this->databaseLine->id);
 
         $this->assertEquals('first-page.new-value', $movedDatabaseLine->key);
+        $this->assertEquals($this->databaseLine->id, $movedDatabaseLine->id);
         $this->assertEquals($this->databaseLine->page_id, $movedDatabaseLine->page_id);
     }
 
     /** @test */
     public function it_will_not_rename_a_line_key_that_does_not_exist()
     {
-        $this->addDatabaseLine('first-page.first-value', []);
-
-        $this->assertEquals('first-page.first-value', $this->databaseLine->key);
+        $this->expectException(InvalidLineKeyException::class);
 
         app(MoveDatabaseLine::class)->handle(LineKey::fromString('first-page.non-existing-value'), LineKey::fromString('first-page.new-value'));
-
-        $movedDatabaseLine = DatabaseLine::find($this->databaseLine->id);
-
-        $this->assertEquals('first-page.first-value', $movedDatabaseLine->key);
-        $this->assertEquals($this->databaseLine->page_id, $movedDatabaseLine->page_id);
     }
 
     /** @test */
@@ -57,5 +54,7 @@ class MoveDatabaseLineTest extends TestCase
 
         $this->assertEquals('second-page.new-value', $movedDatabaseLine->key);
         $this->assertNotEquals($this->databaseLine->page_id, $movedDatabaseLine->page_id);
+
+        $this->assertInstanceOf(Page::class, Page::findByKey(PageKey::fromString('second-page')));
     }
 }

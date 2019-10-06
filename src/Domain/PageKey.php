@@ -62,6 +62,16 @@ class PageKey
         return strtolower($key);
     }
 
+    public static function isValid($key): bool
+    {
+        try{
+            new static($key);
+            return true;
+        } catch(InvalidPageKeyException $e) {
+            return false;
+        }
+    }
+
     private function validateKey($key)
     {
         if (!$key || !is_string($key) || false !== strpos($key, '.')) {

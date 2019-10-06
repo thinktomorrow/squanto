@@ -140,15 +140,13 @@ class DatabaseLine extends Model
      * @param $locale
      * @return mixed
      */
-    public static function getValuesByLocale($locale)
+    public static function getValuesByLocale(string $locale): array
     {
         return self::getValuesByLocaleAndPage($locale);
     }
 
-    public static function getValuesByLocaleAndPage($locale, $pagekey = null)
+    public static function getValuesByLocaleAndPage(string $locale, ?PageKey $pagekey): array
     {
-        $locale = $locale?: app()->getLocale();
-
         // Since the dimsav translatable model trait injects its behaviour and overwrites our results
         // with the current locale, we will need to fetch results straight from the db instead.
         $lines = DB::table('squanto_lines')
@@ -159,13 +157,10 @@ class DatabaseLine extends Model
         if ($pagekey) {
             $lines = $lines
                 ->join('squanto_pages', 'squanto_lines.page_id', '=', 'squanto_pages.id')
-                ->where('squanto_pages.key', $pagekey);
+                ->where('squanto_pages.key', $pagekey->get());
         }
 
         $lines = $lines->get();
-
-        // Assert we have a collection
-        $lines = $lines instanceof Collection ? $lines : collect($lines);
 
         return $lines->pluck('value', 'key')->toArray();
     }

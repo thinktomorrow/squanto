@@ -2,6 +2,8 @@
 
 namespace Thinktomorrow\Squanto\Translators;
 
+use Thinktomorrow\Squanto\Domain\LineKey;
+use Thinktomorrow\Squanto\Domain\PageKey;
 use Thinktomorrow\Squanto\Domain\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Page;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
@@ -19,15 +21,12 @@ class DatabaseTranslator implements Translator
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
-        if (!$line = DatabaseLine::findByKey($key)) {
+        if (!$line = DatabaseLine::findByKey(LineKey::fromString($key))) {
 
-            /**
-             * If no line is requested,
-             * we check if an entire page is asked for
-             */
-            if($page = Page::findByKey($key))
+            /** If no line is requested, we check if an entire page is asked for */
+            if(PageKey::isValid($key) && $page = Page::findByKey(PageKey::fromString($key)))
             {
-                $lines = DatabaseLine::getValuesByLocaleAndPage($locale, $key);
+                $lines = DatabaseLine::getValuesByLocaleAndPage($locale ?? app()->getLocale(), PageKey::fromString($key));
                 return ConvertToTree::fromFlattened($lines, false);
             }
 

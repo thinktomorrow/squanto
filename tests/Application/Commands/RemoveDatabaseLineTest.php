@@ -23,7 +23,7 @@ class RemoveDatabaseLineTest extends TestCase
     }
 
     /** @test */
-    public function it_can_remove_a_line_to_database()
+    public function it_can_remove_a_database_line()
     {
         app(RemoveDatabaseLine::class)->handle(LineKey::fromString($this->databaseLine->key));
 

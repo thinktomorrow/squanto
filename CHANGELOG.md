@@ -26,12 +26,14 @@ Import translations to the translation files. It prompts a preview of the additi
 
 ## 1.0.0 - unreleased
 ### Sources of truth
-The goal for our stable release is to solidify the concept that there are two sources of truth, resp. the translation file and the database, and that they each serve a different purpose for squanto. The translation file is responsible for the *structure* of the translations.
-The database is the source for the translation values themselves. This separation will remove the majority of concerns that arise
-when trying to sync from or to both sources. There are a couple of actions that support this philosophy:
+The goal for our stable release is to solidify the concept that there are two sources of truth, resp. the translation file and the database. 
+They each serve a different purpose for squanto. The translation file is responsible for the *structure* of the translations.
+The database is the source for the translation values themselves. 
+
+This separation will remove the majority of concerns that arise when trying to sync from or to both sources. There are a couple of actions that support this philosophy:
 
 ### Proposed changes
-- Line management info is the metadata for each line: optional label, description, type of field, ... We will remove the line management on database level and maintain metadata via the file system. This allows to keep everything in vc.
+- Line management info is the **metadata for each line**: optional label, description, type of field, ... We will remove the line management on database level and maintain metadata via the file system. This allows to keep everything in vc.
 - in config there should be a path from where these files can be set. for each translation file there is a corresponding mgmt file.
 - move config to thinktomorrow/squanto
 - sync command: restructure database, update metadata, repopulate file values, inserts new translations if not already present. It should be save to use the sync in deployment scripts.
@@ -58,7 +60,7 @@ banners.title is set but not used yet.
 3. skip for now
 
 ### Changes
-- Change: minimum requirement is laravel 5.7
+- Change: minimum requirement is laravel 5.8
 - Change: Publish config to `config/thinktomorrow/squanto.php` instead of `config/squanto.php` to conform with other think tomorrow packages.
 - Change: `LaravelTranslationsReader::read()` has been changed to `LaravelTranslationsReader::readAll()`.
 

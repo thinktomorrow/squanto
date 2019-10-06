@@ -78,4 +78,32 @@ class AddDatabaseLineTest extends TestCase
         app()->setLocale('fr');
         $this->assertEquals('new-first-value-fr', $databaseLine->value);
     }
+
+    /** @test */
+    public function it_can_force_replace_existing_database_values()
+    {
+        $lineKey = LineKey::fromString('first-page.first-value');
+
+        app(AddDatabaseLine::class)->handle($lineKey, [
+            'nl' => 'new-first-value-nl',
+            'fr' => 'new-first-value-fr',
+        ]);
+
+        app(AddDatabaseLine::class)->forceReplacement()->handle($lineKey, [
+            'nl' => 'wanted-first-value-nl',
+            'fr' => 'wanted-first-value-fr',
+        ]);
+
+        $databaseLine = DatabaseLine::first();
+
+        $this->assertCount(1, DatabaseLine::all());
+        $this->assertCount(2, $databaseLine->translations()->get());
+        $this->assertEquals('first-page.first-value', $databaseLine->key);
+
+        app()->setLocale('nl');
+        $this->assertEquals('wanted-first-value-nl', $databaseLine->value);
+
+        app()->setLocale('fr');
+        $this->assertEquals('wanted-first-value-fr', $databaseLine->value);
+    }
 }
