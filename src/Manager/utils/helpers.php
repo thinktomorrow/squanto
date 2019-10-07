@@ -51,7 +51,7 @@ if(!function_exists('squantoCleanupHTML'))
 
         // cleanup HTML and any unwanted attributes
         $config = \HTMLPurifier_Config::createDefault();
-        $config->set('Cache.SerializerPath', config('squanto.htmlPurifierCache' ));
+        $config->set('Cache.SerializerPath', config('squanto.htmlPurifierCache'));
 
         $purifier = new \HTMLPurifier($config);
         $value = $purifier->purify( $value );
@@ -60,7 +60,8 @@ if(!function_exists('squantoCleanupHTML'))
          * htmlPurifier converts characters to their encode equivalents. This is something
          * that we need to reverse after the htmlPurifier cleanup.
          */
-        $value  = str_replace('&amp;', '&', $value);
+        $value = str_replace('&amp;', '&', $value);
+        $value = str_replace('%3A', ':', $value);
 
         return $value;
     }

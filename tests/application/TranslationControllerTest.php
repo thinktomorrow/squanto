@@ -28,8 +28,8 @@ class TranslationControllerTest extends TestCase
         $request = Request::capture()->replace(["trans" => [ "nl" => [$line->id => 'bazz & foo']]]);
 
         app(TranslationController::class)->update($request, $page->id);
-        
-        $this->assertEquals('bazz & foo', Line::findByKey('foo.bar')->value);           
+
+        $this->assertEquals('bazz & foo', Line::findByKey('foo.bar')->value);
     }
 
     /** @test */
@@ -79,6 +79,22 @@ class TranslationControllerTest extends TestCase
         app(TranslationController::class)->update($request, $page->id);
 
         $this->assertSame('<div>Centered</div>', Line::findByKey('foo.fourth')->value);
+    }
+
+    /** @test */
+    public function translation_replace_parameter_can_be_passed_in_anchor_tag()
+    {
+        $page = Page::make('foo');
+        $line = Line::make('foo.fourth');
+        $line->saveValue('nl','<b>bazz</b>');
+        $line->saveSuggestedType();
+
+        //mocking a request + call since we have no full laravel application in this package
+        $request = Request::capture()->replace(["trans" => [ "nl" => [$line->id => '<a href=":param">:param</a>']]]);
+
+        app(TranslationController::class)->update($request, $page->id);
+
+        $this->assertSame('<a href=":param">:param</a>', Line::findByKey('foo.fourth')->value);
     }
 
 
