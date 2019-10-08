@@ -7,7 +7,7 @@ use Thinktomorrow\Squanto\Domain\Page;
 
 class LineTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
@@ -64,7 +64,7 @@ class LineTest extends TestCase
         $lines = Line::getValuesByLocale('nl');
 
         $this->assertCount(2, $lines);
-        $this->assertInternalType('array', $lines);
+        $this->assertInternalType('array',$lines);
 
         $lines = Line::getValuesByLocale('fr');
         $this->assertCount(1, $lines);

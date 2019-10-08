@@ -3,6 +3,8 @@
 
 namespace Thinktomorrow\Squanto\Services;
 
+use Illuminate\Support\Arr;
+
 
 final class ConvertToTree
 {
@@ -17,7 +19,7 @@ final class ConvertToTree
         $translations = [];
 
         foreach ($lines as $key => $value) {
-            array_set($translations, $key, $value);
+            Arr::set($translations, $key, $value);
         }
 
         return $includePage ? $translations : reset($translations);

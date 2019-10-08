@@ -5,12 +5,11 @@ namespace Thinktomorrow\Squanto\Tests;
 use Illuminate\Http\Request;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Page;
-use Thinktomorrow\Squanto\Domain\LineType;
 use Thinktomorrow\Squanto\Manager\Http\Controllers\TranslationController;
 
 class TranslationControllerTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

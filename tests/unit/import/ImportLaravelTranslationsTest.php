@@ -11,7 +11,7 @@ use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 
 class ImportLaravelTranslationsTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 

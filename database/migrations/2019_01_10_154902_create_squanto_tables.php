@@ -10,8 +10,8 @@ class CreateSquantoTables extends Migration
     {
         Schema::create('squanto_lines', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('page_id')->unsigned()->nullable(); // Pages are for proper clustering on admin side.
-            $table->boolean('published')->default(1); // Draft or active
+            $table->integer('page_id')->unsigned()->nullable(); 
+            $table->boolean('published')->default(1); 
             $table->string('key')->unique();
             $table->string('label')->nullable();
             $table->string('description')->nullable();
@@ -33,9 +33,9 @@ class CreateSquantoTables extends Migration
 
         Schema::create('squanto_pages', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('label'); // admin label
-            $table->string('description')->nullable(); // admin description
-            $table->string('key')->unique(); // refers to the first segment of the linekey
+            $table->string('label'); 
+            $table->string('description')->nullable();
+            $table->string('key')->unique();
             $table->tinyInteger('sequence')->default(0);
             $table->timestamps();
         });

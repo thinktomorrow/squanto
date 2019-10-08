@@ -13,7 +13,7 @@ class TestCase extends BaseTestCase
     use DatabaseTransactions,
         TestHelpers;
 
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
     }
@@ -39,9 +39,9 @@ class TestCase extends BaseTestCase
 
         // Connection is defined in the phpunit config xml
         $app['config']->set('database.connections.testing', [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', __DIR__.'/../database/testing.sqlite'),
-            'prefix' => '',
+            'driver'    => 'sqlite',
+            'database'  => env('DB_DATABASE', __DIR__.'/../database/testing.sqlite'),
+            'prefix'    => '',
         ]);
 
         $app['config']->set('database.default', 'testing');

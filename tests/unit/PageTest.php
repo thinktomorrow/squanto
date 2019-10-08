@@ -7,7 +7,7 @@ use Thinktomorrow\Squanto\Domain\Page;
 
 class PageTest extends TestCase
 {
-    public function setUp()
+    public function setUp(): void
     {
         parent::setUp();
 
