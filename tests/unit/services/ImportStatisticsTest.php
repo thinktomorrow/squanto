@@ -12,7 +12,7 @@ class ImportStatisticsTest extends TestCase
     {
         $stats = new ImportStatistics();
 
-        $this->assertInternalType('array',$stats->get());
+        $this->assertIsArray($stats->get());
         $this->assertCount(0,$stats->get());
     }
 
@@ -21,7 +21,7 @@ class ImportStatisticsTest extends TestCase
     {
         $stats = new ImportStatistics(['first','second']);
 
-        $this->assertInternalType('array', $stats->get());
+        $this->assertIsArray( $stats->get());
         $this->assertCount(2,$stats->get());
     }
 

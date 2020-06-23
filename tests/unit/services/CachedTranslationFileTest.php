@@ -14,7 +14,7 @@ class CachedTranslationFileTest extends TestCase
         parent::setUp();
 
         $this->setUpDatabase();
-        
+
         // Reset language file because this language file is changed within these tests to reflect a change
         $this->setTemporaryCacheDir();
     }
@@ -40,7 +40,7 @@ class CachedTranslationFileTest extends TestCase
         $this->assertFileExists($filepath);
 
         $translations = require $filepath;
-        $this->assertInternalType('array',$translations);
+        $this->assertIsArray($translations);
         $this->assertCount(2,$translations);
         $this->assertEquals('foobar-nl',$translations['bar']);
         $this->assertEquals('foobaz-nl',$translations['baz']);

@@ -64,7 +64,7 @@ class LineTest extends TestCase
         $lines = Line::getValuesByLocale('nl');
 
         $this->assertCount(2, $lines);
-        $this->assertInternalType('array',$lines);
+        $this->assertIsArray($lines);
 
         $lines = Line::getValuesByLocale('fr');
         $this->assertCount(1, $lines);
