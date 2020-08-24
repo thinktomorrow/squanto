@@ -1,8 +1,8 @@
 <?php
 
+declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Services;
-
 
 use Illuminate\Support\Arr;
 
@@ -15,7 +15,7 @@ final class ConvertToTree
      * @param bool $includePage
      * @return array
      */
-    public static function fromFlattened(array $lines = [], $includePage = true)
+    public static function fromFlattened(array $lines = [], $includePage = true): array
     {
         $translations = [];
 

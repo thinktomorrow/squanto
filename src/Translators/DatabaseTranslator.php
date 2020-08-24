@@ -2,14 +2,22 @@
 
 namespace Thinktomorrow\Squanto\Translators;
 
+use Illuminate\Support\Str;
 use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Domain\PageKey;
-use Thinktomorrow\Squanto\Domain\DatabaseLine;
-use Thinktomorrow\Squanto\Domain\Page;
+use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
+use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
 
 class DatabaseTranslator implements Translator
 {
+    /** @var DatabaseLinesRepository */
+    private DatabaseLinesRepository $databaseLinesRepository;
+
+    public function __construct(DatabaseLinesRepository $databaseLinesRepository)
+    {
+        $this->databaseLinesRepository = $databaseLinesRepository;
+    }
+
     /**
      * Get translation for given key from database.
      *
@@ -21,23 +29,41 @@ class DatabaseTranslator implements Translator
      */
     public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
-        if (!$line = DatabaseLine::findByKey(LineKey::fromString($key))) {
+        if(!$this->databaseLinesRepository->exists($key)) {
+            /** If no specific line is requested, we check if a collection of lines can be retrieved */
+            if(($lines = $this->databaseLinesRepository->allStartingWith($key)) && $lines->count() > 0) {
 
-            /** If no line is requested, we check if an entire page is asked for */
-            if(PageKey::isValid($key) && $page = Page::findByKey(PageKey::fromString($key)))
-            {
-                $lines = DatabaseLine::getValuesByLocaleAndPage($locale ?? app()->getLocale(), PageKey::fromString($key));
-                return ConvertToTree::fromFlattened($lines, false);
+                $flattenedValues = $lines->values($locale ?? app()->getLocale());
+
+                foreach($flattenedValues as $k => $flattenedValue) {
+                    if(Str::startsWith($k, $key)) {
+                        $removalPrefix = substr($k, 0, strlen($key));
+                        $newKey = trim(str_replace($removalPrefix, '', $k),'.');
+                        unset($flattenedValues[$k]);
+
+                        $flattenedValues[$newKey] = $flattenedValue;
+                    }
+                }
+
+                return ConvertToTree::fromFlattened($flattenedValues);
             }
 
             return null;
         }
 
+        $line = $this->databaseLinesRepository->find($key);
+
+        $value = $line->value($locale ?? app()->getLocale());
+
+//trap($line->value($locale ?? app()->getLocale()), $locale ?? app()->getLocale(), $fallback);
+
+        if (!$value && $fallback && config('app.fallback_locale')) {
+            $value = $line->value(config('app.fallback_locale'));
+        }
+
         // Return null or '' as is, because null will result in trying to fetch the translation
         // from the file source and an intentional empty string does not.
-        if (!$value = $line->getValue($locale, $fallback)) {
-            return $value;
-        }
+        if(!$value) return $value;
 
         foreach ($replace as $key => $replacer) {
             $value = str_replace(':'.$key, $replacer, $value);

@@ -3,19 +3,36 @@
 namespace Thinktomorrow\Squanto\Translators;
 
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Contracts\Translation\Loader;
 use Illuminate\Translation\Translator as LaravelTranslator;
-use Thinktomorrow\Squanto\Domain\PageKey;
 
 class SquantoTranslator extends LaravelTranslator implements Translator
 {
-    private $databaseTranslator;
+    private DatabaseTranslator $databaseTranslator;
 
-    private $keyAsDefault = true;
+    private array $excludedFilenames;
+
+    private bool $keyAsDefault = true;
+
     private $isDatabaseAlreadyMigrated = null;
 
-    public function setKeyAsDefault($keyAsDefault = true)
+    public function __construct(Loader $loader, $locale)
     {
-        $this->keyAsDefault = $keyAsDefault;
+        parent::__construct($loader, $locale);
+
+        $this->excludedFilenames = config('thinktomorrow.squanto.excluded_files', []);
+        $this->databaseTranslator = app(DatabaseTranslator::class);
+    }
+
+    /**
+     * In case the translation is not found, Laravel returns the transkey by default.
+     * In squanto config you could choose to opt out of this behavior and instead
+     * have a non existing translation return null.
+     * @param bool $keyAsDefault
+     */
+    public function setKeyAsDefault(bool $keyAsDefault = true)
+    {
+        $this->keyAsDefault = (bool) $keyAsDefault;
     }
 
     /**
@@ -67,9 +84,16 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      */
     private function getFromExcludedSource($key, $replace, $locale, $fallback)
     {
-        if(!PageKey::fromLineKeyString($key)->isExcludedSource()) return null;
+        if(!$this->belongsToExcludedSource($key)) return null;
 
         return parent::get($key, $replace, $locale, $fallback);
+    }
+
+    private function belongsToExcludedSource(string $key): bool
+    {
+        $pagePrefix = substr($key, 0, strpos($key,'.'));
+
+        return in_array($pagePrefix, $this->excludedFilenames);
     }
 
     /**
@@ -98,10 +122,6 @@ class SquantoTranslator extends LaravelTranslator implements Translator
          */
         if (! $this->isDatabaseAlreadyMigrated()) {
             return null;
-        }
-
-        if (!isset($this->databaseTranslator)) {
-            $this->databaseTranslator = app(DatabaseTranslator::class);
         }
 
         return $this->databaseTranslator->get($key, $replace, $locale, $fallback);

@@ -3,10 +3,12 @@
 return [
 
     /**
-     * Allowed locales to be managed
+     * Allowed locales to be managed.
+     * It expects these locales to match the translation folder names
+     *
      * @var array
      */
-    'locales' => ['nl'],
+    'locales' => ['nl', 'en'],
 
     /**
      * Exclude following lang groups from import
@@ -36,7 +38,7 @@ return [
      * This is relative to the default viewpath.
      * @var string
      */
-    'template' => '_layouts.master',
+    'template' => 'squanto::_layouts.master',
 
     /**
      * Path where the laravel language files are stored
@@ -46,9 +48,16 @@ return [
     'lang_path' => base_path('resources/lang'),
 
     /**
-     * Path where the cached language files should be stored
+     * Path where the cached language files should be stored. Note that this entire folder
+     * will be built up from scratch on each cache refresh.
      * @var string
      */
     'cache_path' => storage_path('app/lang'),
+
+    /**
+     * The folder where the squanto metadata are located. These files
+     * contain options for the admin presentation of the squanto fields.
+     */
+    'metadata_path' => base_path('resources/squanto_metadata'),
 
 ];

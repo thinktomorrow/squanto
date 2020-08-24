@@ -1,9 +1,11 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Tests;
+namespace Thinktomorrow\SquantoTests;
 
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
+use Illuminate\Foundation\Testing\DatabaseMigrations;
+use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
@@ -12,6 +14,8 @@ use Thinktomorrow\Squanto\SquantoManagerServiceProvider;
 
 class TestCase extends BaseTestCase
 {
+    use DatabaseTransactions, DatabaseMigrations;
+
     /** @var \Thinktomorrow\Squanto\Translators\SquantoTranslator */
     protected $translator;
 
@@ -21,23 +25,27 @@ class TestCase extends BaseTestCase
     /** @var string */
     private $tempDirectory;
 
-    use DatabaseTransactions,
-        TestHelpers;
+    use TestHelpers;
 
-    public function setUp()
+    protected function setUp(): void
     {
         parent::setUp();
 
-        $this->createLangDirectories();
+        // Set language disk directories
+        $this->tempDirectory = new TemporaryDirectory($this->getTempDirectory());
+        $this->langDirectory = new TemporaryDirectory($this->getTempDirectory('lang'));
+
+        config()->set('thinktomorrow.squanto.lang_path', $this->getTempDirectory('lang'));
+        config()->set('thinktomorrow.squanto.metadata_path', $this->getTempDirectory('metadata'));
 
         $this->rebindTranslator();
     }
 
-    public function tearDown()
+    protected function tearDown(): void
     {
-        $this->tempDirectory->delete();
-
         parent::tearDown();
+
+        $this->tempDirectory->delete();
     }
 
     protected function getPackageProviders($app)
@@ -63,14 +71,14 @@ class TestCase extends BaseTestCase
         ]);
 
         $app['config']->set('database.default', 'testing');
-        $app['config']->set('squanto', require $this->getTempDirectory('config/squanto.php'));
+        $app['config']->set('thinktomorrow.squanto', require $this->getTempDirectory('config/squanto.php'));
         $app['config']->set('app.locale','nl');
         $app['config']->set('app.fallback_locale','en');
 
         // Dimsav package dependency requires us to set the fallback locale via this config
         // It should if config not set be using the default laravel fallback imo
-        $app['config']->set('translatable.locales',['nl','fr','en']);
-        $app['config']->set('translatable.fallback_locale','en');
+//        $app['config']->set('translatable.locales',['nl','fr','en']);
+//        $app['config']->set('translatable.fallback_locale','en');
     }
 
     // Register our translator again so any changes on the lang files are reflected in the translator
@@ -85,14 +93,6 @@ class TestCase extends BaseTestCase
                 new Filesystem(new Local($this->getTempDirectory('lang')))
             );
         });
-    }
-
-    private function createLangDirectories()
-    {
-        $this->tempDirectory = new TemporaryDirectory($this->getTempDirectory());
-        $this->langDirectory = new TemporaryDirectory($this->getTempDirectory('lang'));
-
-        config()->set('squanto.lang_path', $this->getTempDirectory('lang'));
     }
 
     private function getStubDirectory($dir = null)

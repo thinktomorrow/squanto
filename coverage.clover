@@ -156,15 +156,15 @@
         <metrics loc="162" ncloc="91" classes="1" methods="13" coveredmethods="4" conditionals="0" coveredconditionals="0" statements="27" coveredstatements="10" elements="40" coveredelements="14"/>
       </file>
     </package>
-    <package name="Thinktomorrow\Squanto\Exceptions">
+    <package name="Thinktomorrow\Squanto\Domain\Exceptions">
       <file name="/Users/bencavens/Code/packages/squanto/src/Exceptions/DomainException.php">
-        <class name="DomainException" namespace="Thinktomorrow\Squanto\Exceptions">
+        <class name="DomainException" namespace="Thinktomorrow\Squanto\Domain\Exceptions">
           <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
         </class>
         <metrics loc="10" ncloc="10" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
       </file>
       <file name="/Users/bencavens/Code/packages/squanto/src/Exceptions/InvalidLineKeyException.php">
-        <class name="InvalidLineKeyException" namespace="Thinktomorrow\Squanto\Exceptions">
+        <class name="InvalidLineKeyException" namespace="Thinktomorrow\Squanto\Domain\Exceptions">
           <metrics complexity="0" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>
         </class>
         <metrics loc="8" ncloc="8" classes="1" methods="0" coveredmethods="0" conditionals="0" coveredconditionals="0" statements="0" coveredstatements="0" elements="0" coveredelements="0"/>

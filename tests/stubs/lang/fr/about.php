@@ -1,4 +1,7 @@
-<?php return [
-            'bar'   => 'bazz',
-            'hello' => 'hello :name, welcome back',
-        ];
+<?php
+
+return [
+    'title'   => 'titre',
+    'content'   => 'description',
+    'hello' => 'Bienvenue :name',
+];

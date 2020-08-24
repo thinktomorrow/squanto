@@ -1,73 +1,54 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Thinktomorrow\Squanto\Domain;
 
-use Thinktomorrow\Squanto\Exceptions\InvalidLineKeyException;
+use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineKeyException;
 
-class LineKey
+final class LineKey
 {
-    private $key;
+    private string $key;
 
-    public function __construct($key)
+    private function __construct(string $key)
     {
         $this->validateKey($key);
 
         $this->key = $this->sanitizeKey($key);
     }
 
-    public static function fromString($key)
+    public static function fromString(string $key)
     {
         return new self($key);
     }
 
-    public function get()
+    public function get(): string
     {
         return $this->key;
-    }
-
-    /**
-     * Get suggestion for a label based on the key
-     *
-     * @return string
-     */
-    public function getAsLabel()
-    {
-        // Remove first part since that part equals the page
-        $key = substr($this->key, strpos($this->key, '.')+1);
-
-        $label = str_replace(['.','-'], ' ', $key);
-
-        return ucfirst($label);
     }
 
     /**
      * Get Page identifier.
      * This is the first segment of the key
      *
-     * @return PageKey
+     * @return string
      */
-    public function getPageKey(): PageKey
+    public function pageKey(): string
     {
-        // substr($this->key, 0, strpos($this->key, '.'));
-        return PageKey::fromLineKeyString($this->get());
+        return substr($this->key, 0, strpos($this->key, '.'));
     }
 
-    public function getWithoutPageKey()
-    {
-        return substr($this->key, strpos($this->key, '.') + 1 );
-    }
-
-    public function equals($other)
+    public function equals($other): bool
     {
         return (get_class($this) === get_class($other) && $this->get() === $other->get());
     }
 
-    private function sanitizeKey($key)
+    private function sanitizeKey(string $key): string
     {
         return strtolower($key);
     }
 
-    private function validateKey($key)
+    public static function validateKey($key): void
     {
         if (!$key || !is_string($key) || false === strpos($key, '.')) {
             throw new InvalidLineKeyException('Invalid LineKey format ['.$key.', type: '.gettype($key).'] given. Must be a string containing at least two dot separated segments. E.g. about.title');
