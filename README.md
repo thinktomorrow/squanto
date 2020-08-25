@@ -8,9 +8,13 @@
 [![Total Downloads][ico-downloads]][link-downloads]
 
 Manage the static translations of your Laravel application during and after development.
-Squanto, based on one of the first [Native Indian interpreters](https://nl.wikipedia.org/wiki/Squanto), is an opinionated way to manage the translations in database.
+Squanto, its name derived from one of the first [Native Indian interpreters](https://nl.wikipedia.org/wiki/Squanto), is an opinionated way to manage the translations in database.
 
-**NOTE: This package is still in development and the api will be subject to change. Also note that it is tailor made for Think Tomorrow projects but you are free to use it. Please only use this package in development until a stable version is released. That being said, please do try this package out as feedback is much appreciated!**
+**NOTE: This package is still in development and the api will be subject to change. That being said, please do try this package out as feedback is much appreciated!**
+
+## Requirements
+- php >= 7.4.7
+- Laravel >= 7.15
 
 ## Install
 
@@ -19,11 +23,16 @@ Via Composer
 $ composer require thinktomorrow/squanto
 ```
 
+
+
 ## Setup
-1. Publish the provider:
-    ``` bash
-    $ php artisan vendor:publish --provider="Thinktomorrow\Squanto\SquantoServiceProvider"
-    ```
+The service providers of the package will be discovered automatically. Make note that there are two providers: one for the package but also a separate service provider for the Manager browser UI. 
+
+Publish the config file:
+```bash 
+    php artisan vendor:publish --tag=squanto-config
+``` 
+
 
 2. Basic development protection
 Add the `ThinkTomorrow\Squanto\Manager\ManagesSquanto` trait to your User model. This will expose a public
@@ -76,13 +85,9 @@ Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recen
 $ composer test
 ```
 
-## Contributing
-
-Please see [CONTRIBUTING](CONTRIBUTING.md) and [CONDUCT](CONDUCT.md) for details.
-
 ## Security
 
-If you discover any security related issues, please email cavensben@gmail.com instead of using the issue tracker.
+If you discover any security related issues, please email to dev@thinktomorrow.be instead of using the issue tracker.
 
 ## Credits
 

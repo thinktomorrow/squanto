@@ -6,8 +6,6 @@ use Illuminate\Support\ServiceProvider;
 
 class SquantoManagerServiceProvider extends ServiceProvider
 {
-    protected $defer = false;
-
     /**
      * @return array
      */

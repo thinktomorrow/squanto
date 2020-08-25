@@ -51,7 +51,8 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Thinktomorrow\\Squanto\\SquantoServiceProvider"
+                "Thinktomorrow\\Squanto\\SquantoServiceProvider",
+                "Thinktomorrow\\Squanto\\SquantoManagerServiceProvider"
             ]
         }
     },

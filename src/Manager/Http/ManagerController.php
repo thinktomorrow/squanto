@@ -37,7 +37,7 @@ class ManagerController extends Controller
         $this->cacheDatabaseLines = $cacheDatabaseLines;
     }
 
-    public function index()
+    public function index(Request $request)
     {
         $pages = $this->pagesRepository->all();
 

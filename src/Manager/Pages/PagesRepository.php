@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Manager\Pages;
 
-use Thinktomorrow\Squanto\Manager\Pages\Pages;
 use Thinktomorrow\Squanto\Disk\Query\ReadLanguageFolder;
 
 final class PagesRepository

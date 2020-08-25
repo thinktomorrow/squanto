@@ -4,6 +4,7 @@ namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Console\CheckCommand;
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Thinktomorrow\Squanto\Disk\Query\ReadLanguageFile;
 use Thinktomorrow\Squanto\Disk\Query\ReadMetadataFile;
 use Thinktomorrow\Squanto\Console\PurgeDatabaseCommand;
@@ -17,10 +18,8 @@ use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
 use League\Flysystem\Adapter\Local;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
-class SquantoServiceProvider extends BaseServiceProvider
+class SquantoServiceProvider extends BaseServiceProvider implements DeferrableProvider
 {
-    protected $defer = true;
-
     /**
      * @return array
      */
@@ -29,6 +28,9 @@ class SquantoServiceProvider extends BaseServiceProvider
         return [
             'translator',
             'translation.loader',
+            ReadLanguageFolder::class,
+            ReadMetadataFolder::class,
+            CacheDatabaseLines::class,
         ];
     }
 
@@ -44,7 +46,7 @@ class SquantoServiceProvider extends BaseServiceProvider
         if ($this->app->runningInConsole()) {
             $this->publishes([
                 __DIR__.'/../config/squanto.php' => config_path('thinktomorrow.squanto.php')
-            ], 'config');
+            ], 'squanto-config');
 
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
