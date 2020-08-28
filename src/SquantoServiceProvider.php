@@ -45,7 +45,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__.'/../config/squanto.php' => config_path('thinktomorrow.squanto.php')
+                __DIR__.'/../config/squanto.php' => config_path('thinktomorrow/squanto.php')
             ], 'squanto-config');
 
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');

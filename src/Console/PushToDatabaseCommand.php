@@ -4,7 +4,6 @@ namespace Thinktomorrow\Squanto\Console;
 
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Disk\Query\DiskLinesRepository;
 use Thinktomorrow\Squanto\Disk\Query\DiskMetadataRepository;
 use Thinktomorrow\Squanto\Database\Application\UpdateMetadata;

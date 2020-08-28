@@ -4,6 +4,7 @@ declare(strict_types=1);
 namespace Thinktomorrow\Squanto\Database\Query;
 
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Lines;
 use Thinktomorrow\Squanto\Domain\LineKey;

@@ -3,42 +3,29 @@
 return [
 
     /**
-     * Allowed locales to be managed.
-     * It expects these locales to match the translation folder names
+     * The locales accessible for squanto. They are the translations that will be managed
+     * via the database. These locales need to match the language folder names
      *
      * @var array
      */
     'locales' => ['nl', 'en'],
 
     /**
-     * Exclude following lang groups from import
-     * Here you list all translations that should be maintained by the developer
+     * The language files not accessible for squanto. Here you can exclude translation
+     * files from being managed by squanto. Another way of looking: these translation
+     * files will only be accessed by the developer
+     *
      * @var array
      */
     'excluded_files' => ['auth','pagination','passwords','validation','app'],
 
     /**
-     * Paragraphize
-     *
-     * By default the redactor editor uses <p> tags for each line.
-     * With this setting, squanto will interpret <p></p> as <br> on write changes.
-     * Note that this can be overruled by the allowed html settings of a translation record
-     */
-    'paragraphize' => false,
-
-    /**
-     * In case the translation key cannot be translated, this option
-     * allows to display null instead of the key itself. This differs
-     * from native Laravel behaviour where always the key is returned.
+     * Return null instead of the translation key when a translation isn't found.`
+     * Out of the box, Laravel returns the translation key itself in case the value
+     * could not be retrieved. Squanto allows to choice this behavior. Set this
+     * option to false to return null instead of the key when a value isn't found.
      */
     'key_as_default' => true,
-
-    /**
-     * Master template filepath.
-     * This is relative to the default viewpath.
-     * @var string
-     */
-    'template' => 'squanto::_layouts.master',
 
     /**
      * Path where the laravel language files are stored
@@ -59,5 +46,21 @@ return [
      * contain options for the admin presentation of the squanto fields.
      */
     'metadata_path' => base_path('resources/squanto_metadata'),
+
+    /**
+     * Master template filepath.
+     * This is relative to the default viewpath.
+     * @var string
+     */
+    'template' => 'squanto::_layouts.master',
+
+    /**
+     * Paragraphize
+     *
+     * By default the redactor editor uses <p> tags for each line.
+     * With this setting, squanto will interpret <p></p> as <br> on write changes.
+     * Note that this can be overruled by the allowed html settings of a translation record
+     */
+    'paragraphize' => false,
 
 ];

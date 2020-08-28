@@ -26,61 +26,55 @@ $ composer require thinktomorrow/squanto
 
 
 ## Setup
-The service providers of the package will be discovered automatically. Make note that there are two providers: one for the package but also a separate service provider for the Manager browser UI. 
+The service providers of the package will be discovered automatically by Laravel. 
+Note that there are two providers: one general package service provider but also a separate one for the Manager browser UI. 
 
-Publish the config file:
+Run the migrations. This will add a table called `squanto_lines` to your database.
+``` bash
+$ php artisan migrate
+```
+
+Next, publish the config file.
 ```bash 
     php artisan vendor:publish --tag=squanto-config
 ``` 
+In the config, set the different locales you'll wish to maintain via squanto.
+Most of the other config settings are sensible defaults and should work fine.
 
+## Admin interface
+### routes
+Add the following routes. These are the route definitions for viewing and editing the translations. Make sure you'll add the necessary authentication middleware. 
+```php 
+Route::get('translations/{id}/edit', [\Thinktomorrow\Squanto\Manager\Http\ManagerController::class, 'edit'])->name('squanto.edit');
+Route::put('translations/{id}', [\Thinktomorrow\Squanto\Manager\Http\ManagerController::class, 'update'])->name('squanto.update');
+Route::get('translations', [\Thinktomorrow\Squanto\Manager\Http\ManagerController::class, 'index'])->name('squanto.index');
+```
 
-2. Basic development protection
-Add the `ThinkTomorrow\Squanto\Manager\ManagesSquanto` trait to your User model. This will expose a public
-method 'isSquantoDeveloper' to be used inside your views and middleware.
-
-3. Managing squanto via the interface also requires a middleware `squanto.develop` which should protect 
-the routes responsible for adding, editing and deleting translation lines. An insecure default is 
-available but for production you must setup your own permissions logic on these routes.
-    ``` php
-    protected $routeMiddleware = [
-        'squanto.developer' => \Thinktomorrow\Squanto\Manager\Http\Middleware\Developer::class,
-    ],
-    ```
-
-4. Add the service provider in your config/app.php providers array
-    ``` php
-    'providers' => [
-        ...
-        Thinktomorrow\Squanto\SquantoServiceProvider::class,
-        Thinktomorrow\Squanto\SquantoManagerServiceProvider::class, // Optionally add the UI manager
-    ];
-    ```
-
-5. Editor
-
+### Wysiswyg editor
 The 'redactor' editor is required so you'll need to include the css and js assets. This is not provided since you'll need a licence.
 Feel free to switch editors. The textareas that require a wysiwyg are assigned the `redactor-editor` class.
 
 ## Usage
 
-Make sure you set the settings in the squanto config file. Especially the locales to be maintained.
-Run the migrations
+The following console commands are available for the developer.
 ``` bash
-$ php artisan migrate
-```
+# Push all language lines to the database. Existing database values will remain untouched.
+$ php artisan squanto:push
 
-Next you can import the existing translations from your lang files with the following command:
-``` bash
-$ php artisan squanto:import
+# Remove database lines that are no longer present in the language files.
+$ php artisan squanto:purge
+
+# Check if your database lines are up to date, and if a push or purge command is advised.
+$ php artisan squanto:check
+
+# Rebuild the database cache.
+$ php artisan squanto:cache
 ```
-If you run this command with the `-dry` option it will simulate the impact of the import first.
 
 ## Changelog
-
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
 
 ## Testing
-
 ``` bash
 $ composer test
 ```
