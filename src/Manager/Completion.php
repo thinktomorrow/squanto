@@ -1,31 +1,50 @@
 <?php
 
-namespace Thinktomorrow\Squanto\Domain;
+namespace Thinktomorrow\Squanto\Manager;
 
+use Illuminate\Support\Collection;
+use Thinktomorrow\Squanto\Domain\Lines;
 use Thinktomorrow\Squanto\Database\DatabaseLine;
-use Thinktomorrow\Squanto\Database\DatabasePage;
 
-class Completion
+final class Completion
 {
-    public static function check(DatabasePage $page)
+    /** @var Lines */
+    private Lines $lines;
+
+    public function __construct(Lines $lines)
     {
-        foreach (config('thinktomorrow.squanto.locales') as $locale) {
-            if ((Integer)self::asPercentage($page, $locale) != 100) {
+        $this->lines = $lines;
+    }
+
+    public static function fromDatabaseLines(Collection $databaseLines): self
+    {
+        return new static( new Lines($databaseLines->map->toLine()->all() ));
+    }
+
+    public function asPercentage(string $locale): float
+    {
+        $total = $this->lines->count();
+        $values = array_filter($this->lines->values($locale),function($value){ return null !== $value; });
+
+        return round(count($values) / $total, 2);
+    }
+
+    public function isComplete(string $locale): bool
+    {
+        $total = $this->lines->count();
+        $values = array_filter($this->lines->values($locale),function($value){ return null !== $value; });
+
+        return count($values) == $total;
+    }
+
+    public function isCompleteForAllLocales(): bool
+    {
+        foreach(config('thinktomorrow.squanto.locales', []) as $locale) {
+            if(!$this->isComplete($locale)) {
                 return false;
             }
         }
+
         return true;
-    }
-
-    public static function asPercentage(DatabasePage $page, $locale)
-    {
-        $total  = $page->lines->count();
-
-        if ($total == 0) {
-            return 100;
-        }
-
-        $translated = collect(DatabaseLine::getValuesByLocaleAndPage($locale, $page->key))->count();
-        return $translated / $total * 100;
     }
 }
