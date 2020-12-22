@@ -17,12 +17,12 @@ return [
      *
      * @var array
      */
-    'excluded_files' => ['auth','pagination','passwords','validation','app'],
+    'excluded_files' => ['auth','pagination','passwords','validation','app', 'routes'],
 
     /**
      * Return null instead of the translation key when a translation isn't found.`
      * Out of the box, Laravel returns the translation key itself in case the value
-     * could not be retrieved. Squanto allows to choice this behavior. Set this
+     * could not be retrieved. Squanto allows to choose this behavior. Set this
      * option to false to return null instead of the key when a value isn't found.
      */
     'key_as_default' => true,
@@ -43,7 +43,7 @@ return [
 
     /**
      * The folder where the squanto metadata are located. These files
-     * contain options for the admin presentation of the squanto fields.
+     * contain the info and settings for the squanto admin fields.
      */
     'metadata_path' => base_path('resources/squanto_metadata'),
 

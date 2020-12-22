@@ -26,6 +26,7 @@ class TranslationControllerTest extends TestCase
         app(ManagerController::class)->update($request, 'foo');
 
         $this->assertEquals('bazz & foo', DatabaseLine::findByKey(LineKey::fromString('foo.bar'))->dynamic('value','nl'));
+        $this->assertSame('bazz & foo', app('translator')->get('foo.bar'));
     }
 
     /** @test */
