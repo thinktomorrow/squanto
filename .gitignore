@@ -6,3 +6,4 @@ docs
 vendor
 tests/tmp
 /database/testing.sqlite
+.phpunit.result.cache
