@@ -27,7 +27,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^5.0",
+        "orchestra/testbench": "^5.0|^6.0",
         "phpunit/phpunit": "^9.0",
         "psalm/plugin-laravel": "^1.2",
         "spatie/temporary-directory": "^1.1",
