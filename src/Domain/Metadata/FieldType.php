@@ -31,11 +31,14 @@ final class FieldType
 
     private function validate($type)
     {
-        if(!in_array($type, [
+        if(!in_array(
+            $type, [
             self::TEXT,
             self::TEXTAREA,
             self::EDITOR
-        ])) {
+            ]
+        )
+        ) {
             throw new SquantoException('Invalid fieldtype ['.$type.']');
         }
     }

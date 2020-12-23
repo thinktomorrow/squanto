@@ -31,9 +31,11 @@ final class MetadataCollection
     {
         $collection = [];
 
-        $lines->each(function(Line $line) use(&$collection){
-            $collection[] = Metadata::fromLine($line);
-        });
+        $lines->each(
+            function (Line $line) use (&$collection) {
+                $collection[] = Metadata::fromLine($line);
+            }
+        );
 
         return new static($collection);
     }

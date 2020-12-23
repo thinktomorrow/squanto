@@ -8,10 +8,14 @@ use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
 
 final class ReadMetadataFolder
 {
-    /** @var ReadMetadataFile */
+    /**
+     * @var ReadMetadataFile 
+     */
     private ReadMetadataFile $readMetadataFile;
 
-    /** @var Filesystem */
+    /**
+     * @var Filesystem 
+     */
     private Filesystem $filesystem;
 
     public function __construct(ReadMetadataFile $readMetadataFile, Filesystem $filesystem)

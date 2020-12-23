@@ -15,16 +15,24 @@ class PurgeDatabaseCommand extends Command
 
     protected $description = 'Remove database lines that are no longer present in the language files.';
 
-    /** @var DiskLinesRepository */
+    /**
+     * @var DiskLinesRepository 
+     */
     private DiskLinesRepository $diskLinesRepository;
 
-    /** @var DatabaseLinesRepository */
+    /**
+     * @var DatabaseLinesRepository 
+     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /** @var RemoveDatabaseLine */
+    /**
+     * @var RemoveDatabaseLine 
+     */
     private RemoveDatabaseLine $removeDatabaseLine;
 
-    /** @var CacheDatabaseLines */
+    /**
+     * @var CacheDatabaseLines 
+     */
     private CacheDatabaseLines $cacheDatabaseLines;
 
     public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, RemoveDatabaseLine $removeDatabaseLine, CacheDatabaseLines $cacheDatabaseLines)
@@ -44,16 +52,18 @@ class PurgeDatabaseCommand extends Command
         $databaseLines = $this->databaseLinesRepository->all();
         $diskLines = $this->diskLinesRepository->all();
 
-        $databaseLines->each(function(Line $line) use ($diskLines, &$purgedRows){
-            if(!$diskLines->exists($line->keyAsString())){
-                $this->removeDatabaseLine->handle($line);
+        $databaseLines->each(
+            function (Line $line) use ($diskLines, &$purgedRows) {
+                if(!$diskLines->exists($line->keyAsString())) {
+                    $this->removeDatabaseLine->handle($line);
 
-                $purgedRows[] = [
+                    $purgedRows[] = [
                     $line->keyAsString(),
                     $this->outputTranslations($line->values())
-                ];
+                    ];
+                }
             }
-        });
+        );
 
         if(count($purgedRows) > 0) {
             $this->info(count($purgedRows) . ' obsolete lines purged from database.');

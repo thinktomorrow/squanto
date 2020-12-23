@@ -11,12 +11,12 @@ final class ReadLanguageFile
 {
     public function read(string $locale, string $filepath): Lines
     {
-        if(!is_file($filepath) || !file_exists($filepath)){
+        if(!is_file($filepath) || !file_exists($filepath)) {
             throw new InvalidLanguageFileReference('Filepath ['.$filepath . '] does not point to an existing or valid language file.');
         }
 
         // Parse filepath and get all lines as array ...
-        $lines = require $filepath;
+        $lines = include $filepath;
 
         if(!is_array($lines)) {
             throw new InvalidLanguageFileReference('Content of a language file should return an array. filepath: ['.$filepath.']');

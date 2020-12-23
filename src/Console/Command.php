@@ -35,7 +35,7 @@ abstract class Command extends \Illuminate\Console\Command
         $table->setRows($rowsWithSeparators);
 
         // Allow the last column to expand multiple rows (because it contains the translations)
-        $table->setColumnMaxWidth(count($headers) - 1,120);
+        $table->setColumnMaxWidth(count($headers) - 1, 120);
 
         $table->render();
     }

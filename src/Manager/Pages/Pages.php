@@ -17,7 +17,13 @@ final class Pages
     public static function fromFilenames(array $filenames): self
     {
         // Extract all files (excluding non-managed)
-        return new static(array_map(function($filename) { return Page::fromFilename($filename); }, $filenames));
+        return new static(
+            array_map(
+                function ($filename) {
+                    return Page::fromFilename($filename); 
+                }, $filenames
+            )
+        );
     }
 
     public function all(): array

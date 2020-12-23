@@ -13,13 +13,19 @@ class CheckCommand extends Command
 
     protected $description = 'Check if your database lines are up to date.';
 
-    /** @var DiskLinesRepository */
+    /**
+     * @var DiskLinesRepository 
+     */
     private DiskLinesRepository $diskLinesRepository;
 
-    /** @var DatabaseLinesRepository */
+    /**
+     * @var DatabaseLinesRepository 
+     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /** @var DiskMetadataRepository */
+    /**
+     * @var DiskMetadataRepository 
+     */
     private DiskMetadataRepository $diskMetadataRepository;
 
     public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, DiskMetadataRepository $diskMetadataRepository)
@@ -39,17 +45,21 @@ class CheckCommand extends Command
         $pushableRows = [];
         $purgableRows = [];
 
-        $diskLines->each(function(Line $line) use ($databaseLines, &$pushableRows){
-            if(!$databaseLines->exists($line->keyAsString())){
-                $pushableRows[] = [$line->keyAsString()];
+        $diskLines->each(
+            function (Line $line) use ($databaseLines, &$pushableRows) {
+                if(!$databaseLines->exists($line->keyAsString())) {
+                    $pushableRows[] = [$line->keyAsString()];
+                }
             }
-        });
+        );
 
-        $databaseLines->each(function(Line $line) use ($diskLines, &$purgableRows){
-            if(!$diskLines->exists($line->keyAsString())){
-                $purgableRows[] = [$line->keyAsString()];
+        $databaseLines->each(
+            function (Line $line) use ($diskLines, &$purgableRows) {
+                if(!$diskLines->exists($line->keyAsString())) {
+                    $purgableRows[] = [$line->keyAsString()];
+                }
             }
-        });
+        );
 
         if(count($pushableRows) > 0) {
             $this->displayTable([ count($pushableRows) . ' new lines'], $pushableRows);

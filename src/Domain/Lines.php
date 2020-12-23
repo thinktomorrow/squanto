@@ -52,7 +52,8 @@ final class Lines
         return new static($mergedLines);
     }
 
-    public function each(callable $callback) {
+    public function each(callable $callback)
+    {
         foreach ($this->items as $line) {
             $callback($line);
         }
@@ -61,14 +62,16 @@ final class Lines
     /**
      * Return all the values for a specific locale in key:value pairs
      *
-     * @param string $locale
+     * @param  string $locale
      * @return array
      */
     public function values(string $locale): array
     {
         $result = [];
 
-        /** @var Line $line */
+        /**
+ * @var Line $line 
+*/
         foreach($this->items as $line) {
             $result[$line->keyAsString()] = $line->value($locale);
         }

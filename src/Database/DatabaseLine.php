@@ -43,31 +43,31 @@ class DatabaseLine extends Model
     /**
      * Save a translated value
      *
-     * @param $locale
-     * @param $value
+     * @param  $locale
+     * @param  $value
      * @return $this
      */
-//    public function saveValue($locale, $value)
-//    {
-//        $this->setDynamic('value', $value, $locale);
-//        $this->save();
-//
-//        return $this;
-//    }
+    //    public function saveValue($locale, $value)
+    //    {
+    //        $this->setDynamic('value', $value, $locale);
+    //        $this->save();
+    //
+    //        return $this;
+    //    }
 
     /**
-     * @param null $locale
-     * @param bool $fallback
+     * @param  null $locale
+     * @param  bool $fallback
      * @return string
      */
-//    public function getValue($locale = null, $fallback = true)
-//    {
-//        $result = $this->dynamic('value', $locale);
-//
-//        if(null === $result && $fallback) {
-//            $result = $this->dynamic('value', config('app.fallback_locale'));
-//        }
-//
-//        return $result;
-//    }
+    //    public function getValue($locale = null, $fallback = true)
+    //    {
+    //        $result = $this->dynamic('value', $locale);
+    //
+    //        if(null === $result && $fallback) {
+    //            $result = $this->dynamic('value', config('app.fallback_locale'));
+    //        }
+    //
+    //        return $result;
+    //    }
 }

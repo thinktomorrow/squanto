@@ -11,8 +11,14 @@ final class UpdateDatabaseLine
 {
     public function handle(Line $line): void
     {
-        DatabaseLine::findByKey(LineKey::fromString($line->keyAsString()) )->update([
-            'values' => ['value' => array_filter($line->values(), function($value){ return null !== $value; })],
-        ]);
+        DatabaseLine::findByKey(LineKey::fromString($line->keyAsString()))->update(
+            [
+            'values' => ['value' => array_filter(
+                $line->values(), function ($value) {
+                    return null !== $value; 
+                }
+            )],
+            ]
+        );
     }
 }

@@ -16,7 +16,9 @@ class CacheDatabaseLines
      */
     private $filesystem;
 
-    /** @var DatabaseLinesRepository */
+    /**
+     * @var DatabaseLinesRepository 
+     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
     public function __construct(DatabaseLinesRepository $databaseLinesRepository, Filesystem $filesystem)
@@ -35,7 +37,13 @@ class CacheDatabaseLines
         $lines = $this->databaseLinesRepository->all();
 
         foreach (config('thinktomorrow.squanto.locales', []) as $locale) {
-            $this->writeFile($locale, array_filter($lines->values($locale), function($value){ return null !== $value; }));
+            $this->writeFile(
+                $locale, array_filter(
+                    $lines->values($locale), function ($value) {
+                        return null !== $value; 
+                    }
+                )
+            );
         }
     }
 
@@ -43,7 +51,7 @@ class CacheDatabaseLines
      * Create new cached translation files based on database entries
      *
      * @param $locale
-     * @param array $lines - flat array of key-value pairs e.g. foo.bar => 'translation of foo'
+     * @param array $lines  - flat array of key-value pairs e.g. foo.bar => 'translation of foo'
      */
     private function writeFile($locale, array $lines = [])
     {

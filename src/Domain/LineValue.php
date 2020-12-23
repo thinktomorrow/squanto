@@ -42,7 +42,7 @@ final class LineValue
     /**
      * Values should consist of locale:value pairs.
      *
-     * @param array $values
+     * @param  array $values
      * @throws InvalidLineValue
      */
     private function validateValues(array $values): void

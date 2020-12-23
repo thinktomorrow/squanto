@@ -5,10 +5,14 @@ namespace Thinktomorrow\Squanto\Domain;
 
 final class Line
 {
-    /** @var LineKey */
+    /**
+     * @var LineKey 
+     */
     private LineKey $lineKey;
 
-    /** @var LineValue */
+    /**
+     * @var LineValue 
+     */
     private LineValue $lineValue;
 
     public function __construct(LineKey $lineKey, LineValue $lineValue)

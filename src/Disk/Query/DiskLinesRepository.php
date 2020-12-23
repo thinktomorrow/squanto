@@ -7,7 +7,9 @@ use Thinktomorrow\Squanto\Domain\Lines;
 
 final class DiskLinesRepository
 {
-    /** @var ReadLanguageFolder */
+    /**
+     * @var ReadLanguageFolder 
+     */
     private ReadLanguageFolder $readLanguageFolder;
 
     public function __construct(ReadLanguageFolder $readLanguageFolder)

@@ -7,7 +7,9 @@ use Thinktomorrow\Squanto\Disk\Query\ReadLanguageFolder;
 
 final class PagesRepository
 {
-    /** @var ReadLanguageFolder */
+    /**
+     * @var ReadLanguageFolder 
+     */
     private ReadLanguageFolder $readLanguageFolder;
 
     public function __construct(ReadLanguageFolder $readLanguageFolder)

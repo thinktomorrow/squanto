@@ -10,7 +10,9 @@ class CacheDatabaseCommand extends Command
 
     protected $description = 'Cache the database line.';
 
-    /** @var CacheDatabaseLines */
+    /**
+     * @var CacheDatabaseLines 
+     */
     private CacheDatabaseLines $cacheDatabaseLines;
 
     public function __construct(CacheDatabaseLines $cacheDatabaseLines)

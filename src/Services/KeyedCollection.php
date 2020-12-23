@@ -7,7 +7,8 @@ trait KeyedCollection
 {
     public function find(string $key)
     {
-        if(!$this->exists($key)) return null;
+        if(!$this->exists($key)) { return null;
+        }
 
         return $this->items[$key];
     }
@@ -36,7 +37,7 @@ trait KeyedCollection
      * Use the key of each Line as key for its array entry.
      * This way we have unique entries and allow for easy replacement of existing values.
      *
-     * @param array $items
+     * @param  array $items
      * @return array
      */
     private static function keyify(array $items): array

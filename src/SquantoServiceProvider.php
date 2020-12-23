@@ -44,18 +44,22 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
         $this->loadTranslationsFrom($this->getSquantoCachePath(), 'squanto');
 
         if ($this->app->runningInConsole()) {
-            $this->publishes([
+            $this->publishes(
+                [
                 __DIR__.'/../config/squanto.php' => config_path('thinktomorrow/squanto.php')
-            ], 'squanto-config');
+                ], 'squanto-config'
+            );
 
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
-            $this->commands([
+            $this->commands(
+                [
                 CheckCommand::class,
                 CacheDatabaseCommand::class,
                 PushToDatabaseCommand::class,
                 PurgeDatabaseCommand::class,
-            ]);
+                ]
+            );
         }
     }
 
@@ -71,26 +75,32 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
 
         $this->registerTranslator();
 
-        $this->app->bind(ReadLanguageFolder::class, function ($app) {
-            return new ReadLanguageFolder(
-                $app->make(ReadLanguageFile::class),
-                new Filesystem(new Local($this->getSquantoLangPath()))
-            );
-        });
+        $this->app->bind(
+            ReadLanguageFolder::class, function ($app) {
+                return new ReadLanguageFolder(
+                    $app->make(ReadLanguageFile::class),
+                    new Filesystem(new Local($this->getSquantoLangPath()))
+                );
+            }
+        );
 
-        $this->app->bind(ReadMetadataFolder::class, function ($app) {
-            return new ReadMetadataFolder(
-                $app->make(ReadMetadataFile::class),
-                new Filesystem(new Local($this->getSquantoMetadataPath()))
-            );
-        });
+        $this->app->bind(
+            ReadMetadataFolder::class, function ($app) {
+                return new ReadMetadataFolder(
+                    $app->make(ReadMetadataFile::class),
+                    new Filesystem(new Local($this->getSquantoMetadataPath()))
+                );
+            }
+        );
 
-        $this->app->bind(CacheDatabaseLines::class, function ($app) {
-            return new CacheDatabaseLines(
-                $app->make(DatabaseLinesRepository::class),
-                new Filesystem(new Local($this->getSquantoCachePath()))
-            );
-        });
+        $this->app->bind(
+            CacheDatabaseLines::class, function ($app) {
+                return new CacheDatabaseLines(
+                    $app->make(DatabaseLinesRepository::class),
+                    new Filesystem(new Local($this->getSquantoCachePath()))
+                );
+            }
+        );
 
         $this->mergeConfigFrom(
             __DIR__.'/../config/squanto.php', 'thinktomorrow.squanto'
@@ -101,20 +111,22 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
     {
         $this->registerLoader();
 
-        $this->app->singleton('translator', function ($app) {
+        $this->app->singleton(
+            'translator', function ($app) {
 
-            $loader = $app['translation.loader'];
-            $locale = $app['config']['app.locale'];
+                $loader = $app['translation.loader'];
+                $locale = $app['config']['app.locale'];
 
-            $trans = new SquantoTranslator($loader, $locale);
+                $trans = new SquantoTranslator($loader, $locale);
 
-            $trans->setFallback($app['config']['app.fallback_locale']);
+                $trans->setFallback($app['config']['app.fallback_locale']);
 
-            // Custom Squanto option to display key or null when translation is not found
-            $trans->setKeyAsDefault($app['config']['thinktomorrow.squanto.key_as_default']);
+                // Custom Squanto option to display key or null when translation is not found
+                $trans->setKeyAsDefault($app['config']['thinktomorrow.squanto.key_as_default']);
 
-            return $trans;
-        });
+                return $trans;
+            }
+        );
     }
 
     private function getSquantoCachePath(): string

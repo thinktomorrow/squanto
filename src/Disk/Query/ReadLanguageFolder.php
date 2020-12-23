@@ -8,10 +8,14 @@ use Thinktomorrow\Squanto\Domain\Lines;
 
 final class ReadLanguageFolder
 {
-    /** @var ReadLanguageFile */
+    /**
+     * @var ReadLanguageFile 
+     */
     private ReadLanguageFile $readLanguageFile;
 
-    /** @var Filesystem */
+    /**
+     * @var Filesystem 
+     */
     private Filesystem $filesystem;
 
     public function __construct(ReadLanguageFile $readLanguageFile, Filesystem $filesystem)
@@ -47,7 +51,7 @@ final class ReadLanguageFolder
         $excludedFilenames = config('thinktomorrow.squanto.excluded_files', []);
 
         foreach($files as $k => $file) {
-            if(in_array($file['filename'],$excludedFilenames)) {
+            if(in_array($file['filename'], $excludedFilenames)) {
                 unset($files[$k]);
             }
         }

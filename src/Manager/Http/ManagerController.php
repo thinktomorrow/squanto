@@ -17,16 +17,24 @@ class ManagerController extends Controller
 {
     use ValidatesRequests;
 
-    /** @var PagesRepository */
+    /**
+     * @var PagesRepository 
+     */
     private PagesRepository $pagesRepository;
 
-    /** @var DatabaseLinesRepository */
+    /**
+     * @var DatabaseLinesRepository 
+     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /** @var UpdateDatabaseLine */
+    /**
+     * @var UpdateDatabaseLine 
+     */
     private UpdateDatabaseLine $updateDatabaseLine;
 
-    /** @var CacheDatabaseLines */
+    /**
+     * @var CacheDatabaseLines 
+     */
     private CacheDatabaseLines $cacheDatabaseLines;
 
     public function __construct(PagesRepository $pagesRepository, DatabaseLinesRepository $databaseLinesRepository, UpdateDatabaseLine $updateDatabaseLine, CacheDatabaseLines $cacheDatabaseLines)
@@ -41,9 +49,11 @@ class ManagerController extends Controller
     {
         $pages = $this->pagesRepository->all();
 
-        return view('squanto::index', [
+        return view(
+            'squanto::index', [
             'pages' => $pages->all(),
-        ]);
+            ]
+        );
     }
 
     public function edit($pageSlug)
@@ -51,15 +61,19 @@ class ManagerController extends Controller
         $lines = $this->databaseLinesRepository->modelsStartingWith($pageSlug);
 
         $viewModels = [];
-        $lines->each(function($lineModel) use(&$viewModels){
-            $viewModels[] = new LineViewModel($lineModel);
-        });
+        $lines->each(
+            function ($lineModel) use (&$viewModels) {
+                $viewModels[] = new LineViewModel($lineModel);
+            }
+        );
 
-        return view('squanto::edit', [
+        return view(
+            'squanto::edit', [
             'locales' => config('thinktomorrow.squanto.locales'),
             'lines' => $viewModels,
             'page' => $this->pagesRepository->findBySlug($pageSlug),
-        ]);
+            ]
+        );
     }
 
     public function update(Request $request, $pageSlug)
@@ -75,36 +89,36 @@ class ManagerController extends Controller
         return redirect()->route('squanto.index')->with('messages.success', $page->label() .' translations have been updated');
     }
 
-//    private function saveValueTranslations(array $translations)
-//    {
-//        collect($translations)->map(function ($translation, $locale) {
-//            collect($translation)->map(function ($value, $id) use ($locale) {
-//
-//                $line = DatabaseLine::find($id);
-//
-//                $value = squantoCleanupHTML($value);
-//
-//                if(false == config('thinktomorrow.squanto.paragraphize') && !$line->areParagraphsAllowed())
-//                {
-//                    $value = $this->replaceParagraphsByLinebreaks($value);
-//                }
-//
-//                // If line value is not meant to contain tags, we should strip them
-//                if (!$line->editInEditor()) {
-//                    $value = squantoCleanupString($value);
-//                }
-//
-//                if (null === $value) {
-//                    $line->removeValue($locale);
-//                } else {
-//                    $line->saveValue($locale, $value);
-//                }
-//            });
-//        });
-//    }
+    //    private function saveValueTranslations(array $translations)
+    //    {
+    //        collect($translations)->map(function ($translation, $locale) {
+    //            collect($translation)->map(function ($value, $id) use ($locale) {
+    //
+    //                $line = DatabaseLine::find($id);
+    //
+    //                $value = squantoCleanupHTML($value);
+    //
+    //                if(false == config('thinktomorrow.squanto.paragraphize') && !$line->areParagraphsAllowed())
+    //                {
+    //                    $value = $this->replaceParagraphsByLinebreaks($value);
+    //                }
+    //
+    //                // If line value is not meant to contain tags, we should strip them
+    //                if (!$line->editInEditor()) {
+    //                    $value = squantoCleanupString($value);
+    //                }
+    //
+    //                if (null === $value) {
+    //                    $line->removeValue($locale);
+    //                } else {
+    //                    $line->saveValue($locale, $value);
+    //                }
+    //            });
+    //        });
+    //    }
 
     /**
-     * @param $page
+     * @param  $page
      * @return \Illuminate\Support\Collection
      */
     protected function groupLinesByKey($page)
@@ -136,6 +150,7 @@ class ManagerController extends Controller
     /**
      * Get suggestion for a label based on the key
      * e.g. foo.bar.title return bar
+     *
      * @return string
      */
     private function getFirstSegmentOfKey(DatabaseLine $line)

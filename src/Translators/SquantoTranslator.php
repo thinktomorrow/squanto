@@ -28,6 +28,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * In case the translation is not found, Laravel returns the transkey by default.
      * In squanto config you could choose to opt out of this behavior and instead
      * have a non existing translation return null.
+     *
      * @param bool $keyAsDefault
      */
     public function setKeyAsDefault(bool $keyAsDefault = true)
@@ -43,9 +44,9 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * 3. Get from the /resources/lang
      *
      * @param  string $key
-     * @param  array $replace
+     * @param  array  $replace
      * @param  string $locale
-     * @param bool $fallback
+     * @param  bool   $fallback
      * @return string
      */
     public function get($key, array $replace = array(), $locale = null, $fallback = true)
@@ -55,11 +56,11 @@ class SquantoTranslator extends LaravelTranslator implements Translator
         // The key is always stored as lowercase so make sure our key input is sanitized as well.
         $key = strtolower($key);
 
-        if( null !== ($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback))) {
+        if(null !== ($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback))) {
             return $result;
         }
 
-        if ( null !== ($result = $this->getFromCache($key, $replace, $locale, $fallback))) {
+        if (null !== ($result = $this->getFromCache($key, $replace, $locale, $fallback))) {
             return $result;
         }
 
@@ -76,22 +77,23 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * Get from excluded sources. This is used here to make retrieval of these
      * non-managed translations a lot faster by going straight to source
      *
-     * @param $key
-     * @param $replace
-     * @param $locale
-     * @param $fallback
+     * @param  $key
+     * @param  $replace
+     * @param  $locale
+     * @param  $fallback
      * @return array|null|string
      */
     private function getFromExcludedSource($key, $replace, $locale, $fallback)
     {
-        if(!$this->belongsToExcludedSource($key)) return null;
+        if(!$this->belongsToExcludedSource($key)) { return null;
+        }
 
         return parent::get($key, $replace, $locale, $fallback);
     }
 
     private function belongsToExcludedSource(string $key): bool
     {
-        $pagePrefix = substr($key, 0, strpos($key,'.'));
+        $pagePrefix = substr($key, 0, strpos($key, '.'));
 
         return in_array($pagePrefix, $this->excludedFilenames);
     }
@@ -99,9 +101,9 @@ class SquantoTranslator extends LaravelTranslator implements Translator
     /**
      * Retrieve the translation from the squanto cache.
      *
-     * @param $key
-     * @param array $replace
-     * @param null $locale
+     * @param  $key
+     * @param  array $replace
+     * @param  null  $locale
      * @return mixed|null
      */
     private function getFromCache($key, array $replace = array(), $locale = null, $fallback = true)

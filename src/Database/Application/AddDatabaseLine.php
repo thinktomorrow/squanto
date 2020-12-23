@@ -11,10 +11,12 @@ final class AddDatabaseLine
 {
     public function handle(Line $line, Metadata $metadata = null): void
     {
-        DatabaseLine::create([
+        DatabaseLine::create(
+            [
             'key'      => $line->keyAsString(),
             'values'   => ['value' => $line->values()],
             'metadata' => $metadata ? $metadata->values() : [],
-        ]);
+            ]
+        );
     }
 }

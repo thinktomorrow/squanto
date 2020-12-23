@@ -18,22 +18,34 @@ class PushToDatabaseCommand extends Command
 
     protected $description = 'Push all language lines to the database. Existing database values will remain untouched.';
 
-    /** @var DiskLinesRepository */
+    /**
+     * @var DiskLinesRepository 
+     */
     private DiskLinesRepository $diskLinesRepository;
 
-    /** @var DatabaseLinesRepository */
+    /**
+     * @var DatabaseLinesRepository 
+     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /** @var AddDatabaseLine */
+    /**
+     * @var AddDatabaseLine 
+     */
     private AddDatabaseLine $addDatabaseLine;
 
-    /** @var UpdateMetadata */
+    /**
+     * @var UpdateMetadata 
+     */
     private UpdateMetadata $updateMetadata;
 
-    /** @var DiskMetadataRepository */
+    /**
+     * @var DiskMetadataRepository 
+     */
     private DiskMetadataRepository $diskMetadataRepository;
 
-    /** @var CacheDatabaseLines */
+    /**
+     * @var CacheDatabaseLines 
+     */
     private CacheDatabaseLines $cacheDatabaseLines;
 
     public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, AddDatabaseLine $addDatabaseLine, UpdateMetadata $updateMetadata, DiskMetadataRepository $diskMetadataRepository, CacheDatabaseLines $cacheDatabaseLines)
@@ -59,23 +71,25 @@ class PushToDatabaseCommand extends Command
         // Metadata
         $metadataCollection = $this->diskMetadataRepository->all($diskLines);
 
-        $diskLines->each(function(Line $line) use ($databaseLines, $metadataCollection, &$newlyAddedRows){
-           if($databaseLines->exists($line->keyAsString())){
-               if($metadata = $metadataCollection->find($line->keyAsString())) {
-                   $this->updateMetadata->handle(LineKey::fromString($line->keyAsString()), $metadata);
-               }
-           } else {
-               $metadata = $metadataCollection->find($line->keyAsString());
+        $diskLines->each(
+            function (Line $line) use ($databaseLines, $metadataCollection, &$newlyAddedRows) {
+                if($databaseLines->exists($line->keyAsString())) {
+                    if($metadata = $metadataCollection->find($line->keyAsString())) {
+                        $this->updateMetadata->handle(LineKey::fromString($line->keyAsString()), $metadata);
+                    }
+                } else {
+                    $metadata = $metadataCollection->find($line->keyAsString());
 
-               // Create new database entry + insert default values
-               $this->addDatabaseLine->handle($line, $metadata);
+                    // Create new database entry + insert default values
+                    $this->addDatabaseLine->handle($line, $metadata);
 
-               $newlyAddedRows[] = [
-                   $line->keyAsString(),
-                   $this->outputTranslations($line->values())
-               ];
-           }
-        });
+                    $newlyAddedRows[] = [
+                       $line->keyAsString(),
+                       $this->outputTranslations($line->values())
+                    ];
+                }
+            }
+        );
 
         if(count($newlyAddedRows) > 0) {
             $this->info(count($newlyAddedRows) . ' new lines pushed to database.');

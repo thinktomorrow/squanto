@@ -12,7 +12,9 @@ final class LineViewModel
     const FIELDTYPE_TEXTAREA = 'textarea';
     const FIELDTYPE_EDITOR = 'editor';
 
-    /** @var DatabaseLine */
+    /**
+     * @var DatabaseLine 
+     */
     private DatabaseLine $line;
 
     public function __construct(DatabaseLine $line)

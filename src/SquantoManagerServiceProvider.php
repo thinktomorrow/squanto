@@ -23,13 +23,13 @@ class SquantoManagerServiceProvider extends ServiceProvider
     {
         // Require helper files
         if(!function_exists('htmLawed')) {
-            require_once dirname(__FILE__) . "/Manager/utils/vendors/htmlLawed.php";
+            include_once dirname(__FILE__) . "/Manager/utils/vendors/htmlLawed.php";
         }
 
-        require_once dirname(__FILE__) . "/Manager/helpers.php";
+        include_once dirname(__FILE__) . "/Manager/helpers.php";
 
         if (! $this->app->routesAreCached()) {
-            require __DIR__ . '/Manager/Http/routes.php';
+            include __DIR__ . '/Manager/Http/routes.php';
         }
 
         // Register squanto viewfiles under squanto:: namespace
