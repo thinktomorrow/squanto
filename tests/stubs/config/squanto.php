@@ -34,4 +34,10 @@ return [
      */
     'key_as_default' => true,
 
+    /**
+     * Squanto utilises the htmlPurifier class to cleanup any submitted html.
+     * You can here set the temp directory required for this package.
+     */
+    'htmlPurifierCache' =>  __DIR__.'/../htmlPurifierCache',
+
 ];

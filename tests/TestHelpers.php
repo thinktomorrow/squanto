@@ -2,9 +2,9 @@
 
 namespace Thinktomorrow\SquantoTests;
 
-use Thinktomorrow\Squanto\Application\Commands\AddDatabaseLine;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\LineKey;
+use Thinktomorrow\Squanto\Database\DatabaseLine;
+use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
 
 trait TestHelpers{
 

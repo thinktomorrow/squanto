@@ -6,7 +6,6 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Thinktomorrow\Squanto\Services\LaravelTranslationsReader;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\SquantoServiceProvider;
