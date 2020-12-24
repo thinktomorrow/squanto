@@ -18,20 +18,20 @@
     ],
     "require": {
         "php": ">=7.4.7",
-        "illuminate/contracts": "~7.15|~8.12",
-        "illuminate/database": "~7.15|~8.12",
-        "illuminate/support": "~7.15|~8.12",
+        "illuminate/contracts": "~8.12",
+        "illuminate/database": "~8.12",
+        "illuminate/support": "~8.12",
         "league/flysystem": "~1.0",
         "thinktomorrow/dynamic-attributes": "dev-master@dev"
     },
     "require-dev": {
         "mockery/mockery": "^1.4",
-        "orchestra/testbench": "^5.0|^6.0",
+        "orchestra/testbench": "^6.0",
         "phpunit/phpunit": "^9.0",
         "spatie/temporary-directory": "^1.1",
         "thinktomorrow/trap": "^0.1.3",
         "psalm/plugin-laravel": "^1.4",
-        "vimeo/psalm": "^3.16|^4.3"
+        "vimeo/psalm": "^4.3"
     },
     "autoload": {
         "psr-4": {
