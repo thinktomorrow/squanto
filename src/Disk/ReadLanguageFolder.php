@@ -48,7 +48,7 @@ final class ReadLanguageFolder
 
     private function excludeFiles(array $files): array
     {
-        $excludedFilenames = config('thinktomorrow.squanto.excluded_files', []);
+        $excludedFilenames = config('squanto.excluded_files', []);
 
         foreach($files as $k => $file) {
             if(in_array($file['filename'], $excludedFilenames)) {

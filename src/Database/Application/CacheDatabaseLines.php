@@ -36,7 +36,7 @@ class CacheDatabaseLines
 
         $lines = $this->databaseLinesRepository->all();
 
-        foreach (config('thinktomorrow.squanto.locales', []) as $locale) {
+        foreach (config('squanto.locales', []) as $locale) {
             $this->writeFile(
                 $locale, array_filter(
                     $lines->values($locale), function ($value) {

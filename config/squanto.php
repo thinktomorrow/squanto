@@ -8,7 +8,7 @@ return [
      *
      * @var array
      */
-    'locales' => ['nl', 'en'],
+    'locales' => ['nl'],
 
     /**
      * The language files not accessible for squanto. Here you can exclude translation
@@ -46,21 +46,5 @@ return [
      * contain the info and settings for the squanto admin fields.
      */
     'metadata_path' => base_path('resources/squanto_metadata'),
-
-    /**
-     * Master template filepath.
-     * This is relative to the default viewpath.
-     * @var string
-     */
-    'template' => 'squanto::_layouts.master',
-
-    /**
-     * Paragraphize
-     *
-     * By default the redactor editor uses <p> tags for each line.
-     * With this setting, squanto will interpret <p></p> as <br> on write changes.
-     * Note that this can be overruled by the allowed html settings of a translation record
-     */
-    'paragraphize' => false,
 
 ];

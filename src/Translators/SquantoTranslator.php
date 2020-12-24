@@ -20,7 +20,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
     {
         parent::__construct($loader, $locale);
 
-        $this->excludedFilenames = config('thinktomorrow.squanto.excluded_files', []);
+        $this->excludedFilenames = config('squanto.excluded_files', []);
         $this->databaseTranslator = app(DatabaseTranslator::class);
     }
 

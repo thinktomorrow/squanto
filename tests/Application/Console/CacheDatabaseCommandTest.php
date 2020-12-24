@@ -30,7 +30,7 @@ class CacheDatabaseCommandTest extends TestCase
 
         $this->artisan('squanto:cache');
 
-        $filepath = config('thinktomorrow.squanto.cache_path') . '/nl/foo.php';
+        $filepath = config('squanto.cache_path') . '/nl/foo.php';
         $cache = require $filepath;
 
         $this->assertEquals('nl value', $cache['xxx']);
@@ -43,7 +43,7 @@ class CacheDatabaseCommandTest extends TestCase
 
         $this->artisan('squanto:cache');
 
-        $this->assertFalse(file_exists(config('thinktomorrow.squanto.cache_path') . '/nl/foo.php'));
-        $this->assertTrue(file_exists(config('thinktomorrow.squanto.cache_path') . '/en/foo.php'));
+        $this->assertFalse(file_exists(config('squanto.cache_path') . '/nl/foo.php'));
+        $this->assertTrue(file_exists(config('squanto.cache_path') . '/en/foo.php'));
     }
 }

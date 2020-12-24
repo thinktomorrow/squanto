@@ -36,8 +36,8 @@ class DatabaseLine extends Model
 
     protected function dynamicLocales(): array
     {
-        trap(config('thinktomorrow.squanto.locales', []));
-        return config('thinktomorrow.squanto.locales', []);
+        trap(config('squanto.locales', []));
+        return config('squanto.locales', []);
     }
 
     /**

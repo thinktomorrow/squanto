@@ -35,7 +35,7 @@ final class Page
     public function completionPercentage(): int
     {
         $lines = app(DatabaseLinesRepository::class)->allStartingWith($this->slug);
-        $locales = config('thinktomorrow.squanto.locales');
+        $locales = config('squanto.locales');
 
         return app(Completion::class)->calculate($lines, $locales);
     }

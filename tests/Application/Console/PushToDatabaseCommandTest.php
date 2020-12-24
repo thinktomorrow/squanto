@@ -25,7 +25,7 @@ class PushToDatabaseCommandTest extends TestCase
     /** @test */
     public function it_can_push_disk_lines_to_database()
     {
-        config()->set('thinktomorrow.squanto.locales', ['en', 'nl']);
+        config()->set('squanto.locales', ['en', 'nl']);
 
         $this->artisan('squanto:push');
 
@@ -51,7 +51,7 @@ class PushToDatabaseCommandTest extends TestCase
             ]]
         ]);
 
-        config()->set('thinktomorrow.squanto.locales', ['nl']);
+        config()->set('squanto.locales', ['nl']);
         $this->artisan('squanto:push');
 
         $this->assertEquals('custom titel', $this->repository->find('about.title')->value('nl'));
@@ -67,7 +67,7 @@ class PushToDatabaseCommandTest extends TestCase
             ]]
         ]);
 
-        config()->set('thinktomorrow.squanto.locales', ['nl', 'en']);
+        config()->set('squanto.locales', ['nl', 'en']);
         $this->artisan('squanto:push');
 
         $this->assertNull($this->repository->find('about.title')->value('en'));

@@ -61,7 +61,7 @@ class SquantoTranslatorCascadeTest extends TestCase
     /** @test */
     public function it_uses_original_source_for_excluded_files()
     {
-        config()->set('thinktomorrow.squanto.excluded_files', ['about']);
+        config()->set('squanto.excluded_files', ['about']);
         $this->rebindTranslator();
 
         $this->assertEquals('titel', $this->translator->get('about.title'));

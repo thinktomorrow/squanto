@@ -30,7 +30,7 @@ final class DiskMetadataRepository
         $collection = $this->readMetadataFromLines->read($lines);
 
         // read metadata from metadata file
-        if(($metadataFolderpath = config('thinktomorrow.squanto.metadata_path')) && file_exists($metadataFolderpath)) {
+        if(($metadataFolderpath = config('squanto.metadata_path')) && file_exists($metadataFolderpath)) {
             $collection = $collection->merge($this->readMetadataFolder->read($metadataFolderpath));
         }
 

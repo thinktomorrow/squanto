@@ -19,7 +19,7 @@ final class DiskLinesRepository
 
     public function all(): Lines
     {
-        $locales = config('thinktomorrow.squanto.locales');
+        $locales = config('squanto.locales');
 
         $lines = new Lines([]);
 

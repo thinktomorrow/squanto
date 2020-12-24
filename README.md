@@ -14,7 +14,7 @@ Squanto, its name derived from one of the first [Native Indian interpreters](htt
 
 ## Requirements
 - php >= 7.4.7
-- Laravel >= 7.15
+- Laravel >= 8.0
 
 ## Install
 

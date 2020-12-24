@@ -34,8 +34,8 @@ class TestCase extends BaseTestCase
         $this->tempDirectory = new TemporaryDirectory($this->getTempDirectory());
         $this->langDirectory = new TemporaryDirectory($this->getTempDirectory('lang'));
 
-        config()->set('thinktomorrow.squanto.lang_path', $this->getTempDirectory('lang'));
-        config()->set('thinktomorrow.squanto.metadata_path', $this->getTempDirectory('metadata'));
+        config()->set('squanto.lang_path', $this->getTempDirectory('lang'));
+        config()->set('squanto.metadata_path', $this->getTempDirectory('metadata'));
 
         $this->rebindTranslator();
     }
@@ -70,7 +70,7 @@ class TestCase extends BaseTestCase
         ]);
 
         $app['config']->set('database.default', 'testing');
-        $app['config']->set('thinktomorrow.squanto', require $this->getTempDirectory('config/squanto.php'));
+        $app['config']->set('squanto', require $this->getTempDirectory('config/squanto.php'));
         $app['config']->set('app.locale','nl');
         $app['config']->set('app.fallback_locale','en');
 
@@ -87,11 +87,11 @@ class TestCase extends BaseTestCase
 
         $this->translator = app('translator');
 
-        app()->bind(LaravelTranslationsReader::class, function ($app) {
-            return new LaravelTranslationsReader(
-                new Filesystem(new Local($this->getTempDirectory('lang')))
-            );
-        });
+//        app()->bind(LaravelTranslationsReader::class, function ($app) {
+//            return new LaravelTranslationsReader(
+//                new Filesystem(new Local($this->getTempDirectory('lang')))
+//            );
+//        });
     }
 
     private function getStubDirectory($dir = null)

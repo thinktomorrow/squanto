@@ -65,7 +65,7 @@ class ManagerController extends Controller
         });
 
         return view('squanto::edit', [
-            'locales' => config('thinktomorrow.squanto.locales'),
+            'locales' => config('squanto.locales'),
             'lines'   => $viewModels,
             'page'    => $this->pagesRepository->findBySlug($pageSlug),
         ]);

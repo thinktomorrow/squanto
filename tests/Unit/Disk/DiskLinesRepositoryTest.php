@@ -15,7 +15,7 @@ final class DiskLinesRepositoryTest extends TestCase
     /** @test */
     public function it_can_retrieve_all_translations_from_disk()
     {
-        config()->set('thinktomorrow.squanto.locales', ['en', 'nl']);
+        config()->set('squanto.locales', ['en', 'nl']);
 
         $lines = app(DiskLinesRepository::class)->all();
         $this->assertInstanceOf(Lines::class, $lines);
@@ -27,7 +27,7 @@ final class DiskLinesRepositoryTest extends TestCase
     /** @test */
     public function it_can_retrieve_all_translations_for_a_locale_from_disk()
     {
-        config()->set('thinktomorrow.squanto.locales', ['en']);
+        config()->set('squanto.locales', ['en']);
 
         $lines = app(DiskLinesRepository::class)->all();
         $this->assertInstanceOf(Lines::class, $lines);
@@ -52,7 +52,7 @@ final class DiskLinesRepositoryTest extends TestCase
     public function it_can_exclude_certain_files()
     {
         // Exclude all the en translation files
-        config()->set('thinktomorrow.squanto.excluded_files', ['nested','about']);
+        config()->set('squanto.excluded_files', ['nested','about']);
 
         $lines = app(ReadLanguageFolder::class)->read('en');
 
