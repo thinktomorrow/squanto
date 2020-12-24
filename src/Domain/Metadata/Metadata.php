@@ -49,7 +49,10 @@ final class Metadata
         // We take the longest translation value as a reference to guess the proper fieldtype.
         uasort(
             $values, function ($a, $b) {
-            return strlen($a ?? '') < strlen($b ?? '');
+
+                $comp = strlen($a ?? '') < strlen($b ?? '');
+
+            return $comp ? 1 : -1;
         }
         );
 
