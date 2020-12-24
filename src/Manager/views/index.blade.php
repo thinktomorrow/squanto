@@ -1,36 +1,33 @@
-@extends(config('thinktomorrow.squanto.template'))
+<x-squanto::app-layout>
 
 @section('page-title')
     <a href="{{ route('squanto.index') }}">Translations</a>
 @stop
 
-@section('content')
-    <div class="panel">
-        <table class="table admin-form">
-            <thead>
-            <tr class="bg-light">
-                <th>Title</th>
-                <th style="width:9%;"></th>
-            </tr>
-            </thead>
-            <tbody>
-            @foreach($pages as $page)
+<div class="bg-white shadow overflow-hidden sm:rounded-md">
+    <ul class="divide-y divide-gray-200">
 
-                <tr>
-                    <td>
-                        <a href="{{ route('squanto.edit',$page->slug()) }}">
-                            {{ $page->label() }}
-                        </a>
-                    </td>
-                    <td class="text-right">
-                        <a title="Edit {{ $page->label() }}" href="{{ route('squanto.edit',$page->slug()) }}" class="btn btn-rounded btn-success btn-xs"><i class="fa fa-edit"></i> </a>
-                    </td>
-                </tr>
+        @foreach($pages as $page)
+            <?php $completionPercentage = $page->completionPercentage(); ?>
+            <li>
+                <a class="block hover:bg-gray-50 px-4 py-4 sm:px-6" href="{{ route('squanto.edit',$page->slug()) }}">
+                        <div class="flex items-center justify-between">
+                            <p class="text-sm text-gray-800 truncate">
+                                {{ $page->label() }}
+                            </p>
+                            <div class="ml-2 flex-shrink-0 flex">
+                                <p class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                 {{ $completionPercentage == 100 ? 'bg-green-100 text-green-800' : ($completionPercentage < 50 ? 'bg-pink-100 text-pink-800' : 'bg-yellow-100 text-yellow-800') }}">
+                                    {{ $completionPercentage }}%
+                                </p>
+                            </div>
+                        </div>
+                </a>
+            </li>
 
-            @endforeach
-            </tbody>
-        </table>
-    </div>
+        @endforeach
+    </ul>
+</div>
 
 
-@stop
+</x-squanto::app-layout>

@@ -7,7 +7,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 class CacheDatabaseCommandTest extends TestCase
 {

@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Thinktomorrow\Squanto\Disk\Query;
+namespace Thinktomorrow\Squanto\Disk;
 
 use Illuminate\Support\Arr;
 use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;

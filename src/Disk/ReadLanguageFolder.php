@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Thinktomorrow\Squanto\Disk\Query;
+namespace Thinktomorrow\Squanto\Disk;
 
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Domain\Lines;
@@ -9,12 +9,12 @@ use Thinktomorrow\Squanto\Domain\Lines;
 final class ReadLanguageFolder
 {
     /**
-     * @var ReadLanguageFile 
+     * @var ReadLanguageFile
      */
     private ReadLanguageFile $readLanguageFile;
 
     /**
-     * @var Filesystem 
+     * @var Filesystem
      */
     private Filesystem $filesystem;
 

@@ -21,11 +21,10 @@ final class Metadata
     {
         return new static(
             LineKey::fromString($line->keyAsString()), [
-            'label' => str_replace('.', ' ', $line->keyAsString()),
+            'label'       => null,
             'description' => null,
-            'fieldtype' => static::guessFieldType($line),
-            ]
-        );
+            'fieldtype'   => static::guessFieldType($line),
+        ]);
     }
 
     public static function fromRaw(string $key, array $values): self
@@ -49,9 +48,9 @@ final class Metadata
 
         // We take the longest translation value as a reference to guess the proper fieldtype.
         uasort(
-            $values, function ($a,$b) {
-                return strlen($a ?? '') < strlen($b ?? '');
-            }
+            $values, function ($a, $b) {
+            return strlen($a ?? '') < strlen($b ?? '');
+        }
         );
 
         $valueForGuessingFieldType = reset($values);

@@ -3,9 +3,9 @@
 namespace Thinktomorrow\Squanto\Console;
 
 use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Disk\Query\DiskLinesRepository;
-use Thinktomorrow\Squanto\Disk\Query\DiskMetadataRepository;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
+use Thinktomorrow\Squanto\Disk\DiskMetadataRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 class CheckCommand extends Command
 {
@@ -14,17 +14,17 @@ class CheckCommand extends Command
     protected $description = 'Check if your database lines are up to date.';
 
     /**
-     * @var DiskLinesRepository 
+     * @var DiskLinesRepository
      */
     private DiskLinesRepository $diskLinesRepository;
 
     /**
-     * @var DatabaseLinesRepository 
+     * @var DatabaseLinesRepository
      */
     private DatabaseLinesRepository $databaseLinesRepository;
 
     /**
-     * @var DiskMetadataRepository 
+     * @var DiskMetadataRepository
      */
     private DiskMetadataRepository $diskMetadataRepository;
 

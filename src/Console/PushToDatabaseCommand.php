@@ -4,11 +4,11 @@ namespace Thinktomorrow\Squanto\Console;
 
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Disk\Query\DiskLinesRepository;
-use Thinktomorrow\Squanto\Disk\Query\DiskMetadataRepository;
+use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
+use Thinktomorrow\Squanto\Disk\DiskMetadataRepository;
 use Thinktomorrow\Squanto\Database\Application\UpdateMetadata;
 use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
 
 class PushToDatabaseCommand extends Command
@@ -19,32 +19,32 @@ class PushToDatabaseCommand extends Command
     protected $description = 'Push all language lines to the database. Existing database values will remain untouched.';
 
     /**
-     * @var DiskLinesRepository 
+     * @var DiskLinesRepository
      */
     private DiskLinesRepository $diskLinesRepository;
 
     /**
-     * @var DatabaseLinesRepository 
+     * @var \Thinktomorrow\Squanto\Database\DatabaseLinesRepository
      */
     private DatabaseLinesRepository $databaseLinesRepository;
 
     /**
-     * @var AddDatabaseLine 
+     * @var AddDatabaseLine
      */
     private AddDatabaseLine $addDatabaseLine;
 
     /**
-     * @var UpdateMetadata 
+     * @var UpdateMetadata
      */
     private UpdateMetadata $updateMetadata;
 
     /**
-     * @var DiskMetadataRepository 
+     * @var DiskMetadataRepository
      */
     private DiskMetadataRepository $diskMetadataRepository;
 
     /**
-     * @var CacheDatabaseLines 
+     * @var CacheDatabaseLines
      */
     private CacheDatabaseLines $cacheDatabaseLines;
 
@@ -100,7 +100,7 @@ class PushToDatabaseCommand extends Command
             $this->info('Cached translation files refreshed.');
 
         } else {
-            $this->info('No new lines found to push to database. That\'s great!');
+            $this->info('No new lines found to push to database. Any metadata has been updated. That\'s great!');
         }
     }
 

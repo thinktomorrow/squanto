@@ -5,9 +5,9 @@ namespace Thinktomorrow\SquantoTests\Unit\Disk;
 
 use Thinktomorrow\Squanto\Domain\Lines;
 use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Disk\Query\ReadLanguageFile;
-use Thinktomorrow\Squanto\Disk\Query\ReadLanguageFolder;
-use Thinktomorrow\Squanto\Disk\Query\DiskLinesRepository;
+use Thinktomorrow\Squanto\Disk\ReadLanguageFile;
+use Thinktomorrow\Squanto\Disk\ReadLanguageFolder;
+use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLanguageFileReference;
 
 final class DiskLinesRepositoryTest extends TestCase

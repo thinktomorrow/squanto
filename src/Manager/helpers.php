@@ -33,13 +33,10 @@ if(!function_exists('squantoCleanupString')) {
 if(!function_exists('squantoCleanupHTML')) {
     function squantoCleanupHTML( $value, $whitelist = null )
     {
-        if(!function_exists('htmLawed')) {
-            include_once __DIR__ . '/vendors/htmlLawed.php';
-        }
-
         if(is_null($whitelist)) {
             $whitelist = '<code><span><div><label><a><br><p><b><i><del><strike><u><img><video><audio><iframe><object><embed><param><blockquote><mark><cite><small><ul><ol><li><hr><dl><dt><dd><sup><sub><big><pre><code><figure><figcaption><strong><em><table><tr><td><th><tbody><thead><tfoot><h1><h2><h3><h4><h5><h6>';
         }
+
         // Strip entire blocks of malicious code
         $value = preg_replace(
             array(
@@ -49,17 +46,9 @@ if(!function_exists('squantoCleanupHTML')) {
         );
 
         // strip unwanted tags via whitelist...
-        if(false !== $whitelist) { $value = strip_tags($value, $whitelist);
+        if(false !== $whitelist) {
+            $value = strip_tags($value, $whitelist);
         }
-
-        // cleanup HTML and any unwanted attributes
-        $value = htmLawed($value);
-
-        /**
-         * htmlLawed converts characters to their encode equivalents. This is something
-         * that we need to reverse after the htmlLawed cleanup.
-         */
-        $value  = str_replace('&amp;', '&', $value);
 
         return $value;
     }

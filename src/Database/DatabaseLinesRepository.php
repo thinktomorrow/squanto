@@ -1,14 +1,12 @@
 <?php
 declare(strict_types=1);
 
-namespace Thinktomorrow\Squanto\Database\Query;
+namespace Thinktomorrow\Squanto\Database;
 
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\DB;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Lines;
 use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Exceptions\NotFoundDatabaseLine;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineKeyException;
 

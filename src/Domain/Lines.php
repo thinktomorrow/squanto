@@ -29,9 +29,9 @@ final class Lines
     {
         $preppedLines = [];
 
-        foreach($lines as $key => $value) {
+        foreach ($lines as $key => $value) {
             // Empty arrays are not prepped
-            if($value === []) {
+            if ($value === []) {
                 continue;
             }
             $preppedLines[] = Line::fromRaw($key, [$locale => $value]);
@@ -62,17 +62,15 @@ final class Lines
     /**
      * Return all the values for a specific locale in key:value pairs
      *
-     * @param  string $locale
+     * @param string $locale
      * @return array
      */
     public function values(string $locale): array
     {
         $result = [];
 
-        /**
- * @var Line $line 
-*/
-        foreach($this->items as $line) {
+        /** @var Line $line */
+        foreach ($this->items as $line) {
             $result[$line->keyAsString()] = $line->value($locale);
         }
 
@@ -81,8 +79,8 @@ final class Lines
 
     private function validateLines(array $lines): void
     {
-        foreach($lines as $line){
-            if(! $line instanceof Line) {
+        foreach ($lines as $line) {
+            if (!$line instanceof Line) {
                 throw new InvalidLinesArray('A lines parameter should consist of Line instances.');
             }
         }

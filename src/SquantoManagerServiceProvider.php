@@ -2,6 +2,7 @@
 
 namespace Thinktomorrow\Squanto;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class SquantoManagerServiceProvider extends ServiceProvider
@@ -21,11 +22,6 @@ class SquantoManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Require helper files
-        if(!function_exists('htmLawed')) {
-            include_once dirname(__FILE__) . "/Manager/utils/vendors/htmlLawed.php";
-        }
-
         include_once dirname(__FILE__) . "/Manager/helpers.php";
 
         if (! $this->app->routesAreCached()) {
@@ -35,6 +31,8 @@ class SquantoManagerServiceProvider extends ServiceProvider
         // Register squanto viewfiles under squanto:: namespace
         // allow to override them by making a view file under the resources/views/vendor/squanto location
         $this->loadViewsFrom(realpath(__DIR__ . '/Manager/views'), 'squanto');
+
+        Blade::componentNamespace('Thinktomorrow\\Squanto\\Manager\\Components', 'squanto');
     }
 
     /**

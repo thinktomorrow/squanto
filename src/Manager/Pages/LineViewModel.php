@@ -13,7 +13,7 @@ final class LineViewModel
     const FIELDTYPE_EDITOR = 'editor';
 
     /**
-     * @var DatabaseLine 
+     * @var DatabaseLine
      */
     private DatabaseLine $line;
 
@@ -39,12 +39,28 @@ final class LineViewModel
 
     public function label(): string
     {
-        return $this->line->metadata['label'] ?? $this->line->key;
+        if($this->line->metadata['label']) return $this->line->metadata['label'];
+
+        $parts = explode('.', $this->line->key);
+
+        if(count($parts) <=2) return last($parts);
+
+        array_splice($parts, 0, 2);
+        return implode(' ', $parts);
     }
 
     public function description(): ?string
     {
         return $this->line->metadata['description'] ?? null;
+    }
+
+    public function sectionKey(): string
+    {
+        $parts = explode('.', $this->line->key);
+
+        if(count($parts) <= 2) return last($parts);
+
+        return $parts[1];
     }
 
     public function isFieldTypeEditor(): bool

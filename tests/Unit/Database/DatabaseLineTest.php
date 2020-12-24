@@ -9,7 +9,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Domain\Exceptions\NotFoundDatabaseLine;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 class DatabaseLineTest extends TestCase
 {

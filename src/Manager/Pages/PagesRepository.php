@@ -3,12 +3,12 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Manager\Pages;
 
-use Thinktomorrow\Squanto\Disk\Query\ReadLanguageFolder;
+use Thinktomorrow\Squanto\Disk\ReadLanguageFolder;
 
 final class PagesRepository
 {
     /**
-     * @var ReadLanguageFolder 
+     * @var ReadLanguageFolder
      */
     private ReadLanguageFolder $readLanguageFolder;
 

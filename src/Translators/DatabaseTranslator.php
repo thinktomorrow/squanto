@@ -3,15 +3,13 @@
 namespace Thinktomorrow\Squanto\Translators;
 
 use Illuminate\Support\Str;
-use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 class DatabaseTranslator implements Translator
 {
     /**
-     * @var DatabaseLinesRepository 
+     * @var \Thinktomorrow\Squanto\Database\DatabaseLinesRepository
      */
     private DatabaseLinesRepository $databaseLinesRepository;
 
@@ -33,7 +31,7 @@ class DatabaseTranslator implements Translator
     {
         if(!$this->databaseLinesRepository->exists($key)) {
             /**
- * If no specific line is requested, we check if a collection of lines can be retrieved 
+ * If no specific line is requested, we check if a collection of lines can be retrieved
 */
             if(($lines = $this->databaseLinesRepository->allStartingWith($key)) && $lines->count() > 0) {
 

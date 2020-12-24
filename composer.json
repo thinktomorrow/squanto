@@ -18,7 +18,6 @@
     ],
     "require": {
         "php": ">=7.4.7",
-        "ezyang/htmlpurifier": "^4.11",
         "illuminate/contracts": "~7.15|~8.12",
         "illuminate/database": "~7.15|~8.12",
         "illuminate/support": "~7.15|~8.12",

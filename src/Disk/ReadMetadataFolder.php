@@ -1,7 +1,7 @@
 <?php
 declare(strict_types=1);
 
-namespace Thinktomorrow\Squanto\Disk\Query;
+namespace Thinktomorrow\Squanto\Disk;
 
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
@@ -9,12 +9,12 @@ use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
 final class ReadMetadataFolder
 {
     /**
-     * @var ReadMetadataFile 
+     * @var ReadMetadataFile
      */
     private ReadMetadataFile $readMetadataFile;
 
     /**
-     * @var Filesystem 
+     * @var Filesystem
      */
     private Filesystem $filesystem;
 

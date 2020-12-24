@@ -4,7 +4,7 @@ namespace Thinktomorrow\Squanto\Database\Application;
 
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 class CacheDatabaseLines
 {
@@ -17,7 +17,7 @@ class CacheDatabaseLines
     private $filesystem;
 
     /**
-     * @var DatabaseLinesRepository 
+     * @var DatabaseLinesRepository
      */
     private DatabaseLinesRepository $databaseLinesRepository;
 
@@ -40,7 +40,7 @@ class CacheDatabaseLines
             $this->writeFile(
                 $locale, array_filter(
                     $lines->values($locale), function ($value) {
-                        return null !== $value; 
+                        return null !== $value;
                     }
                 )
             );

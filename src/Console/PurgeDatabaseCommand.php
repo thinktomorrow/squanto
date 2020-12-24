@@ -3,8 +3,8 @@
 namespace Thinktomorrow\Squanto\Console;
 
 use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Disk\Query\DiskLinesRepository;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
 use Thinktomorrow\Squanto\Database\Application\RemoveDatabaseLine;
 
@@ -16,22 +16,22 @@ class PurgeDatabaseCommand extends Command
     protected $description = 'Remove database lines that are no longer present in the language files.';
 
     /**
-     * @var DiskLinesRepository 
+     * @var DiskLinesRepository
      */
     private DiskLinesRepository $diskLinesRepository;
 
     /**
-     * @var DatabaseLinesRepository 
+     * @var \Thinktomorrow\Squanto\Database\DatabaseLinesRepository
      */
     private DatabaseLinesRepository $databaseLinesRepository;
 
     /**
-     * @var RemoveDatabaseLine 
+     * @var RemoveDatabaseLine
      */
     private RemoveDatabaseLine $removeDatabaseLine;
 
     /**
-     * @var CacheDatabaseLines 
+     * @var CacheDatabaseLines
      */
     private CacheDatabaseLines $cacheDatabaseLines;
 

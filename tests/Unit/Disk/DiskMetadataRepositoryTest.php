@@ -5,7 +5,7 @@ namespace Thinktomorrow\SquantoTests\Unit\Disk;
 
 use Thinktomorrow\SquantoTests\TestCase;
 use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
-use Thinktomorrow\Squanto\Disk\Query\ReadMetadataFolder;
+use Thinktomorrow\Squanto\Disk\ReadMetadataFolder;
 
 final class DiskMetadataRepositoryTest extends TestCase
 {

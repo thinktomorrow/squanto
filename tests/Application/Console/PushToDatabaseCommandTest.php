@@ -6,7 +6,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
-use Thinktomorrow\Squanto\Database\Query\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 class PushToDatabaseCommandTest extends TestCase
 {
