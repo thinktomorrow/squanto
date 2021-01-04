@@ -58,8 +58,8 @@ class PurgeDatabaseCommand extends Command
                     $this->removeDatabaseLine->handle($line);
 
                     $purgedRows[] = [
-                    $line->keyAsString(),
-                    $this->outputTranslations($line->values())
+                        $line->keyAsString(),
+                        $this->outputTranslations($line->values()),
                     ];
                 }
             }

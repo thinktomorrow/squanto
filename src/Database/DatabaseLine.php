@@ -34,6 +34,11 @@ class DatabaseLine extends Model
         return self::where('key', $lineKey->get())->first();
     }
 
+    public static function findSoftDeletedByKey(LineKey $lineKey)
+    {
+        return self::onlyTrashed()->where('key', $lineKey->get())->first();
+    }
+
     protected function dynamicLocales(): array
     {
         trap(config('squanto.locales', []));

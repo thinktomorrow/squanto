@@ -72,4 +72,23 @@ class PushToDatabaseCommandTest extends TestCase
 
         $this->assertNull($this->repository->find('about.title')->value('en'));
     }
+
+    /** @test */
+    public function it_does_add_translations_when_the_database_entry_exists_as_soft_deleted_entry()
+    {
+        $record = DatabaseLine::create([
+            'key' => 'about.title',
+            'values' => ['value' => [
+                'nl' => 'custom titel',
+            ]],
+        ]);
+
+        $record->delete();
+
+        config()->set('squanto.locales', ['nl', 'en']);
+        $this->artisan('squanto:push');
+
+        $this->assertEquals('titel', $this->repository->find('about.title')->value('nl'));
+        $this->assertEquals('title', $this->repository->find('about.title')->value('en'));
+    }
 }
