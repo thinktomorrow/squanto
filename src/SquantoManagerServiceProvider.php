@@ -24,7 +24,7 @@ class SquantoManagerServiceProvider extends ServiceProvider
     {
         include_once dirname(__FILE__) . "/Manager/helpers.php";
 
-        if (! $this->app->routesAreCached()) {
+        if (! $this->app->routesAreCached() && config('squanto.use_default_routes')) {
             include __DIR__ . '/Manager/Http/routes.php';
         }
 
