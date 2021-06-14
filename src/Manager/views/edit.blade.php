@@ -1,5 +1,4 @@
 <x-squanto::app-layout>
-
     <form method="POST" action="{{ route('squanto.update', $page->slug()) }}" role="form">
         {{ csrf_field() }}
         <input type="hidden" name="_method" value="PUT">
