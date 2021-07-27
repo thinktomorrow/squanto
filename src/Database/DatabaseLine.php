@@ -4,12 +4,14 @@ namespace Thinktomorrow\Squanto\Database;
 
 use Thinktomorrow\Squanto\Domain\Line;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\DB;
 use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Domain\Metadata\FieldType;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Thinktomorrow\DynamicAttributes\HasDynamicAttributes;
 
+/**
+ * @property mixed values
+ * @property string key
+ */
 class DatabaseLine extends Model
 {
     use HasDynamicAttributes;
@@ -41,38 +43,6 @@ class DatabaseLine extends Model
 
     protected function dynamicLocales(): array
     {
-        trap(config('squanto.locales', []));
         return config('squanto.locales', []);
     }
-
-    /**
-     * Save a translated value
-     *
-     * @param  $locale
-     * @param  $value
-     * @return $this
-     */
-    //    public function saveValue($locale, $value)
-    //    {
-    //        $this->setDynamic('value', $value, $locale);
-    //        $this->save();
-    //
-    //        return $this;
-    //    }
-
-    /**
-     * @param  null $locale
-     * @param  bool $fallback
-     * @return string
-     */
-    //    public function getValue($locale = null, $fallback = true)
-    //    {
-    //        $result = $this->dynamic('value', $locale);
-    //
-    //        if(null === $result && $fallback) {
-    //            $result = $this->dynamic('value', config('app.fallback_locale'));
-    //        }
-    //
-    //        return $result;
-    //    }
 }

@@ -50,10 +50,10 @@ class CacheDatabaseLines
     /**
      * Create new cached translation files based on database entries
      *
-     * @param $locale
+     * @param string $locale
      * @param array $lines  - flat array of key-value pairs e.g. foo.bar => 'translation of foo'
      */
-    private function writeFile($locale, array $lines = [])
+    private function writeFile(string $locale, array $lines = [])
     {
         $translations = ConvertToTree::fromFlattened($lines);
 
