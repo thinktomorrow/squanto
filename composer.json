@@ -17,12 +17,12 @@
         }
     ],
     "require": {
-        "php": ">=7.4.7",
+        "php": ">=8.1",
         "illuminate/contracts": "~8.12",
         "illuminate/database": "~8.12",
         "illuminate/support": "~8.12",
         "league/flysystem": "~1.0",
-        "thinktomorrow/dynamic-attributes": "^0.3.0",
+        "thinktomorrow/dynamic-attributes": "^0.4.0",
         "ext-json": "*"
     },
     "require-dev": {

@@ -23,12 +23,14 @@ abstract class Command extends \Illuminate\Console\Command
 
         // last pagekey
         $pageKey = '';
+
         foreach($rows as $row) {
             if($pageKey && 0 !== strpos($row[0], $pageKey)) {
-                $pageKey = substr($row[0], 0, strpos($row[0], '.'));
                 $rowsWithSeparators[] = new TableSeparator();
             }
+
             $rowsWithSeparators[] = $row;
+
             $pageKey = substr($row[0], 0, strpos($row[0], '.'));
         }
 
