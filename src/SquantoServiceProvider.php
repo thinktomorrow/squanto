@@ -118,7 +118,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             $trans->setFallback($app['config']['app.fallback_locale']);
 
             // Custom Squanto option to display key or null when translation is not found
-            $trans->setKeyAsDefault($app['config']['squanto.key_as_default']);
+            $trans->setKeyAsDefault($app['config']['squanto.key_as_default'] ?? false);
 
             return $trans;
         }

@@ -28,6 +28,13 @@ return [
     'key_as_default' => true,
 
     /**
+     * Use the default routes provided by the package. These make use of the default auth middleware.
+     * If you need to customize these route definitions, set this value to false. As a starting
+     * point, you can copy the content of the src/Managers/Http/routes.php file.
+     */
+    'use_default_routes' => true,
+
+    /**
      * Path where the laravel language files are stored
      * Default is the /resources/lang folder
      * @var string

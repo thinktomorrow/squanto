@@ -78,6 +78,7 @@ class PushToDatabaseCommand extends Command
                         $this->updateMetadata->handle(LineKey::fromString($line->keyAsString()), $metadata);
                     }
                 } else {
+
                     $metadata = $metadataCollection->find($line->keyAsString());
 
                     // Create new database entry + insert default values

@@ -31,7 +31,7 @@ final class DiskMetadataRepository
 
         // read metadata from metadata file
         if(($metadataFolderpath = config('squanto.metadata_path')) && file_exists($metadataFolderpath)) {
-            $collection = $collection->merge($this->readMetadataFolder->read($metadataFolderpath));
+            $collection = $collection->merge($this->readMetadataFolder->read());
         }
 
         return $collection;
