@@ -2,6 +2,7 @@
 
 namespace Thinktomorrow\SquantoTests\Application\Manager;
 
+use Illuminate\View\View;
 use Illuminate\Http\Request;
 use Thinktomorrow\SquantoTests\TestCase;
 use Thinktomorrow\Squanto\Domain\LineKey;
@@ -10,6 +11,22 @@ use Thinktomorrow\Squanto\Manager\Http\ManagerController;
 
 class TranslationControllerTest extends TestCase
 {
+    /** @test */
+    public function it_can_view_edit_when_pageslug_contains_a_dash()
+    {
+        DatabaseLine::create([
+            'key' => 'foo_baz.bar',
+            'values' => ['value' => [
+                'nl' => 'bazz',
+            ]]
+        ]);
+
+        /** @var View $response */
+        $response = app(ManagerController::class)->edit('foo_baz');
+
+        $this->assertCount(1, $response->getData()['lines']);
+    }
+
     /** @test */
     public function it_can_store_a_translation()
     {

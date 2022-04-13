@@ -19,7 +19,9 @@ final class Page
 
     public static function fromFilename(string $filename): self
     {
-        return new static($filename, Str::slug($filename));
+        $label = str_replace(['-','_'], ' ', $filename);
+
+        return new static($label, $filename);
     }
 
     public function label(): string
