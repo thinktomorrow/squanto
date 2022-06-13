@@ -58,7 +58,7 @@ class CacheDatabaseLines
         $translations = ConvertToTree::fromFlattened($lines);
 
         foreach ($translations as $section => $trans) {
-            $this->filesystem->put(
+            $this->filesystem->write(
                 $locale.'/'.$section.'.php',
                 "<?php\n\n return ".var_export($trans, true).";\n"
             );
@@ -67,9 +67,9 @@ class CacheDatabaseLines
 
     private function deleteAllCacheFiles(): void
     {
-        foreach ($this->filesystem->listContents() as $content) {
+        foreach ($this->filesystem->listContents('/') as $content) {
             if ($content['type'] == 'dir') {
-                $this->filesystem->deleteDir($content['path']);
+                $this->filesystem->deleteDirectory($content['path']);
             } else {
                 $this->filesystem->delete($content['path']);
             }

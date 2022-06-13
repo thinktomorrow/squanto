@@ -3,7 +3,9 @@
 namespace Thinktomorrow\Squanto;
 
 use League\Flysystem\Filesystem;
+use Thinktomorrow\Squanto\Disk\Paths;
 use Thinktomorrow\Squanto\Console\CheckCommand;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Thinktomorrow\Squanto\Disk\ReadLanguageFile;
 use Thinktomorrow\Squanto\Disk\ReadMetadataFile;
@@ -15,7 +17,6 @@ use Thinktomorrow\Squanto\Disk\ReadMetadataFolder;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
-use League\Flysystem\Adapter\Local;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider implements DeferrableProvider
@@ -41,7 +42,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
      */
     public function boot()
     {
-        $this->loadTranslationsFrom($this->getSquantoCachePath(), 'squanto');
+        $this->loadTranslationsFrom(Paths::getSquantoCachePath(), 'squanto');
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
@@ -66,8 +67,8 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
      */
     public function register()
     {
-        $this->app['squanto.cache_path'] = $this->getSquantoCachePath();
-        $this->app['squanto.lang_path'] = $this->getSquantoLangPath();
+        $this->app['squanto.cache_path'] = Paths::getSquantoCachePath();
+        $this->app['squanto.lang_path'] = Paths::getSquantoLangPath();
 
         $this->registerTranslator();
 
@@ -75,7 +76,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             ReadLanguageFolder::class, function ($app) {
             return new ReadLanguageFolder(
                 $app->make(ReadLanguageFile::class),
-                new Filesystem(new Local($this->getSquantoLangPath()))
+                new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoLangPath()))
             );
         }
         );
@@ -84,7 +85,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             ReadMetadataFolder::class, function ($app) {
             return new ReadMetadataFolder(
                 $app->make(ReadMetadataFile::class),
-                new Filesystem(new Local($this->getSquantoMetadataPath()))
+                new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoMetadataPath()))
             );
         }
         );
@@ -93,7 +94,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             CacheDatabaseLines::class, function ($app) {
             return new CacheDatabaseLines(
                 $app->make(DatabaseLinesRepository::class),
-                new Filesystem(new Local($this->getSquantoCachePath()))
+                new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoCachePath()))
             );
         }
         );
@@ -123,24 +124,5 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             return $trans;
         }
         );
-    }
-
-    private function getSquantoCachePath(): string
-    {
-        $path = config('squanto.cache_path');
-
-        return is_null($path) ? storage_path('app/trans') : $path;
-    }
-
-    private function getSquantoLangPath(): string
-    {
-        $path = config('squanto.lang_path');
-
-        return is_null($path) ? app('path.lang') : $path;
-    }
-
-    private function getSquantoMetadataPath(): string
-    {
-        return config('squanto.metadata_path', resource_path('squanto_metadata'));
     }
 }

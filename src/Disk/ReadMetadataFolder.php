@@ -27,11 +27,11 @@ final class ReadMetadataFolder
     public function read(): MetadataCollection
     {
         $collection = new MetadataCollection([]);
-        $files = $this->filesystem->listContents();
+        $files = $this->filesystem->listContents('/');
 
         foreach ($files as $file) {
 
-            $filepath = $this->filesystem->getAdapter()->getPathPrefix() . $file['path']; // preprend with basepath: $this->path . DIRECTORY_SEPARATOR . $file['path']
+            $filepath = Paths::getSquantoMetadataPath() . '/' . $file['path']; // preprend with basepath: $this->path . DIRECTORY_SEPARATOR . $file['path']
 
             $collection = $collection->merge($this->readMetadataFile->read($filepath));
         }

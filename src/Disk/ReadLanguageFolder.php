@@ -30,10 +30,9 @@ final class ReadLanguageFolder
 
         $files = $this->files($locale);
 
-        foreach ($files as $file) {
-            $filepath = $this->filesystem->getAdapter()->getPathPrefix() . $file['path'];
 
-            $lines = $lines->merge($this->readLanguageFile->read($locale, $filepath));
+        foreach ($files as $file) {
+            $lines = $lines->merge($this->readLanguageFile->read($locale, Paths::getSquantoLangPath() .'/'. $file['path']));
         }
 
         return $lines;
@@ -41,8 +40,7 @@ final class ReadLanguageFolder
 
     public function files(string $folder): array
     {
-        $files = $this->filesystem->listContents($folder);
-
+        $files = $this->filesystem->listContents($folder)->toArray();
         return $this->excludeFiles($files);
     }
 
@@ -51,7 +49,9 @@ final class ReadLanguageFolder
         $excludedFilenames = config('squanto.excluded_files', []);
 
         foreach($files as $k => $file) {
-            if(in_array($file['filename'], $excludedFilenames)) {
+            $filename = str_replace('.php', '', basename($file['path']));
+
+            if(in_array($filename, $excludedFilenames)) {
                 unset($files[$k]);
             }
         }
