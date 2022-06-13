@@ -3,11 +3,11 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\SquantoTests\Unit\Domain;
 
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Domain\Lines;
-use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineValue;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineKeyException;
+use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineValue;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\Lines;
+use Thinktomorrow\SquantoTests\TestCase;
 
 final class LinesTest extends TestCase
 {

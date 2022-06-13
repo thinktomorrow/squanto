@@ -1,12 +1,12 @@
 <?php
 return [
-    'title'   => [
+    'title' => [
         'label' => 'titel label',
         'description' => 'titel description',
         'fieldtype' => 'textarea',
     ],
 
-    'content'   => [
+    'content' => [
         'label' => 'content label',
         'description' => 'content description',
     ],

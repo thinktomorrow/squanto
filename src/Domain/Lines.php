@@ -3,8 +3,8 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Domain;
 
-use Thinktomorrow\Squanto\Services\KeyedCollection;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLinesArray;
+use Thinktomorrow\Squanto\Services\KeyedCollection;
 
 /**
  * Class Lines
@@ -80,7 +80,7 @@ final class Lines
     private function validateLines(array $lines): void
     {
         foreach ($lines as $line) {
-            if (!$line instanceof Line) {
+            if (! $line instanceof Line) {
                 throw new InvalidLinesArray('A lines parameter should consist of Line instances.');
             }
         }

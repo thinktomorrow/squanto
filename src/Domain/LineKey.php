@@ -50,9 +50,8 @@ final class LineKey
 
     public static function validateKey($key): void
     {
-        if (!$key || !is_string($key) || false === strpos($key, '.')) {
+        if (! $key || ! is_string($key) || false === strpos($key, '.')) {
             throw new InvalidLineKeyException('Invalid LineKey format ['.$key.', type: '.gettype($key).'] given. Must be a string containing at least two dot separated segments. E.g. about.title');
         }
     }
-
 }

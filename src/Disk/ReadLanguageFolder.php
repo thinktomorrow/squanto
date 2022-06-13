@@ -41,6 +41,7 @@ final class ReadLanguageFolder
     public function files(string $folder): array
     {
         $files = $this->filesystem->listContents($folder)->toArray();
+
         return $this->excludeFiles($files);
     }
 
@@ -48,15 +49,14 @@ final class ReadLanguageFolder
     {
         $excludedFilenames = config('squanto.excluded_files', []);
 
-        foreach($files as $k => $file) {
+        foreach ($files as $k => $file) {
             $filename = str_replace('.php', '', basename($file['path']));
 
-            if(in_array($filename, $excludedFilenames)) {
+            if (in_array($filename, $excludedFilenames)) {
                 unset($files[$k]);
             }
         }
 
         return $files;
     }
-
 }

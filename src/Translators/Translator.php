@@ -11,5 +11,5 @@ interface Translator
      * @param  bool  $fallback
      * @return mixed
      */
-    public function get($key, array $replace = array(), $locale = null, $fallback = true);
+    public function get($key, array $replace = [], $locale = null, $fallback = true);
 }

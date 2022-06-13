@@ -2,12 +2,12 @@
 
 namespace Thinktomorrow\SquantoTests\Application\Manager;
 
-use Illuminate\View\View;
 use Illuminate\Http\Request;
-use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Domain\LineKey;
+use Illuminate\View\View;
 use Thinktomorrow\Squanto\Database\DatabaseLine;
+use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Manager\Http\ManagerController;
+use Thinktomorrow\SquantoTests\TestCase;
 
 class TranslationControllerTest extends TestCase
 {
@@ -18,7 +18,7 @@ class TranslationControllerTest extends TestCase
             'key' => 'foo_baz.bar',
             'values' => ['value' => [
                 'nl' => 'bazz',
-            ]]
+            ]],
         ]);
 
         /** @var View $response */
@@ -34,7 +34,7 @@ class TranslationControllerTest extends TestCase
             'key' => 'foo.bar',
             'values' => ['value' => [
                 'nl' => 'bazz',
-            ]]
+            ]],
         ]);
 
         //mocking a request + call since we have no full laravel application in this package
@@ -42,7 +42,7 @@ class TranslationControllerTest extends TestCase
 
         app(ManagerController::class)->update($request, 'foo');
 
-        $this->assertEquals('bazz & foo', DatabaseLine::findByKey(LineKey::fromString('foo.bar'))->dynamic('value','nl'));
+        $this->assertEquals('bazz & foo', DatabaseLine::findByKey(LineKey::fromString('foo.bar'))->dynamic('value', 'nl'));
         $this->assertSame('bazz & foo', app('translator')->get('foo.bar'));
     }
 
@@ -53,7 +53,7 @@ class TranslationControllerTest extends TestCase
             'key' => 'foo.bar',
             'values' => ['value' => [
                 'nl' => 'bazz',
-            ]]
+            ]],
         ]);
 
         //mocking a request + call since we have no full laravel application in this package
@@ -61,8 +61,7 @@ class TranslationControllerTest extends TestCase
 
         app(ManagerController::class)->update($request, 'foo');
 
-        $this->assertSame('', DatabaseLine::findByKey(LineKey::fromString('foo.bar'))->dynamic('value','nl'));
+        $this->assertSame('', DatabaseLine::findByKey(LineKey::fromString('foo.bar'))->dynamic('value', 'nl'));
         $this->assertSame('', app('translator')->get('foo.bar'));
     }
-
 }

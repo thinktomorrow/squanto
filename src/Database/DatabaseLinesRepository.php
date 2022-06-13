@@ -4,17 +4,17 @@ declare(strict_types=1);
 namespace Thinktomorrow\Squanto\Database;
 
 use Illuminate\Support\Collection;
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Domain\Lines;
-use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Domain\Exceptions\NotFoundDatabaseLine;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineKeyException;
+use Thinktomorrow\Squanto\Domain\Exceptions\NotFoundDatabaseLine;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\LineKey;
+use Thinktomorrow\Squanto\Domain\Lines;
 
 final class DatabaseLinesRepository
 {
     public function find(string $key): Line
     {
-        if(!$model = DatabaseLine::findByKey(LineKey::fromString($key))) {
+        if (! $model = DatabaseLine::findByKey(LineKey::fromString($key))) {
             throw new NotFoundDatabaseLine('No line in database found by key ' . $key);
         }
 
@@ -23,9 +23,9 @@ final class DatabaseLinesRepository
 
     public function exists(string $key): bool
     {
-        try{
+        try {
             return null !== DatabaseLine::findByKey(LineKey::fromString($key));
-        } catch(InvalidLineKeyException $e) {
+        } catch (InvalidLineKeyException $e) {
             return false;
         }
     }

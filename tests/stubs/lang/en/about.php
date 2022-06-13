@@ -1,6 +1,6 @@
 <?php
 return [
-    'title'   => 'title',
+    'title' => 'title',
     // content is missing on purpose
     'hello' => 'hello :name, welcome back',
 ];

@@ -3,14 +3,13 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\SquantoTests\Application\Manager;
 
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Manager\Pages\Completion;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Manager\Pages\Completion;
+use Thinktomorrow\SquantoTests\TestCase;
 
 final class CompletionTest extends TestCase
 {

@@ -4,8 +4,8 @@ return [
     'foo' => 'bar',
     'one' => [
         'two' => [
-            'first'     => 'eerste',
-            'second'    => 'tweede',
-        ]
+            'first' => 'eerste',
+            'second' => 'tweede',
+        ],
     ],
 ];

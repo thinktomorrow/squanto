@@ -2,11 +2,11 @@
 
 namespace Thinktomorrow\SquantoTests\Application\Translator;
 
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
-use Thinktomorrow\Squanto\Translators\DatabaseTranslator;
 use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
+use Thinktomorrow\Squanto\Database\DatabaseLine;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Translators\DatabaseTranslator;
+use Thinktomorrow\SquantoTests\TestCase;
 
 class DatabaseTranslatorTest extends TestCase
 {
@@ -24,7 +24,7 @@ class DatabaseTranslatorTest extends TestCase
             'nl' => 'bazz',
         ]));
 
-        $this->assertEquals('bazz',$this->translator->get('foo.bar'));
+        $this->assertEquals('bazz', $this->translator->get('foo.bar'));
     }
 
     /** @test */
@@ -33,7 +33,7 @@ class DatabaseTranslatorTest extends TestCase
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar', ['nl' => 'bazz']));
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar2', ['nl' => 'bazzer']));
 
-        $this->assertEquals(['bar' => 'bazz','bar2' => 'bazzer'],$this->translator->get('foo'));
+        $this->assertEquals(['bar' => 'bazz','bar2' => 'bazzer'], $this->translator->get('foo'));
     }
 
     /** @test */
@@ -49,7 +49,7 @@ class DatabaseTranslatorTest extends TestCase
             'nl' => 'hello :name, welcome back',
         ]]]);
 
-        $this->assertEquals('hello Ben, welcome back',$this->translator->get('foo.bar',['name' => 'Ben']));
+        $this->assertEquals('hello Ben, welcome back', $this->translator->get('foo.bar', ['name' => 'Ben']));
     }
 
     /** @test */
@@ -60,7 +60,7 @@ class DatabaseTranslatorTest extends TestCase
             'fr' => 'bash',
         ]]]);
 
-        $this->assertEquals('bash',$this->translator->get('foo.bar',[],'fr'));
+        $this->assertEquals('bash', $this->translator->get('foo.bar', [], 'fr'));
     }
 
     /** @test */
@@ -70,9 +70,8 @@ class DatabaseTranslatorTest extends TestCase
             'en' => 'bazz',
         ]]);
 
-        $this->assertEquals('bazz',$this->translator->get('foo.bar',[],'fr',true));
-        $this->assertEquals('bazz',$this->translator->get('foo.bar',[],'fr')); // Default is true
-        $this->assertEquals(null,$this->translator->get('foo.bar',[],'fr',false));
+        $this->assertEquals('bazz', $this->translator->get('foo.bar', [], 'fr', true));
+        $this->assertEquals('bazz', $this->translator->get('foo.bar', [], 'fr')); // Default is true
+        $this->assertEquals(null, $this->translator->get('foo.bar', [], 'fr', false));
     }
-
 }

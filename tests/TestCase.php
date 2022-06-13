@@ -2,14 +2,14 @@
 
 namespace Thinktomorrow\SquantoTests;
 
-use Orchestra\Testbench\TestCase as BaseTestCase;
-use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use League\Flysystem\Adapter\Local;
 use League\Flysystem\Filesystem;
-use Thinktomorrow\Squanto\SquantoServiceProvider;
+use Orchestra\Testbench\TestCase as BaseTestCase;
+use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Thinktomorrow\Squanto\SquantoManagerServiceProvider;
+use Thinktomorrow\Squanto\SquantoServiceProvider;
 
 class TestCase extends BaseTestCase
 {
@@ -71,8 +71,8 @@ class TestCase extends BaseTestCase
 
         $app['config']->set('database.default', 'testing');
         $app['config']->set('squanto', require $this->getTempDirectory('config/squanto.php'));
-        $app['config']->set('app.locale','nl');
-        $app['config']->set('app.fallback_locale','en');
+        $app['config']->set('app.locale', 'nl');
+        $app['config']->set('app.fallback_locale', 'en');
 
         // Dimsav package dependency requires us to set the fallback locale via this config
         // It should if config not set be using the default laravel fallback imo

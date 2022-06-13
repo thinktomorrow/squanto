@@ -2,11 +2,11 @@
 
 namespace Thinktomorrow\Squanto\Console;
 
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
-use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
 use Thinktomorrow\Squanto\Database\Application\RemoveDatabaseLine;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
+use Thinktomorrow\Squanto\Domain\Line;
 
 class PurgeDatabaseCommand extends Command
 {
@@ -54,7 +54,7 @@ class PurgeDatabaseCommand extends Command
 
         $databaseLines->each(
             function (Line $line) use ($diskLines, &$purgedRows) {
-                if(!$diskLines->exists($line->keyAsString())) {
+                if (! $diskLines->exists($line->keyAsString())) {
                     $this->removeDatabaseLine->handle($line);
 
                     $purgedRows[] = [
@@ -65,14 +65,13 @@ class PurgeDatabaseCommand extends Command
             }
         );
 
-        if(count($purgedRows) > 0) {
+        if (count($purgedRows) > 0) {
             $this->info(count($purgedRows) . ' obsolete lines purged from database.');
             $this->displayTable(['line', 'translations'], $purgedRows);
             $this->info('Finished. Everything is back in sync!');
 
             $this->cacheDatabaseLines->handle();
             $this->info('Cached translation files refreshed.');
-
         } else {
             $this->info('No obsolete lines found in database. All clean!');
         }
@@ -81,7 +80,7 @@ class PurgeDatabaseCommand extends Command
     private function outputTranslations(array $values): string
     {
         $output = [];
-        foreach($values as $locale => $value){
+        foreach ($values as $locale => $value) {
             $output[] = $locale.': '.$value;
         }
 

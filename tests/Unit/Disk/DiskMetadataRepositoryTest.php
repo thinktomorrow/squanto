@@ -3,9 +3,9 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\SquantoTests\Unit\Disk;
 
-use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
 use Thinktomorrow\Squanto\Disk\ReadMetadataFolder;
+use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
+use Thinktomorrow\SquantoTests\TestCase;
 
 final class DiskMetadataRepositoryTest extends TestCase
 {

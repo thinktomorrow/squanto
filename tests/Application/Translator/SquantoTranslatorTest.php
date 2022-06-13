@@ -58,7 +58,7 @@ class SquantoTranslatorTest extends TestCase
     /** @test */
     public function it_can_get_a_fallback_translation()
     {
-        config()->set('app.fallback_locale','nl');
+        config()->set('app.fallback_locale', 'nl');
         $this->rebindTranslator();
 
         $this->assertEquals('nl heading', $this->translator->get('about.heading', [], 'fr', true));

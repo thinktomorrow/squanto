@@ -11,7 +11,7 @@ class CacheDatabaseCommand extends Command
     protected $description = 'Cache the database line.';
 
     /**
-     * @var CacheDatabaseLines 
+     * @var CacheDatabaseLines
      */
     private CacheDatabaseLines $cacheDatabaseLines;
 
@@ -24,8 +24,8 @@ class CacheDatabaseCommand extends Command
 
     public function handle()
     {
-            $this->cacheDatabaseLines->handle();
+        $this->cacheDatabaseLines->handle();
 
-            $this->info('Database lines are cached.');
+        $this->info('Database lines are cached.');
     }
 }

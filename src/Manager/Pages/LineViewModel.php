@@ -39,13 +39,18 @@ final class LineViewModel
 
     public function label(): string
     {
-        if($this->line->metadata['label']) return $this->line->metadata['label'];
+        if ($this->line->metadata['label']) {
+            return $this->line->metadata['label'];
+        }
 
         $parts = explode('.', $this->line->key);
 
-        if(count($parts) <=2) return last($parts);
+        if (count($parts) <= 2) {
+            return last($parts);
+        }
 
         array_splice($parts, 0, 2);
+
         return implode(' ', $parts);
     }
 
@@ -58,7 +63,9 @@ final class LineViewModel
     {
         $parts = explode('.', $this->line->key);
 
-        if(count($parts) <= 2) return last($parts);
+        if (count($parts) <= 2) {
+            return last($parts);
+        }
 
         return $parts[1];
     }

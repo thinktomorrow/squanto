@@ -2,15 +2,15 @@
 
 namespace Thinktomorrow\Squanto\Manager\Http;
 
+use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
+use Thinktomorrow\Squanto\Database\Application\UpdateDatabaseLine;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Manager\Pages\LineViewModel;
-use Illuminate\Foundation\Validation\ValidatesRequests;
 use Thinktomorrow\Squanto\Manager\Pages\PagesRepository;
-use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
-use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
-use Thinktomorrow\Squanto\Database\Application\UpdateDatabaseLine;
 
 class ManagerController extends Controller
 {
@@ -49,7 +49,8 @@ class ManagerController extends Controller
         $pages = $this->pagesRepository->all();
 
         return view(
-            'squanto::index', [
+            'squanto::index',
+            [
                 'pages' => $pages->all(),
             ]
         );
@@ -66,8 +67,8 @@ class ManagerController extends Controller
 
         return view('squanto::edit', [
             'locales' => config('squanto.locales'),
-            'lines'   => $viewModels,
-            'page'    => $this->pagesRepository->findBySlug($pageSlug),
+            'lines' => $viewModels,
+            'page' => $this->pagesRepository->findBySlug($pageSlug),
         ]);
     }
 

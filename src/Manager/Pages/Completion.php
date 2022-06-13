@@ -12,11 +12,13 @@ final class Completion
         $maximum = $lines->count() * count($locales);
         $completed = 0;
 
-        if($maximum == 0) return 100;
+        if ($maximum == 0) {
+            return 100;
+        }
 
-        $lines->each(function(Line $line) use($locales, &$completed){
-            foreach($locales as $locale) {
-                if(null !== $line->value($locale) && '' !== $line->value($locale)) {
+        $lines->each(function (Line $line) use ($locales, &$completed) {
+            foreach ($locales as $locale) {
+                if (null !== $line->value($locale) && '' !== $line->value($locale)) {
                     $completed++;
                 }
             }

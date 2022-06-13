@@ -3,10 +3,10 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Domain\Metadata;
 
+use Thinktomorrow\Squanto\Domain\Exceptions\InvalidMetadataArray;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Lines;
 use Thinktomorrow\Squanto\Services\KeyedCollection;
-use Thinktomorrow\Squanto\Domain\Exceptions\InvalidMetadataArray;
 
 /**
  * Class MetadataCollection
@@ -44,7 +44,7 @@ final class MetadataCollection
     {
         $preppedItems = [];
 
-        foreach($items as $key => $values) {
+        foreach ($items as $key => $values) {
             $preppedItems[] = Metadata::fromRaw($key, $values);
         }
 
@@ -60,8 +60,8 @@ final class MetadataCollection
 
     private function validateItems(array $items): void
     {
-        foreach($items as $item){
-            if(! $item instanceof Metadata) {
+        foreach ($items as $item) {
+            if (! $item instanceof Metadata) {
                 throw new InvalidMetadataArray('Metadata items array should only consist of Metadata instances.');
             }
         }

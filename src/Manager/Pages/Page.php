@@ -3,7 +3,6 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Manager\Pages;
 
-use Illuminate\Support\Str;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 final class Page

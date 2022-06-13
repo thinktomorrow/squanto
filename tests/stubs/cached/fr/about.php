@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'title'   => 'titre cached',
+    'title' => 'titre cached',
 ];

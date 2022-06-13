@@ -21,9 +21,9 @@ final class PagesRepository
     {
         $filenames = [];
 
-        foreach(config('squanto.locales') as $locale) {
+        foreach (config('squanto.locales') as $locale) {
             $files = $this->readLanguageFolder->files($locale);
-            foreach($files as $file){
+            foreach ($files as $file) {
                 $filenames[] = $file['filename'];
             }
         }

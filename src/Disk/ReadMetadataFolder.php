@@ -30,7 +30,6 @@ final class ReadMetadataFolder
         $files = $this->filesystem->listContents('/');
 
         foreach ($files as $file) {
-
             $filepath = Paths::getSquantoMetadataPath() . '/' . $file['path']; // preprend with basepath: $this->path . DIRECTORY_SEPARATOR . $file['path']
 
             $collection = $collection->merge($this->readMetadataFile->read($filepath));
@@ -38,5 +37,4 @@ final class ReadMetadataFolder
 
         return $collection;
     }
-
 }

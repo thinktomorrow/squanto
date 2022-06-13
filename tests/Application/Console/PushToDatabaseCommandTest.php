@@ -2,11 +2,11 @@
 
 namespace Thinktomorrow\SquantoTests\Application\Console;
 
-use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
+use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\SquantoTests\TestCase;
 
 class PushToDatabaseCommandTest extends TestCase
 {
@@ -48,7 +48,7 @@ class PushToDatabaseCommandTest extends TestCase
             'key' => 'about.title',
             'values' => ['value' => [
                 'nl' => 'custom titel',
-            ]]
+            ]],
         ]);
 
         config()->set('squanto.locales', ['nl']);
@@ -64,7 +64,7 @@ class PushToDatabaseCommandTest extends TestCase
             'key' => 'about.title',
             'values' => ['value' => [
                 'nl' => 'custom titel',
-            ]]
+            ]],
         ]);
 
         config()->set('squanto.locales', ['nl', 'en']);

@@ -2,8 +2,8 @@
 
 namespace Thinktomorrow\Squanto\Translators;
 
-use Illuminate\Support\Facades\Schema;
 use Illuminate\Contracts\Translation\Loader;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Translation\Translator as LaravelTranslator;
 
 class SquantoTranslator extends LaravelTranslator implements Translator
@@ -49,14 +49,14 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * @param  bool   $fallback
      * @return string
      */
-    public function get($key, array $replace = array(), $locale = null, $fallback = true)
+    public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
         $locale = $locale ?: $this->getLocale();
 
         // The key is always stored as lowercase so make sure our key input is sanitized as well.
         $key = strtolower($key);
 
-        if(null !== ($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback))) {
+        if (null !== ($result = $this->getFromExcludedSource($key, $replace, $locale, $fallback))) {
             return $result;
         }
 
@@ -85,7 +85,8 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      */
     private function getFromExcludedSource($key, $replace, $locale, $fallback)
     {
-        if(!$this->belongsToExcludedSource($key)) { return null;
+        if (! $this->belongsToExcludedSource($key)) {
+            return null;
         }
 
         return parent::get($key, $replace, $locale, $fallback);
@@ -106,7 +107,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * @param  null  $locale
      * @return mixed|null
      */
-    private function getFromCache($key, array $replace = array(), $locale = null, $fallback = true)
+    private function getFromCache($key, array $replace = [], $locale = null, $fallback = true)
     {
         if (false === strpos($key, 'squanto::')) {
             $key = 'squanto::'.$key;
@@ -117,7 +118,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
         return ($result !== $key) ? $result : null;
     }
 
-    private function getFromDatabase($key, array $replace = array(), $locale = null, $fallback = true)
+    private function getFromDatabase($key, array $replace = [], $locale = null, $fallback = true)
     {
         /**
          * If database tables are not present we will soft ignore this call and delegate to the native
@@ -137,7 +138,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      */
     private function isDatabaseAlreadyMigrated()
     {
-        if (!is_null($this->isDatabaseAlreadyMigrated)) {
+        if (! is_null($this->isDatabaseAlreadyMigrated)) {
             return $this->isDatabaseAlreadyMigrated;
         }
 

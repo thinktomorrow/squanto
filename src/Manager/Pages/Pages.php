@@ -20,8 +20,9 @@ final class Pages
         return new static(
             array_map(
                 function ($filename) {
-                    return Page::fromFilename($filename); 
-                }, $filenames
+                    return Page::fromFilename($filename);
+                },
+                $filenames
             )
         );
     }
@@ -33,8 +34,8 @@ final class Pages
 
     private function validatePages(array $pages)
     {
-        foreach($pages as $page){
-            if(! $page instanceof Page) {
+        foreach ($pages as $page) {
+            if (! $page instanceof Page) {
                 throw new \InvalidArgumentException('A pages parameter should consist of Page instances.');
             }
         }

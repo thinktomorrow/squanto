@@ -1,5 +1,5 @@
 <?php
 return [
-    'title'   => 'title cached',
+    'title' => 'title cached',
     'content' => null,
 ];

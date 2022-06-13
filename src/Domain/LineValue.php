@@ -22,7 +22,7 @@ final class LineValue
 
     public function value(string $locale): ?string
     {
-        if(!array_key_exists($locale, $this->values)) {
+        if (! array_key_exists($locale, $this->values)) {
             return null;
         }
 
@@ -48,11 +48,11 @@ final class LineValue
     private function validateValues(array $values): void
     {
         foreach ($values as $locale => $value) {
-            if (!is_string($locale)) {
+            if (! is_string($locale)) {
                 throw new InvalidLineValue('LineValue should contain locale:value pairs. Invalid locale [' . $locale . '] given.');
             }
 
-            if (!is_string($value) && null !== $value) {
+            if (! is_string($value) && null !== $value) {
                 throw new InvalidLineValue('A value is expected to be of type string or null. A value of type ' . gettype($value) . ' is passed instead.');
             }
         }

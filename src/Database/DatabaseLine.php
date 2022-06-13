@@ -2,11 +2,11 @@
 
 namespace Thinktomorrow\Squanto\Database;
 
-use Thinktomorrow\Squanto\Domain\Line;
 use Illuminate\Database\Eloquent\Model;
-use Thinktomorrow\Squanto\Domain\LineKey;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Thinktomorrow\DynamicAttributes\HasDynamicAttributes;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\LineKey;
 
 /**
  * @property mixed values

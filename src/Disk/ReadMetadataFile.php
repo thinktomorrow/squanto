@@ -4,14 +4,14 @@ declare(strict_types=1);
 namespace Thinktomorrow\Squanto\Disk;
 
 use Illuminate\Support\Arr;
-use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidMetadataFileReference;
+use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
 
 final class ReadMetadataFile
 {
     public function read(string $filepath): MetadataCollection
     {
-        if(!is_file($filepath) || !file_exists($filepath)) {
+        if (! is_file($filepath) || ! file_exists($filepath)) {
             throw new InvalidMetadataFileReference('Filepath ['.$filepath . '] does not point to an existing or valid language file.');
         }
 
@@ -31,11 +31,10 @@ final class ReadMetadataFile
         // Ok so here's the deal, we want to flatten but not everything. The metadata values are an array
         // and should be treated together under the same key. Therefore we must be sure to group all values together
         $groupedDottedValues = [];
-        foreach($dottedValues as $dottedKey => $dottedValue)
-        {
+        foreach ($dottedValues as $dottedKey => $dottedValue) {
             $realKey = $groupKey.'.'.substr($dottedKey, 0, strrpos($dottedKey, '.'));
             $valueKey = substr($dottedKey, strrpos($dottedKey, '.') + 1);
-            if(!isset($groupedDottedValues[$realKey])) {
+            if (! isset($groupedDottedValues[$realKey])) {
                 $groupedDottedValues[$realKey] = [];
             }
             $groupedDottedValues[$realKey][$valueKey] = $dottedValue;

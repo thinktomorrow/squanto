@@ -23,7 +23,7 @@ final class DiskLinesRepository
 
         $lines = new Lines([]);
 
-        foreach($locales as $locale){
+        foreach ($locales as $locale) {
             $lines = $lines->merge($this->readLanguageFolder->read($locale));
         }
 

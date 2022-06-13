@@ -3,8 +3,8 @@
 namespace Thinktomorrow\Squanto\Database\Application;
 
 use League\Flysystem\Filesystem;
-use Thinktomorrow\Squanto\Services\ConvertToTree;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Services\ConvertToTree;
 
 class CacheDatabaseLines
 {
@@ -38,8 +38,10 @@ class CacheDatabaseLines
 
         foreach (config('squanto.locales', []) as $locale) {
             $this->writeFile(
-                $locale, array_filter(
-                    $lines->values($locale), function ($value) {
+                $locale,
+                array_filter(
+                    $lines->values($locale),
+                    function ($value) {
                         return null !== $value;
                     }
                 )

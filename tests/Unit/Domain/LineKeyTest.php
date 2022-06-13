@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\SquantoTests\Unit\Domain;
 
-use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineKeyException;
+use Thinktomorrow\Squanto\Domain\LineKey;
+use Thinktomorrow\SquantoTests\TestCase;
 
 class LineKeyTest extends TestCase
 {
@@ -34,10 +34,10 @@ class LineKeyTest extends TestCase
     public function allow_expected_key_format()
     {
         $lineid = LineKey::fromString('foo.bar');
-        $this->assertEquals('foo.bar',$lineid->get());
+        $this->assertEquals('foo.bar', $lineid->get());
 
         $lineid = LineKey::fromString('Foo.BAR');
-        $this->assertEquals('foo.bar',$lineid->get());
+        $this->assertEquals('foo.bar', $lineid->get());
     }
 
     /** @test */

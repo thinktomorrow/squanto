@@ -1,7 +1,7 @@
 <?php
 
 return [
-    'title'   => 'titre',
-    'content'   => 'description',
+    'title' => 'titre',
+    'content' => 'description',
     'hello' => 'Bienvenue :name',
 ];

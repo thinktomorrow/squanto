@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\SquantoTests\Unit\Domain;
 
-use Thinktomorrow\SquantoTests\TestCase;
 use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Manager\Pages\Page;
+use Thinktomorrow\SquantoTests\TestCase;
 
 class PageTest extends TestCase
 {
     /** @test */
-    public function page_from_lineKey_matches_original_filename()
+    public function page_from_line_key_matches_original_filename()
     {
         $lineid = LineKey::fromString('foo_bar.baz');
         $this->assertEquals('foo_bar', $lineid->pageKey());

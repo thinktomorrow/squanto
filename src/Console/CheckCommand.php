@@ -2,10 +2,10 @@
 
 namespace Thinktomorrow\Squanto\Console;
 
-use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
 use Thinktomorrow\Squanto\Disk\DiskMetadataRepository;
-use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Domain\Line;
 
 class CheckCommand extends Command
 {
@@ -47,7 +47,7 @@ class CheckCommand extends Command
 
         $diskLines->each(
             function (Line $line) use ($databaseLines, &$pushableRows) {
-                if(!$databaseLines->exists($line->keyAsString())) {
+                if (! $databaseLines->exists($line->keyAsString())) {
                     $pushableRows[] = [$line->keyAsString()];
                 }
             }
@@ -55,32 +55,32 @@ class CheckCommand extends Command
 
         $databaseLines->each(
             function (Line $line) use ($diskLines, &$purgableRows) {
-                if(!$diskLines->exists($line->keyAsString())) {
+                if (! $diskLines->exists($line->keyAsString())) {
                     $purgableRows[] = [$line->keyAsString()];
                 }
             }
         );
 
-        if(count($pushableRows) > 0) {
+        if (count($pushableRows) > 0) {
             $this->displayTable([ count($pushableRows) . ' new lines'], $pushableRows);
         }
-        if(count($purgableRows) > 0) {
+        if (count($purgableRows) > 0) {
             $this->displayTable([count($purgableRows) . ' obsolete lines'], $purgableRows);
         }
 
-        if(count($pushableRows) > 0) {
+        if (count($pushableRows) > 0) {
             $this->info('Run squanto:push to push the new lines to the database.');
         } else {
             $this->info('No new lines found.');
         }
 
-        if(count($purgableRows) > 0) {
+        if (count($purgableRows) > 0) {
             $this->info('Run squanto:purge to remove the obsolete lines from the database.');
         } else {
             $this->info('No obsolete lines found in database.');
         }
 
-        if(count($pushableRows + $purgableRows) == 0) {
+        if (count($pushableRows + $purgableRows) == 0) {
             $this->line('Your database is up to date!');
         }
     }

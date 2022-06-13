@@ -2,9 +2,9 @@
 
 namespace Thinktomorrow\SquantoTests\Domain;
 
+use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineValue;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLineValue;
 
 class LineTest extends TestCase
 {

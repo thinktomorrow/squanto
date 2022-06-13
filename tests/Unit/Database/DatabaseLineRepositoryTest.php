@@ -3,12 +3,12 @@
 namespace Thinktomorrow\SquantoTests\Unit\Database;
 
 use Illuminate\Support\Collection;
+use Thinktomorrow\Squanto\Database\DatabaseLine;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Domain\Exceptions\NotFoundDatabaseLine;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Lines;
 use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
-use Thinktomorrow\Squanto\Domain\Exceptions\NotFoundDatabaseLine;
-use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 
 class DatabaseLineRepositoryTest extends TestCase
 {
@@ -59,7 +59,7 @@ class DatabaseLineRepositoryTest extends TestCase
 
         $this->assertEquals(new Lines([
             Line::fromRaw('foo.bar', []),
-            Line::fromRaw('baz.boo', [])
+            Line::fromRaw('baz.boo', []),
         ]), $lines);
     }
 
@@ -75,5 +75,4 @@ class DatabaseLineRepositoryTest extends TestCase
         $this->assertCount(1, $lines);
         $this->assertEquals('foo.bar', $lines->first()->key);
     }
-
 }

@@ -2,12 +2,12 @@
 
 namespace Thinktomorrow\SquantoTests;
 
-use Thinktomorrow\Squanto\Domain\LineKey;
-use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
+use Thinktomorrow\Squanto\Database\DatabaseLine;
+use Thinktomorrow\Squanto\Domain\LineKey;
 
-trait TestHelpers{
-
+trait TestHelpers
+{
     public $databaseLine;
 
     protected function addDatabaseLine(string $key, array $values)
@@ -27,16 +27,16 @@ trait TestHelpers{
         return $refLines->getValue($object);
     }
 
-    private function recurse_copy($src, $dst) {
+    private function recurse_copy($src, $dst)
+    {
         $dir = opendir($src);
         @mkdir($dst);
-        while(false !== ( $file = readdir($dir)) ) {
-            if (( $file != '.' ) && ( $file != '..' )) {
-                if ( is_dir($src . '/' . $file) ) {
-                    $this->recurse_copy($src . '/' . $file,$dst . '/' . $file);
-                }
-                else {
-                    copy($src . '/' . $file,$dst . '/' . $file);
+        while (false !== ($file = readdir($dir))) {
+            if (($file != '.') && ($file != '..')) {
+                if (is_dir($src . '/' . $file)) {
+                    $this->recurse_copy($src . '/' . $file, $dst . '/' . $file);
+                } else {
+                    copy($src . '/' . $file, $dst . '/' . $file);
                 }
             }
         }

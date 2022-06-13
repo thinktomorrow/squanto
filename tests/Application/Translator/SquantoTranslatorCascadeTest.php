@@ -2,9 +2,9 @@
 
 namespace Thinktomorrow\SquantoTests\Application\Translator;
 
+use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\SquantoTests\TestCase;
-use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
 
 class SquantoTranslatorCascadeTest extends TestCase
 {

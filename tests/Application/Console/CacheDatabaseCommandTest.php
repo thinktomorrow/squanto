@@ -2,12 +2,12 @@
 
 namespace Thinktomorrow\SquantoTests\Application\Console;
 
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\SquantoTests\TestCase;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 use Illuminate\Foundation\Testing\DatabaseTransactions;
 use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\SquantoTests\TestCase;
 
 class CacheDatabaseCommandTest extends TestCase
 {

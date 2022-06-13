@@ -7,7 +7,8 @@ trait KeyedCollection
 {
     public function find(string $key)
     {
-        if(!$this->exists($key)) { return null;
+        if (! $this->exists($key)) {
+            return null;
         }
 
         return $this->items[$key];
@@ -22,8 +23,8 @@ trait KeyedCollection
     {
         $mergedItems = $items;
 
-        foreach($otherItems as $otherItem) {
-            if($this->exists($otherItem->keyAsString())) {
+        foreach ($otherItems as $otherItem) {
+            if ($this->exists($otherItem->keyAsString())) {
                 $mergedItems[] = $this->items[$otherItem->keyAsString()]->merge($otherItem);
             } else {
                 $mergedItems[] = $otherItem;
@@ -44,7 +45,7 @@ trait KeyedCollection
     {
         $result = [];
 
-        foreach($items as $item) {
+        foreach ($items as $item) {
             $result[$item->keyAsString()] = $item;
         }
 

@@ -21,9 +21,9 @@ final class Metadata
     {
         return new static(
             LineKey::fromString($line->keyAsString()), [
-            'label'       => null,
+            'label' => null,
             'description' => null,
-            'fieldtype'   => static::guessFieldType($line),
+            'fieldtype' => static::guessFieldType($line),
         ]);
     }
 
@@ -48,12 +48,12 @@ final class Metadata
 
         // We take the longest translation value as a reference to guess the proper fieldtype.
         uasort(
-            $values, function ($a, $b) {
-
+            $values,
+            function ($a, $b) {
                 $comp = strlen($a ?? '') < strlen($b ?? '');
 
-            return $comp ? 1 : -1;
-        }
+                return $comp ? 1 : -1;
+            }
         );
 
         $valueForGuessingFieldType = reset($values);
@@ -65,5 +65,4 @@ final class Metadata
     {
         return new static($this->lineKey, array_merge($this->values, $other->values));
     }
-
 }

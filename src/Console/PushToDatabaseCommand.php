@@ -2,14 +2,14 @@
 
 namespace Thinktomorrow\Squanto\Console;
 
-use Thinktomorrow\Squanto\Domain\Line;
-use Thinktomorrow\Squanto\Domain\LineKey;
+use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
+use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
+use Thinktomorrow\Squanto\Database\Application\UpdateMetadata;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
 use Thinktomorrow\Squanto\Disk\DiskMetadataRepository;
-use Thinktomorrow\Squanto\Database\Application\UpdateMetadata;
-use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
-use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
-use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
+use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Domain\LineKey;
 
 class PushToDatabaseCommand extends Command
 {
@@ -73,12 +73,11 @@ class PushToDatabaseCommand extends Command
 
         $diskLines->each(
             function (Line $line) use ($databaseLines, $metadataCollection, &$newlyAddedRows) {
-                if($databaseLines->exists($line->keyAsString())) {
-                    if($metadata = $metadataCollection->find($line->keyAsString())) {
+                if ($databaseLines->exists($line->keyAsString())) {
+                    if ($metadata = $metadataCollection->find($line->keyAsString())) {
                         $this->updateMetadata->handle(LineKey::fromString($line->keyAsString()), $metadata);
                     }
                 } else {
-
                     $metadata = $metadataCollection->find($line->keyAsString());
 
                     // Create new database entry + insert default values
@@ -86,20 +85,19 @@ class PushToDatabaseCommand extends Command
 
                     $newlyAddedRows[] = [
                        $line->keyAsString(),
-                       $this->outputTranslations($line->values())
+                       $this->outputTranslations($line->values()),
                     ];
                 }
             }
         );
 
-        if(count($newlyAddedRows) > 0) {
+        if (count($newlyAddedRows) > 0) {
             $this->info(count($newlyAddedRows) . ' new lines pushed to database.');
             $this->displayTable(['line', 'translations'], $newlyAddedRows);
             $this->info('Finished. Everything is back in sync!');
 
             $this->cacheDatabaseLines->handle();
             $this->info('Cached translation files refreshed.');
-
         } else {
             $this->info('No new lines found to push to database. Any metadata has been updated. That\'s great!');
         }
@@ -108,7 +106,7 @@ class PushToDatabaseCommand extends Command
     private function outputTranslations(array $values): string
     {
         $output = [];
-        foreach($values as $locale => $value){
+        foreach ($values as $locale => $value) {
             $output[] = $locale.': '.$value;
         }
 

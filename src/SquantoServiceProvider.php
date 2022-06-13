@@ -2,21 +2,21 @@
 
 namespace Thinktomorrow\Squanto;
 
-use League\Flysystem\Filesystem;
-use Thinktomorrow\Squanto\Disk\Paths;
-use Thinktomorrow\Squanto\Console\CheckCommand;
-use League\Flysystem\Local\LocalFilesystemAdapter;
 use Illuminate\Contracts\Support\DeferrableProvider;
-use Thinktomorrow\Squanto\Disk\ReadLanguageFile;
-use Thinktomorrow\Squanto\Disk\ReadMetadataFile;
-use Thinktomorrow\Squanto\Console\PurgeDatabaseCommand;
-use Thinktomorrow\Squanto\Console\CacheDatabaseCommand;
-use Thinktomorrow\Squanto\Console\PushToDatabaseCommand;
-use Thinktomorrow\Squanto\Disk\ReadLanguageFolder;
-use Thinktomorrow\Squanto\Disk\ReadMetadataFolder;
-use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
-use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
+use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
+use Thinktomorrow\Squanto\Console\CacheDatabaseCommand;
+use Thinktomorrow\Squanto\Console\CheckCommand;
+use Thinktomorrow\Squanto\Console\PurgeDatabaseCommand;
+use Thinktomorrow\Squanto\Console\PushToDatabaseCommand;
+use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
+use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Disk\Paths;
+use Thinktomorrow\Squanto\Disk\ReadLanguageFile;
+use Thinktomorrow\Squanto\Disk\ReadLanguageFolder;
+use Thinktomorrow\Squanto\Disk\ReadMetadataFile;
+use Thinktomorrow\Squanto\Disk\ReadMetadataFolder;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider implements DeferrableProvider
@@ -73,34 +73,38 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
         $this->registerTranslator();
 
         $this->app->bind(
-            ReadLanguageFolder::class, function ($app) {
-            return new ReadLanguageFolder(
-                $app->make(ReadLanguageFile::class),
-                new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoLangPath()))
-            );
-        }
+            ReadLanguageFolder::class,
+            function ($app) {
+                return new ReadLanguageFolder(
+                    $app->make(ReadLanguageFile::class),
+                    new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoLangPath()))
+                );
+            }
         );
 
         $this->app->bind(
-            ReadMetadataFolder::class, function ($app) {
-            return new ReadMetadataFolder(
-                $app->make(ReadMetadataFile::class),
-                new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoMetadataPath()))
-            );
-        }
+            ReadMetadataFolder::class,
+            function ($app) {
+                return new ReadMetadataFolder(
+                    $app->make(ReadMetadataFile::class),
+                    new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoMetadataPath()))
+                );
+            }
         );
 
         $this->app->bind(
-            CacheDatabaseLines::class, function ($app) {
-            return new CacheDatabaseLines(
-                $app->make(DatabaseLinesRepository::class),
-                new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoCachePath()))
-            );
-        }
+            CacheDatabaseLines::class,
+            function ($app) {
+                return new CacheDatabaseLines(
+                    $app->make(DatabaseLinesRepository::class),
+                    new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoCachePath()))
+                );
+            }
         );
 
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/squanto.php', 'squanto'
+            __DIR__ . '/../config/squanto.php',
+            'squanto'
         );
     }
 
@@ -109,20 +113,20 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
         $this->registerLoader();
 
         $this->app->singleton(
-            'translator', function ($app) {
+            'translator',
+            function ($app) {
+                $loader = $app['translation.loader'];
+                $locale = $app['config']['app.locale'];
 
-            $loader = $app['translation.loader'];
-            $locale = $app['config']['app.locale'];
+                $trans = new SquantoTranslator($loader, $locale);
 
-            $trans = new SquantoTranslator($loader, $locale);
+                $trans->setFallback($app['config']['app.fallback_locale']);
 
-            $trans->setFallback($app['config']['app.fallback_locale']);
+                // Custom Squanto option to display key or null when translation is not found
+                $trans->setKeyAsDefault($app['config']['squanto.key_as_default'] ?? false);
 
-            // Custom Squanto option to display key or null when translation is not found
-            $trans->setKeyAsDefault($app['config']['squanto.key_as_default'] ?? false);
-
-            return $trans;
-        }
+                return $trans;
+            }
         );
     }
 }
