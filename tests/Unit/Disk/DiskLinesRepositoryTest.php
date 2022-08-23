@@ -44,7 +44,7 @@ final class DiskLinesRepositoryTest extends TestCase
         $this->assertNotNull($lines->find('about.title'));
 
         // TODO: should be another test
-         $this->assertNull($lines->find('about.content')); // Not available in en
+        $this->assertNull($lines->find('about.content')); // Not available in en
     }
 
     /** @test */
