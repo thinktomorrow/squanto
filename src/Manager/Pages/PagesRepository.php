@@ -3,6 +3,7 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Manager\Pages;
 
+use League\Flysystem\FileAttributes;
 use Thinktomorrow\Squanto\Disk\ReadLanguageFolder;
 
 final class PagesRepository
@@ -23,8 +24,10 @@ final class PagesRepository
 
         foreach (config('squanto.locales') as $locale) {
             $files = $this->readLanguageFolder->files($locale);
+
+            /** @var FileAttributes[] $file */
             foreach ($files as $file) {
-                $filenames[] = $file['filename'];
+                $filenames[] = str_replace('.php', '', basename($file->path()));
             }
         }
 
