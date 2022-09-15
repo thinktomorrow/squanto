@@ -19,6 +19,12 @@ class SquantoTranslatorTest extends TestCase
     }
 
     /** @test */
+    public function retrieving_translation_can_contain_underscore()
+    {
+        $this->assertEquals('tel', $this->translator->get('about.phone_number'));
+    }
+
+    /** @test */
     public function it_can_get_a_translation_collection()
     {
         $aboutContent = require __DIR__ . '/../../stubs/cached/nl/about.php';

@@ -38,6 +38,9 @@ class LineKeyTest extends TestCase
 
         $lineid = LineKey::fromString('Foo.BAR');
         $this->assertEquals('foo.bar', $lineid->get());
+
+        $lineid = LineKey::fromString('Foo.bar_baz');
+        $this->assertEquals('foo.bar_baz', $lineid->get());
     }
 
     /** @test */
