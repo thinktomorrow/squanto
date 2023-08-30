@@ -76,8 +76,8 @@ class TestCase extends BaseTestCase
 
         // Dimsav package dependency requires us to set the fallback locale via this config
         // It should if config not set be using the default laravel fallback imo
-//        $app['config']->set('translatable.locales',['nl','fr','en']);
-//        $app['config']->set('translatable.fallback_locale','en');
+        //        $app['config']->set('translatable.locales',['nl','fr','en']);
+        //        $app['config']->set('translatable.fallback_locale','en');
     }
 
     // Register our translator again so any changes on the lang files are reflected in the translator
@@ -87,11 +87,11 @@ class TestCase extends BaseTestCase
 
         $this->translator = app('translator');
 
-//        app()->bind(LaravelTranslationsReader::class, function ($app) {
-//            return new LaravelTranslationsReader(
-//                new Filesystem(new Local($this->getTempDirectory('lang')))
-//            );
-//        });
+        //        app()->bind(LaravelTranslationsReader::class, function ($app) {
+        //            return new LaravelTranslationsReader(
+        //                new Filesystem(new Local($this->getTempDirectory('lang')))
+        //            );
+        //        });
     }
 
     private function getStubDirectory($dir = null)
