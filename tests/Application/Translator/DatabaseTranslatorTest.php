@@ -17,8 +17,7 @@ class DatabaseTranslatorTest extends TestCase
         $this->translator = app(DatabaseTranslator::class);
     }
 
-    /** @test */
-    public function it_can_get_a_translation()
+    public function test_it_can_get_a_translation()
     {
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar', [
             'nl' => 'bazz',
@@ -27,8 +26,7 @@ class DatabaseTranslatorTest extends TestCase
         $this->assertEquals('bazz', $this->translator->get('foo.bar'));
     }
 
-    /** @test */
-    public function it_can_get_a_translation_collection()
+    public function test_it_can_get_a_translation_collection()
     {
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar', ['nl' => 'bazz']));
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar2', ['nl' => 'bazzer']));
@@ -36,14 +34,30 @@ class DatabaseTranslatorTest extends TestCase
         $this->assertEquals(['bar' => 'bazz','bar2' => 'bazzer'], $this->translator->get('foo'));
     }
 
-    /** @test */
-    public function an_non_found_key_will_return_null()
+    public function test_it_can_get_nested_collection()
+    {
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar.first', ['nl' => 'bazz']));
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar.second', ['nl' => 'bazzer']));
+
+        $this->assertEquals(['bar' =>  ['first' => 'bazz','second' => 'bazzer']], $this->translator->get('foo'));
+        $this->assertEquals(['first' => 'bazz','second' => 'bazzer'], $this->translator->get('foo.bar'));
+    }
+
+    public function test_it_does_not_get_collection_if_key_is_not_separated_with_dot()
+    {
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar_first', ['nl' => 'bazz']));
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar_second', ['nl' => 'bazzer']));
+
+        $this->assertEquals(['bar_first' => 'bazz','bar_second' => 'bazzer'], $this->translator->get('foo'));
+        $this->assertNull($this->translator->get('foo.bar'));
+    }
+
+    public function test_an_non_found_key_will_return_null()
     {
         $this->assertNull($this->translator->get('foo'));
     }
 
-    /** @test */
-    public function it_can_get_a_translation_with_placeholders()
+    public function test_it_can_get_a_translation_with_placeholders()
     {
         $line = DatabaseLine::create(['key' => 'foo.bar', 'values' => ['value' => [
             'nl' => 'hello :name, welcome back',
@@ -52,8 +66,7 @@ class DatabaseTranslatorTest extends TestCase
         $this->assertEquals('hello Ben, welcome back', $this->translator->get('foo.bar', ['name' => 'Ben']));
     }
 
-    /** @test */
-    public function it_can_get_a_translation_for_specific_locale()
+    public function test_it_can_get_a_translation_for_specific_locale()
     {
         $line = DatabaseLine::create(['key' => 'foo.bar', 'values' => ['value' => [
             'nl' => 'bazz',
@@ -63,8 +76,7 @@ class DatabaseTranslatorTest extends TestCase
         $this->assertEquals('bash', $this->translator->get('foo.bar', [], 'fr'));
     }
 
-    /** @test */
-    public function it_can_get_a_fallback_translation()
+    public function test_it_can_get_a_fallback_translation()
     {
         $line = DatabaseLine::create(['key' => 'foo.bar', 'value' => [
             'en' => 'bazz',
