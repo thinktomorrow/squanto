@@ -39,7 +39,7 @@ class DatabaseTranslatorTest extends TestCase
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar.first', ['nl' => 'bazz']));
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar.second', ['nl' => 'bazzer']));
 
-        $this->assertEquals(['bar' =>  ['first' => 'bazz','second' => 'bazzer']], $this->translator->get('foo'));
+        $this->assertEquals(['bar' => ['first' => 'bazz','second' => 'bazzer']], $this->translator->get('foo'));
         $this->assertEquals(['first' => 'bazz','second' => 'bazzer'], $this->translator->get('foo.bar'));
     }
 
