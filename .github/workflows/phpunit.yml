@@ -13,7 +13,9 @@ jobs:
                 stability: [prefer-stable]
                 include:
                     -   laravel: 9.*
-                        testbench: ^7.0
+                        testbench: ^7.5
+                    -   laravel: 10.*
+                        testbench: ^8.10
         name: P${{ matrix.php }} - L${{ matrix.laravel }} - ${{ matrix.stability }}
         steps:
             -   name: Checkout code
