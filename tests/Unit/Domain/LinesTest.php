@@ -11,8 +11,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 
 final class LinesTest extends TestCase
 {
-    /** @test */
-    public function it_can_get_a_single_line()
+    public function test_it_can_get_a_single_line()
     {
         $lines = new Lines([
             Line::fromRaw('page.foo', ['nl' => 'bar']),
@@ -21,8 +20,7 @@ final class LinesTest extends TestCase
         $this->assertInstanceOf(Line::class, $lines->find('page.foo'));
     }
 
-    /** @test */
-    public function it_can_get_all_lines_for_a_specific_locale()
+    public function test_it_can_get_all_lines_for_a_specific_locale()
     {
         $lines = new Lines([
             Line::fromRaw('page.foo', ['nl' => 'bar']),
@@ -35,8 +33,7 @@ final class LinesTest extends TestCase
         ], $lines->values('nl'));
     }
 
-    /** @test */
-    public function it_returns_null_for_a_non_found_line()
+    public function test_it_returns_null_for_a_non_found_line()
     {
         $lines = new Lines([
             Line::fromRaw('page.foo', ['nl' => 'bar']),
@@ -46,8 +43,7 @@ final class LinesTest extends TestCase
         $this->assertNull($lines->find('page.xxx'));
     }
 
-    /** @test */
-    public function it_returns_a_null_value_for_non_found_locale_value()
+    public function test_it_returns_a_null_value_for_non_found_locale_value()
     {
         $lines = new Lines([
             Line::fromRaw('page.foo', ['en' => 'bar']),
@@ -57,8 +53,7 @@ final class LinesTest extends TestCase
         $this->assertEquals(['page.foo' => 'bar'], $lines->values('en'));
     }
 
-    /** @test */
-    public function it_can_merge_new_lines_and_overwrites_existing_values()
+    public function test_it_can_merge_new_lines_and_overwrites_existing_values()
     {
         $lines = new Lines([
             Line::fromRaw('page.foo', ['nl' => 'bar']),
@@ -81,8 +76,7 @@ final class LinesTest extends TestCase
         ], $lines->values('nl'));
     }
 
-    /** @test */
-    public function it_can_merge_new_lines_and_add_new_locale_values()
+    public function test_it_can_merge_new_lines_and_add_new_locale_values()
     {
         $lines = new Lines([
             Line::fromRaw('page.foo', ['nl' => 'bar']),
@@ -104,8 +98,7 @@ final class LinesTest extends TestCase
         ]))->values('en'));
     }
 
-    /** @test */
-    public function it_does_not_accept_nested_arrays()
+    public function test_it_does_not_accept_nested_arrays()
     {
         $this->expectException(InvalidLineValue::class);
 
@@ -114,8 +107,7 @@ final class LinesTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_does_not_accept_a_key_without_dot_separator()
+    public function test_it_does_not_accept_a_key_without_dot_separator()
     {
         $this->expectException(InvalidLineKeyException::class);
 
@@ -124,8 +116,7 @@ final class LinesTest extends TestCase
         ]);
     }
 
-    /** @test */
-    public function it_does_not_accept_a_integer_typed_key()
+    public function test_it_does_not_accept_a_integer_typed_key()
     {
         $this->expectException(InvalidLineValue::class);
 

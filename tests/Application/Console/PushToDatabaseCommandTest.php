@@ -22,8 +22,7 @@ class PushToDatabaseCommandTest extends TestCase
         $this->repository = app()->make(DatabaseLinesRepository::class);
     }
 
-    /** @test */
-    public function it_can_push_disk_lines_to_database()
+    public function test_it_can_push_disk_lines_to_database()
     {
         config()->set('squanto.locales', ['en', 'nl']);
 
@@ -41,8 +40,7 @@ class PushToDatabaseCommandTest extends TestCase
         $this->assertNull($databaseLines->values('en')['about.content']);
     }
 
-    /** @test */
-    public function it_does_not_overwrite_existing_database_translations()
+    public function test_it_does_not_overwrite_existing_database_translations()
     {
         DatabaseLine::create([
             'key' => 'about.title',
@@ -57,8 +55,7 @@ class PushToDatabaseCommandTest extends TestCase
         $this->assertEquals('custom titel', $this->repository->find('about.title')->value('nl'));
     }
 
-    /** @test */
-    public function it_does_not_add_translations_when_the_database_entry_already_exists()
+    public function test_it_does_not_add_translations_when_the_database_entry_already_exists()
     {
         DatabaseLine::create([
             'key' => 'about.title',
@@ -73,8 +70,7 @@ class PushToDatabaseCommandTest extends TestCase
         $this->assertNull($this->repository->find('about.title')->value('en'));
     }
 
-    /** @test */
-    public function it_does_add_translations_when_the_database_entry_exists_as_soft_deleted_entry()
+    public function test_it_does_add_translations_when_the_database_entry_exists_as_soft_deleted_entry()
     {
         $record = DatabaseLine::create([
             'key' => 'about.title',

@@ -11,8 +11,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 
 class TranslationControllerTest extends TestCase
 {
-    /** @test */
-    public function it_can_view_edit_when_pageslug_contains_a_dash()
+    public function test_it_can_view_edit_when_pageslug_contains_a_dash()
     {
         DatabaseLine::create([
             'key' => 'foo_baz.bar',
@@ -27,8 +26,7 @@ class TranslationControllerTest extends TestCase
         $this->assertCount(1, $response->getData()['lines']);
     }
 
-    /** @test */
-    public function it_can_store_a_translation()
+    public function test_it_can_store_a_translation()
     {
         DatabaseLine::create([
             'key' => 'foo.bar',
@@ -46,8 +44,7 @@ class TranslationControllerTest extends TestCase
         $this->assertSame('bazz & foo', app('translator')->get('foo.bar'));
     }
 
-    /** @test */
-    public function an_empty_line_is_intentionally_kept_empty()
+    public function test_an_empty_line_is_intentionally_kept_empty()
     {
         DatabaseLine::create([
             'key' => 'foo.bar',

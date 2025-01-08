@@ -9,8 +9,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 
 final class DiskMetadataRepositoryTest extends TestCase
 {
-    /** @test */
-    public function it_can_retrieve_all_metadata_files_within_a_folder()
+    public function test_it_can_retrieve_all_metadata_files_within_a_folder()
     {
         $collection = app(ReadMetadataFolder::class)->read();
         $this->assertInstanceOf(MetadataCollection::class, $collection);

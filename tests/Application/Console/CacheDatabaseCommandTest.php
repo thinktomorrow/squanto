@@ -23,8 +23,7 @@ class CacheDatabaseCommandTest extends TestCase
         $this->repository = app()->make(DatabaseLinesRepository::class);
     }
 
-    /** @test */
-    public function it_can_purge_disk_lines_to_database()
+    public function test_it_can_purge_disk_lines_to_database()
     {
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.xxx', ['nl' => 'nl value']));
 
@@ -36,8 +35,7 @@ class CacheDatabaseCommandTest extends TestCase
         $this->assertEquals('nl value', $cache['xxx']);
     }
 
-    /** @test */
-    public function a_null_value_will_not_be_cached()
+    public function test_a_null_value_will_not_be_cached()
     {
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.xxx', ['nl' => null, 'en' => 'en value']));
 

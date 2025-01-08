@@ -23,8 +23,7 @@ class PurgeDatabaseCommandTest extends TestCase
         $this->repository = app()->make(DatabaseLinesRepository::class);
     }
 
-    /** @test */
-    public function it_can_purge_disk_lines_to_database()
+    public function test_it_can_purge_disk_lines_to_database()
     {
         // Add obsolete database item
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.xxx', []));

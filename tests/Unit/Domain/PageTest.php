@@ -10,8 +10,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 
 class PageTest extends TestCase
 {
-    /** @test */
-    public function page_from_line_key_matches_original_filename()
+    public function test_page_from_line_key_matches_original_filename()
     {
         $lineid = LineKey::fromString('foo_bar.baz');
         $this->assertEquals('foo_bar', $lineid->pageKey());
@@ -20,8 +19,7 @@ class PageTest extends TestCase
         $this->assertEquals('foo-bar', $lineid->pageKey());
     }
 
-    /** @test */
-    public function page_slug_must_match_linekey_first_part()
+    public function test_page_slug_must_match_linekey_first_part()
     {
         $page = Page::fromFilename('foo_bar');
 

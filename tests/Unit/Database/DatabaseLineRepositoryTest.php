@@ -22,8 +22,7 @@ class DatabaseLineRepositoryTest extends TestCase
         $this->repository = app()->make(DatabaseLinesRepository::class);
     }
 
-    /** @test */
-    public function it_can_fetch_a_line_from_database()
+    public function test_it_can_fetch_a_line_from_database()
     {
         DatabaseLine::create(['key' => 'foo.bar']);
 
@@ -32,8 +31,7 @@ class DatabaseLineRepositoryTest extends TestCase
         $this->assertEquals(Line::fromRaw('foo.bar', []), $line);
     }
 
-    /** @test */
-    public function it_can_check_if_database_line_exists()
+    public function test_it_can_check_if_database_line_exists()
     {
         DatabaseLine::create(['key' => 'foo.bar']);
 
@@ -41,16 +39,14 @@ class DatabaseLineRepositoryTest extends TestCase
         $this->assertFalse($this->repository->exists('foo.xxx'));
     }
 
-    /** @test */
-    public function a_non_found_key_throws_exception()
+    public function test_a_non_found_key_throws_exception()
     {
         $this->expectException(NotFoundDatabaseLine::class);
 
         $this->repository->find('foo.xxx');
     }
 
-    /** @test */
-    public function it_can_fetch_all_lines_from_database()
+    public function test_it_can_fetch_all_lines_from_database()
     {
         DatabaseLine::create(['key' => 'foo.bar']);
         DatabaseLine::create(['key' => 'baz.boo']);
@@ -63,8 +59,7 @@ class DatabaseLineRepositoryTest extends TestCase
         ]), $lines);
     }
 
-    /** @test */
-    public function it_can_fetch_all_lines_as_eloquent_models_from_database()
+    public function test_it_can_fetch_all_lines_as_eloquent_models_from_database()
     {
         DatabaseLine::create(['key' => 'foo.bar']);
         DatabaseLine::create(['key' => 'baz.boo']);

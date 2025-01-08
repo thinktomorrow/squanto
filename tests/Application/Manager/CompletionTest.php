@@ -29,8 +29,7 @@ final class CompletionTest extends TestCase
         $this->addDatabaseLine = app()->make(AddDatabaseLine::class);
     }
 
-    /** @test */
-    public function it_can_check_if_translations_are_completed_for_a_single_locale()
+    public function test_it_can_check_if_translations_are_completed_for_a_single_locale()
     {
         $this->addDatabaseLine->handle(Line::fromRaw('foo.first', ['nl' => 'nl value', 'en' => 'en value']));
         $this->addDatabaseLine->handle(Line::fromRaw('foo.second', ['nl' => 'nl value', 'en' => null]));

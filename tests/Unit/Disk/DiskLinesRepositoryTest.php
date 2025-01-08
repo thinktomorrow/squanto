@@ -12,8 +12,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 
 final class DiskLinesRepositoryTest extends TestCase
 {
-    /** @test */
-    public function it_can_retrieve_all_translations_from_disk()
+    public function test_it_can_retrieve_all_translations_from_disk()
     {
         config()->set('squanto.locales', ['en', 'nl']);
 
@@ -23,8 +22,7 @@ final class DiskLinesRepositoryTest extends TestCase
         $this->assertCount(7, $this->getPrivateProperty($lines, 'items')); // 6 dutch translations
     }
 
-    /** @test */
-    public function it_can_retrieve_all_translations_for_a_locale_from_disk()
+    public function test_it_can_retrieve_all_translations_for_a_locale_from_disk()
     {
         config()->set('squanto.locales', ['en']);
 
@@ -34,8 +32,7 @@ final class DiskLinesRepositoryTest extends TestCase
         $this->assertCount(5, $this->getPrivateProperty($lines, 'items')); // 5 english translations
     }
 
-    /** @test */
-    public function it_can_retrieve_all_translations_of_a_folder()
+    public function test_it_can_retrieve_all_translations_of_a_folder()
     {
         $lines = app(ReadLanguageFolder::class)->read('en');
 
@@ -47,8 +44,7 @@ final class DiskLinesRepositoryTest extends TestCase
         $this->assertNull($lines->find('about.content')); // Not available in en
     }
 
-    /** @test */
-    public function it_can_exclude_certain_files()
+    public function test_it_can_exclude_certain_files()
     {
         // Exclude all the en translation files
         config()->set('squanto.excluded_files', ['nested','about']);
@@ -60,8 +56,7 @@ final class DiskLinesRepositoryTest extends TestCase
         $this->assertCount(0, $lineItems);
     }
 
-    /** @test */
-    public function it_can_retrieve_all_translations_of_any_file()
+    public function test_it_can_retrieve_all_translations_of_any_file()
     {
         $lines = app(ReadLanguageFile::class)->read('nl', __DIR__ .'/langfile_stub.php');
 
@@ -69,16 +64,14 @@ final class DiskLinesRepositoryTest extends TestCase
         $this->assertNotNull($lines->find('langfile_stub.title'));
     }
 
-    /** @test */
-    public function it_fails_when_file_does_not_exist()
+    public function test_it_fails_when_file_does_not_exist()
     {
         $this->expectException(InvalidLanguageFileReference::class);
 
         app(ReadLanguageFile::class)->read('nl', 'xxx');
     }
 
-    /** @test */
-    public function it_fails_when_file_content_does_not_return_an_array()
+    public function test_it_fails_when_file_content_does_not_return_an_array()
     {
         $this->expectException(InvalidLanguageFileReference::class);
 

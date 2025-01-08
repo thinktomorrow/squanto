@@ -23,8 +23,7 @@ class DatabaseLineTest extends TestCase
         $this->repository = app()->make(DatabaseLinesRepository::class);
     }
 
-    /** @test */
-    public function a_database_line_holds_all_translations_in_a_dynamic_field()
+    public function test_a_database_line_holds_all_translations_in_a_dynamic_field()
     {
         DatabaseLine::create(['key' => 'foo.bar', 'values' => ['value' => [
             'nl' => 'nl value',
@@ -41,8 +40,7 @@ class DatabaseLineTest extends TestCase
         $this->assertEquals('en value', $databaseLine->value);
     }
 
-    /** @test */
-    public function it_can_check_if_database_line_exists()
+    public function test_it_can_check_if_database_line_exists()
     {
         DatabaseLine::create(['key' => 'foo.bar']);
 
@@ -50,16 +48,14 @@ class DatabaseLineTest extends TestCase
         $this->assertFalse($this->repository->exists('foo.xxx'));
     }
 
-    /** @test */
-    public function a_non_found_key_throws_exception()
+    public function test_a_non_found_key_throws_exception()
     {
         $this->expectException(NotFoundDatabaseLine::class);
 
         $this->repository->find('foo.xxx');
     }
 
-    /** @test */
-    public function it_can_fetch_all_lines_from_database()
+    public function test_it_can_fetch_all_lines_from_database()
     {
         DatabaseLine::create(['key' => 'foo.bar']);
         DatabaseLine::create(['key' => 'baz.boo']);
@@ -72,8 +68,7 @@ class DatabaseLineTest extends TestCase
         ]), $lines);
     }
 
-    /** @test */
-    public function it_can_fetch_all_lines_as_eloquent_models_from_database()
+    public function test_it_can_fetch_all_lines_as_eloquent_models_from_database()
     {
         DatabaseLine::create(['key' => 'foo.bar']);
         DatabaseLine::create(['key' => 'baz.boo']);
