@@ -9,12 +9,9 @@ use Illuminate\Translation\Translator as LaravelTranslator;
 class SquantoTranslator extends LaravelTranslator implements Translator
 {
     private DatabaseTranslator $databaseTranslator;
-
     private array $excludedFilenames;
-
     private bool $keyAsDefault = true;
-
-    private $isDatabaseAlreadyMigrated = null;
+    private ?bool $isDatabaseAlreadyMigrated = null;
 
     public function __construct(Loader $loader, $locale)
     {
@@ -31,9 +28,9 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      *
      * @param bool $keyAsDefault
      */
-    public function setKeyAsDefault(bool $keyAsDefault = true)
+    public function setKeyAsDefault(bool $keyAsDefault = true): void
     {
-        $this->keyAsDefault = (bool) $keyAsDefault;
+        $this->keyAsDefault = $keyAsDefault;
     }
 
     /**
@@ -42,14 +39,8 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * 1. Get from our cached translations
      * 2. Get from database
      * 3. Get from the /resources/lang
-     *
-     * @param  string $key
-     * @param  array  $replace
-     * @param  string $locale
-     * @param  bool   $fallback
-     * @return string
      */
-    public function get($key, array $replace = [], $locale = null, $fallback = true)
+    public function get(string $key, array $replace = [], ?string $locale = null, bool $fallback = true): string|array|null
     {
         $locale = $locale ?: $this->getLocale();
 
@@ -133,10 +124,8 @@ class SquantoTranslator extends LaravelTranslator implements Translator
     /**
      * Verify that SQUANTO migrations are already run and present in this environment
      * Allow for a soft install
-     *
-     * @return null
      */
-    private function isDatabaseAlreadyMigrated()
+    private function isDatabaseAlreadyMigrated(): bool
     {
         if (! is_null($this->isDatabaseAlreadyMigrated)) {
             return $this->isDatabaseAlreadyMigrated;

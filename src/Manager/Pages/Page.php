@@ -33,7 +33,7 @@ final class Page
         return $this->slug;
     }
 
-    public function completionPercentage(): int
+    public function completionPercentage(): float
     {
         $lines = app(DatabaseLinesRepository::class)->allStartingWith($this->slug);
         $locales = config('squanto.locales');

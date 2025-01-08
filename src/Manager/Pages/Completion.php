@@ -7,7 +7,7 @@ use Thinktomorrow\Squanto\Domain\Lines;
 
 final class Completion
 {
-    public function calculate(Lines $lines, array $locales): int
+    public function calculate(Lines $lines, array $locales): float
     {
         $maximum = $lines->count() * count($locales);
         $completed = 0;

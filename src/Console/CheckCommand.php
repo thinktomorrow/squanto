@@ -4,13 +4,11 @@ namespace Thinktomorrow\Squanto\Console;
 
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
-use Thinktomorrow\Squanto\Disk\DiskMetadataRepository;
 use Thinktomorrow\Squanto\Domain\Line;
 
 class CheckCommand extends Command
 {
     protected $signature = 'squanto:check';
-
     protected $description = 'Check if your database lines are up to date.';
 
     /**
@@ -23,18 +21,12 @@ class CheckCommand extends Command
      */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /**
-     * @var DiskMetadataRepository
-     */
-    private DiskMetadataRepository $diskMetadataRepository;
-
-    public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, DiskMetadataRepository $diskMetadataRepository)
+    public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository)
     {
         parent::__construct();
 
         $this->diskLinesRepository = $diskLinesRepository;
         $this->databaseLinesRepository = $databaseLinesRepository;
-        $this->diskMetadataRepository = $diskMetadataRepository;
     }
 
     public function handle()

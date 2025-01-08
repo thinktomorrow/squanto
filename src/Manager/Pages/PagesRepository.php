@@ -25,7 +25,7 @@ final class PagesRepository
         foreach (config('squanto.locales') as $locale) {
             $files = $this->readLanguageFolder->files($locale);
 
-            /** @var FileAttributes[] $file */
+            /** @var FileAttributes $file */
             foreach ($files as $file) {
                 $filenames[] = str_replace('.php', '', basename($file->path()));
             }

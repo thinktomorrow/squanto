@@ -4,13 +4,15 @@ namespace Thinktomorrow\Squanto\Database;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Thinktomorrow\DynamicAttributes\DynamicDocument;
 use Thinktomorrow\DynamicAttributes\HasDynamicAttributes;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\LineKey;
 
 /**
- * @property mixed values
- * @property string key
+ * @property array $metadata
+ * @property DynamicDocument $values
+ * @property string $key
  */
 class DatabaseLine extends Model
 {

@@ -27,7 +27,7 @@
     },
     "require-dev": {
         "mockery/mockery": "^1.6",
-        "phpstan/phpstan": "^2.1",
+        "larastan/larastan": "^3.0",
         "orchestra/testbench": "^9.9",
         "phpunit/phpunit": "^11.3",
         "spatie/temporary-directory": "^1.1"

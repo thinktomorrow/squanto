@@ -10,7 +10,7 @@ use Thinktomorrow\Squanto\Domain\Metadata\Metadata;
 
 final class AddDatabaseLine
 {
-    public function handle(Line $line, Metadata $metadata = null): void
+    public function handle(Line $line, ?Metadata $metadata = null): void
     {
         // If the key exists as soft deleted entry, we'll first remove the former existing record
         if ($existingSoftDeletedLine = DatabaseLine::findSoftDeletedByKey(LineKey::fromString($line->keyAsString()))) {
