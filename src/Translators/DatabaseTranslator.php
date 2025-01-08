@@ -19,8 +19,14 @@ class DatabaseTranslator implements Translator
 
     /**
      * Get translation for given key from database.
+     *
+     * @param  string $key
+     * @param  array $replace
+     * @param  null  $locale
+     * @param  bool  $fallback
+     * @return string|array|null
      */
-    public function get(string $key, array $replace = [], ?string $locale = null, bool $fallback = true): string|array|null
+    public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
         if (! $this->databaseLinesRepository->exists($key)) {
 
@@ -52,7 +58,7 @@ class DatabaseTranslator implements Translator
 
         $line = $this->databaseLinesRepository->find($key);
 
-        $value = $line->value($locale ?? app()->getLocale());
+        $value = $line->value($locale ?: app()->getLocale());
 
         if (! $value && $fallback && config('app.fallback_locale')) {
             $value = $line->value(config('app.fallback_locale'));

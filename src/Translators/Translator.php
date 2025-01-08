@@ -4,5 +4,12 @@ namespace Thinktomorrow\Squanto\Translators;
 
 interface Translator
 {
-    public function get(string $key, array $replace = [], ?string $locale = null, bool $fallback = true): string|array|null;
+    /**
+     * @param  string $key
+     * @param  array $replace
+     * @param  null  $locale
+     * @param  bool  $fallback
+     * @return string|array|null
+     */
+    public function get($key, array $replace = [], $locale = null, $fallback = true);
 }

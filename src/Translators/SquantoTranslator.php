@@ -39,8 +39,14 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * 1. Get from our cached translations
      * 2. Get from database
      * 3. Get from the /resources/lang
+     *
+     * @param  string $key
+     * @param  array $replace
+     * @param  null  $locale
+     * @param  bool  $fallback
+     * @return string|array|null
      */
-    public function get(string $key, array $replace = [], ?string $locale = null, bool $fallback = true): string|array|null
+    public function get($key, array $replace = [], $locale = null, $fallback = true)
     {
         $locale = $locale ?: $this->getLocale();
 

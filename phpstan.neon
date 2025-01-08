@@ -10,6 +10,7 @@ parameters:
     level: 4
 
     noModelMake: false
+    treatPhpDocTypesAsCertain: false
 
     excludePaths:
         - src/Manager/views
