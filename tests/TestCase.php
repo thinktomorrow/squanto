@@ -60,13 +60,13 @@ class TestCase extends BaseTestCase
         $app['path.lang'] = $this->getTempDirectory('lang');
 
         // Connection is defined in the phpunit config xml
-//        $app['config']->set('database.connections.testing', [
-//            'driver' => 'sqlite',
-//            'database' => env('DB_DATABASE', __DIR__.'/../database/testing.sqlite'),
-//            'prefix' => '',
-//        ]);
+        //        $app['config']->set('database.connections.testing', [
+        //            'driver' => 'sqlite',
+        //            'database' => env('DB_DATABASE', __DIR__.'/../database/testing.sqlite'),
+        //            'prefix' => '',
+        //        ]);
 
-//        $app['config']->set('database.default', 'testing');
+        //        $app['config']->set('database.default', 'testing');
         $app['config']->set('squanto', require $this->getTempDirectory('config/squanto.php'));
         $app['config']->set('app.locale', 'nl');
         $app['config']->set('app.fallback_locale', 'en');
