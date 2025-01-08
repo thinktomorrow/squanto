@@ -2,10 +2,7 @@
 
 namespace Thinktomorrow\SquantoTests;
 
-use Illuminate\Foundation\Testing\DatabaseMigrations;
-use Illuminate\Foundation\Testing\DatabaseTransactions;
-use League\Flysystem\Adapter\Local;
-use League\Flysystem\Filesystem;
+use Illuminate\Foundation\Testing\RefreshDatabase;
 use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Thinktomorrow\Squanto\SquantoManagerServiceProvider;
@@ -13,7 +10,8 @@ use Thinktomorrow\Squanto\SquantoServiceProvider;
 
 class TestCase extends BaseTestCase
 {
-    use DatabaseTransactions, DatabaseMigrations;
+    use RefreshDatabase;
+    use TestHelpers;
 
     /** @var \Thinktomorrow\Squanto\Translators\SquantoTranslator */
     protected $translator;
@@ -24,7 +22,6 @@ class TestCase extends BaseTestCase
     /** @var string */
     private $tempDirectory;
 
-    use TestHelpers;
 
     protected function setUp(): void
     {
@@ -55,7 +52,7 @@ class TestCase extends BaseTestCase
         ];
     }
 
-    protected function getEnvironmentSetUp($app)
+    protected function getEnvironmentSetUp($app): void
     {
         //copy stubs to temp folder
         $this->recurse_copy($this->getStubDirectory(), $this->getTempDirectory());
@@ -63,13 +60,13 @@ class TestCase extends BaseTestCase
         $app['path.lang'] = $this->getTempDirectory('lang');
 
         // Connection is defined in the phpunit config xml
-        $app['config']->set('database.connections.testing', [
-            'driver' => 'sqlite',
-            'database' => env('DB_DATABASE', __DIR__.'/../database/testing.sqlite'),
-            'prefix' => '',
-        ]);
+//        $app['config']->set('database.connections.testing', [
+//            'driver' => 'sqlite',
+//            'database' => env('DB_DATABASE', __DIR__.'/../database/testing.sqlite'),
+//            'prefix' => '',
+//        ]);
 
-        $app['config']->set('database.default', 'testing');
+//        $app['config']->set('database.default', 'testing');
         $app['config']->set('squanto', require $this->getTempDirectory('config/squanto.php'));
         $app['config']->set('app.locale', 'nl');
         $app['config']->set('app.fallback_locale', 'en');
