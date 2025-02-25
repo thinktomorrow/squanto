@@ -22,7 +22,7 @@
         "illuminate/database": "^11.0",
         "illuminate/support": "^11.0",
         "league/flysystem": "^3.25",
-        "thinktomorrow/dynamic-attributes": "^1.0",
+        "thinktomorrow/dynamic-attributes": "^2.0",
         "ext-json": "*"
     },
     "require-dev": {
