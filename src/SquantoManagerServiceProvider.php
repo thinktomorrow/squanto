@@ -30,6 +30,15 @@ class SquantoManagerServiceProvider extends ServiceProvider
 
         // Register squanto viewfiles under squanto:: namespace
         // allow to override them by making a view file under the resources/views/vendor/squanto location
+        $this->loadViewsFrom(__DIR__ . '/Manager/views', 'squanto');
+
+        // Project specific views
+        $overridePath = resource_path('views/vendor/squanto');
+
+        if (is_dir($overridePath)) {
+            $this->loadViewsFrom($overridePath, 'squanto');
+        }
+
         $this->loadViewsFrom(realpath(__DIR__ . '/Manager/views'), 'squanto');
 
         Blade::componentNamespace('Thinktomorrow\\Squanto\\Manager\\Components', 'squanto');
