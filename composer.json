@@ -18,9 +18,9 @@
     ],
     "require": {
         "php": ">=8.3",
-        "illuminate/contracts": "^11.0",
-        "illuminate/database": "^11.0",
-        "illuminate/support": "^11.0",
+        "illuminate/contracts": "^11.0|^12.0",
+        "illuminate/database": "^11.0|^12.0",
+        "illuminate/support": "^11.0|^12.0",
         "league/flysystem": "^3.25",
         "thinktomorrow/dynamic-attributes": "^2.0",
         "ext-json": "*"
@@ -28,7 +28,7 @@
     "require-dev": {
         "mockery/mockery": "^1.6",
         "larastan/larastan": "^3.0",
-        "orchestra/testbench": "^9.9",
+        "orchestra/testbench": "^10.9",
         "phpunit/phpunit": "^11.3",
         "spatie/temporary-directory": "^1.1"
     },
