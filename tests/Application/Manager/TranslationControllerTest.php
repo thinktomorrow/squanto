@@ -35,13 +35,72 @@ class TranslationControllerTest extends TestCase
             ]],
         ]);
 
-        //mocking a request + call since we have no full laravel application in this package
-        $request = Request::capture()->replace(["squanto" => ["foo.bar" => [ "nl" => 'bazz & foo']]]);
+        // mocking a request + call since we have no full laravel application in this package
+        $request = Request::capture()->replace(['squanto' => ['foo.bar' => ['nl' => 'bazz & foo']]]);
 
         app(ManagerController::class)->update($request, 'foo');
 
         $this->assertEquals('bazz & foo', DatabaseLine::findByKey(LineKey::fromString('foo.bar'))->dynamic('value', 'nl'));
         $this->assertSame('bazz & foo', app('translator')->get('foo.bar'));
+    }
+
+    public function test_it_can_search_translations_by_key(): void
+    {
+        DatabaseLine::create([
+            'key' => 'home.hero.title',
+            'values' => ['value' => [
+                'nl' => 'Welkom',
+            ]],
+        ]);
+
+        DatabaseLine::create([
+            'key' => 'about.hero.title',
+            'values' => ['value' => [
+                'nl' => 'Over ons',
+            ]],
+        ]);
+
+        $request = Request::create('/admin/translations', 'GET', ['search' => 'home.hero']);
+
+        /** @var View $response */
+        $response = app(ManagerController::class)->index($request);
+
+        $results = $response->getData()['results'];
+
+        $this->assertCount(1, $results);
+        $this->assertSame('home.hero.title', $results[0]->key());
+    }
+
+    public function test_it_can_search_translations_by_value(): void
+    {
+        DatabaseLine::create([
+            'key' => 'home.hero.title',
+            'values' => ['value' => [
+                'nl' => 'Welkom',
+            ]],
+        ]);
+
+        $request = Request::create('/admin/translations', 'GET', ['search' => 'welkom']);
+
+        /** @var View $response */
+        $response = app(ManagerController::class)->index($request);
+
+        $results = $response->getData()['results'];
+
+        $this->assertCount(1, $results);
+        $this->assertSame('home.hero.title', $results[0]->key());
+    }
+
+    public function test_it_returns_default_page_overview_for_empty_search(): void
+    {
+        $request = Request::create('/admin/translations', 'GET', ['search' => '']);
+
+        /** @var View $response */
+        $response = app(ManagerController::class)->index($request);
+
+        $this->assertSame('', $response->getData()['searchTerm']);
+        $this->assertIsArray($response->getData()['pages']);
+        $this->assertCount(0, $response->getData()['results']);
     }
 
     public function test_an_empty_line_is_intentionally_kept_empty()
@@ -53,8 +112,8 @@ class TranslationControllerTest extends TestCase
             ]],
         ]);
 
-        //mocking a request + call since we have no full laravel application in this package
-        $request = Request::capture()->replace(["squanto" => ["foo.bar" => [ "nl" => '']]]);
+        // mocking a request + call since we have no full laravel application in this package
+        $request = Request::capture()->replace(['squanto' => ['foo.bar' => ['nl' => '']]]);
 
         app(ManagerController::class)->update($request, 'foo');
 

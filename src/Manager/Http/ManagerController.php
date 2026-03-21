@@ -16,24 +16,12 @@ class ManagerController extends Controller
 {
     use ValidatesRequests;
 
-    /**
-     * @var PagesRepository
-     */
     private PagesRepository $pagesRepository;
 
-    /**
-     * @var DatabaseLinesRepository
-     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /**
-     * @var UpdateDatabaseLine
-     */
     private UpdateDatabaseLine $updateDatabaseLine;
 
-    /**
-     * @var CacheDatabaseLines
-     */
     private CacheDatabaseLines $cacheDatabaseLines;
 
     public function __construct(PagesRepository $pagesRepository, DatabaseLinesRepository $databaseLinesRepository, UpdateDatabaseLine $updateDatabaseLine, CacheDatabaseLines $cacheDatabaseLines)
@@ -47,11 +35,22 @@ class ManagerController extends Controller
     public function index(Request $request)
     {
         $pages = $this->pagesRepository->all();
+        $searchTerm = trim((string) $request->query('search', ''));
+        $results = [];
+
+        if ($searchTerm !== '') {
+            $results = $this->databaseLinesRepository
+                ->search($searchTerm)
+                ->map(fn ($lineModel) => new LineViewModel($lineModel))
+                ->all();
+        }
 
         return view(
             'squanto::index',
             [
                 'pages' => $pages->all(),
+                'results' => $results,
+                'searchTerm' => $searchTerm,
             ]
         );
     }
@@ -89,16 +88,13 @@ class ManagerController extends Controller
      * By default laravel converts empty strings to null values. Here we ensure that empty strings are persisted.
      * Null values are not kept by squanto and will cascade to the original translation file value, which is not
      * what we want. Instead we keep an empty string to explicitly mark this value as empty.
-     *
-     * @param Request $request
-     * @return Request
      */
     private function convertNullToEmptyString(Request $request): Request
     {
         $request = $request->merge([
             'squanto' => collect($request->input('squanto', []))->map(function ($translations, $key) {
                 return array_map(function ($value) {
-                    if (null === $value) {
+                    if ($value === null) {
                         $value = '';
                     }
 

@@ -17,7 +17,7 @@
                             <div class="px-4 py-5 bg-white sm:p-6">
                                 <div class="grid grid-cols-6 gap-6">
                                     @foreach($groupedLines as $lineViewModel)
-                                        <div class="col-span-6">
+                                        <div id="{{ $lineViewModel->id() }}" class="col-span-6 scroll-mt-24">
                                             @include('squanto::_field')
                                         </div>
                                     @endforeach
@@ -46,4 +46,3 @@
     </form>
 
 </x-squanto::app-layout>
-

@@ -1,6 +1,15 @@
 
 ## unreleased
 
+### 5.1.0 - 2025-12-15
+- Added: basic key/value search
+
+### 5.0.2 - 2025-12-15
+- Added: php 8.5 support
+
+### 5.0.1 - 2025-12-15
+- Fixed: view:clear error
+
 ### 5.0.0 - 2025-02-25
 - Changed: minimum PHP version required is 8.3.
 - Changed: `thinktomorrow/dynamic-attributes` dependency to `^2.0`.
