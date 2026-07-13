@@ -1,52 +1,63 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Disk;
 
 use League\Flysystem\Filesystem;
+use League\Flysystem\Local\LocalFilesystemAdapter;
 use Thinktomorrow\Squanto\Domain\Lines;
+use Thinktomorrow\Squanto\Sources\SquantoRegistry;
+use Thinktomorrow\Squanto\Sources\SquantoSource;
 
 final class ReadLanguageFolder
 {
-    /**
-     * @var ReadLanguageFile
-     */
     private ReadLanguageFile $readLanguageFile;
 
     /**
      * @var Filesystem
      */
-    private Filesystem $filesystem;
+    private SquantoRegistry $registry;
 
-    public function __construct(ReadLanguageFile $readLanguageFile, Filesystem $filesystem)
+    public function __construct(ReadLanguageFile $readLanguageFile, SquantoRegistry $registry)
     {
         $this->readLanguageFile = $readLanguageFile;
-        $this->filesystem = $filesystem;
+        $this->registry = $registry;
     }
 
-    public function read(string $locale): Lines
+    public function read(string $locale, ?SquantoSource $source = null): Lines
     {
         $lines = new Lines([]);
+        $source = $source ?: $this->registry->defaultSource();
 
-        $files = $this->files($locale);
-
+        $files = $this->files($locale, $source);
 
         foreach ($files as $file) {
-            $lines = $lines->merge($this->readLanguageFile->read($locale, Paths::getSquantoLangPath() .'/'. $file['path']));
+            $lines = $lines->merge($this->readLanguageFile->read($locale, $source->path().'/'.$file['path'], $source));
         }
 
         return $lines;
     }
 
-    public function files(string $folder): array
+    public function files(string $folder, ?SquantoSource $source = null): array
     {
-        $files = $this->filesystem->listContents($folder)->toArray();
+        $source = $source ?: $this->registry->defaultSource();
 
-        return $this->excludeFiles($files);
+        if (! is_dir($source->path().'/'.$folder)) {
+            return [];
+        }
+
+        $files = $this->filesystem($source)->listContents($folder)->toArray();
+
+        return $this->excludeFiles($files, $source);
     }
 
-    private function excludeFiles(array $files): array
+    private function excludeFiles(array $files, SquantoSource $source): array
     {
+        if ($source->isNamespaced()) {
+            return $files;
+        }
+
         $excludedFilenames = config('squanto.excluded_files', []);
 
         foreach ($files as $k => $file) {
@@ -58,5 +69,10 @@ final class ReadLanguageFolder
         }
 
         return $files;
+    }
+
+    private function filesystem(SquantoSource $source): Filesystem
+    {
+        return new Filesystem(new LocalFilesystemAdapter($source->path()));
     }
 }

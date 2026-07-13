@@ -1,20 +1,22 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Disk;
 
 use Thinktomorrow\Squanto\Domain\Lines;
+use Thinktomorrow\Squanto\Sources\SquantoRegistry;
 
 final class DiskLinesRepository
 {
-    /**
-     * @var ReadLanguageFolder
-     */
     private ReadLanguageFolder $readLanguageFolder;
 
-    public function __construct(ReadLanguageFolder $readLanguageFolder)
+    private SquantoRegistry $registry;
+
+    public function __construct(ReadLanguageFolder $readLanguageFolder, SquantoRegistry $registry)
     {
         $this->readLanguageFolder = $readLanguageFolder;
+        $this->registry = $registry;
     }
 
     public function all(): Lines
@@ -23,8 +25,10 @@ final class DiskLinesRepository
 
         $lines = new Lines([]);
 
-        foreach ($locales as $locale) {
-            $lines = $lines->merge($this->readLanguageFolder->read($locale));
+        foreach ($this->registry->all() as $source) {
+            foreach ($locales as $locale) {
+                $lines = $lines->merge($this->readLanguageFolder->read($locale, $source));
+            }
         }
 
         return $lines;

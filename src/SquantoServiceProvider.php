@@ -17,6 +17,7 @@ use Thinktomorrow\Squanto\Disk\ReadLanguageFile;
 use Thinktomorrow\Squanto\Disk\ReadLanguageFolder;
 use Thinktomorrow\Squanto\Disk\ReadMetadataFile;
 use Thinktomorrow\Squanto\Disk\ReadMetadataFolder;
+use Thinktomorrow\Squanto\Sources\SquantoRegistry;
 use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class SquantoServiceProvider extends BaseServiceProvider implements DeferrableProvider
@@ -32,6 +33,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             ReadLanguageFolder::class,
             ReadMetadataFolder::class,
             CacheDatabaseLines::class,
+            SquantoRegistry::class,
         ];
     }
 
@@ -46,10 +48,10 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
 
         if ($this->app->runningInConsole()) {
             $this->publishes([
-                __DIR__ . '/../config/squanto.php' => config_path('squanto.php'),
+                __DIR__.'/../config/squanto.php' => config_path('squanto.php'),
             ], 'squanto-config');
 
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
+            $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
             $this->commands([
                 CheckCommand::class,
@@ -70,6 +72,8 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
         $this->app['squanto.cache_path'] = Paths::getSquantoCachePath();
         $this->app['squanto.lang_path'] = Paths::getSquantoLangPath();
 
+        $this->registerRegistry();
+
         $this->registerTranslator();
 
         $this->app->bind(
@@ -77,7 +81,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             function ($app) {
                 return new ReadLanguageFolder(
                     $app->make(ReadLanguageFile::class),
-                    new Filesystem(new LocalFilesystemAdapter(Paths::getSquantoLangPath()))
+                    $app->make(SquantoRegistry::class)
                 );
             }
         );
@@ -103,9 +107,19 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
         );
 
         $this->mergeConfigFrom(
-            __DIR__ . '/../config/squanto.php',
+            __DIR__.'/../config/squanto.php',
             'squanto'
         );
+    }
+
+    private function registerRegistry(): void
+    {
+        $this->app->singleton(SquantoRegistry::class, function () {
+            $registry = new SquantoRegistry;
+            $registry->registerSource(Paths::getSquantoLangPath());
+
+            return $registry;
+        });
     }
 
     private function registerTranslator()

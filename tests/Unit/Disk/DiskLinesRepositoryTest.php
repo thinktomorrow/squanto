@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\SquantoTests\Unit\Disk;
@@ -8,6 +9,8 @@ use Thinktomorrow\Squanto\Disk\ReadLanguageFile;
 use Thinktomorrow\Squanto\Disk\ReadLanguageFolder;
 use Thinktomorrow\Squanto\Domain\Exceptions\InvalidLanguageFileReference;
 use Thinktomorrow\Squanto\Domain\Lines;
+use Thinktomorrow\Squanto\Sources\SquantoRegistry;
+use Thinktomorrow\Squanto\Squanto;
 use Thinktomorrow\SquantoTests\TestCase;
 
 final class DiskLinesRepositoryTest extends TestCase
@@ -47,7 +50,7 @@ final class DiskLinesRepositoryTest extends TestCase
     public function test_it_can_exclude_certain_files()
     {
         // Exclude all the en translation files
-        config()->set('squanto.excluded_files', ['nested','about']);
+        config()->set('squanto.excluded_files', ['nested', 'about']);
 
         $lines = app(ReadLanguageFolder::class)->read('en');
 
@@ -58,7 +61,7 @@ final class DiskLinesRepositoryTest extends TestCase
 
     public function test_it_can_retrieve_all_translations_of_any_file()
     {
-        $lines = app(ReadLanguageFile::class)->read('nl', __DIR__ .'/langfile_stub.php');
+        $lines = app(ReadLanguageFile::class)->read('nl', __DIR__.'/langfile_stub.php');
 
         $this->assertInstanceOf(Lines::class, $lines);
         $this->assertNotNull($lines->find('langfile_stub.title'));
@@ -75,6 +78,46 @@ final class DiskLinesRepositoryTest extends TestCase
     {
         $this->expectException(InvalidLanguageFileReference::class);
 
-        app(ReadLanguageFile::class)->read('nl', __DIR__ .'/langfile_empty_stub.php');
+        app(ReadLanguageFile::class)->read('nl', __DIR__.'/langfile_empty_stub.php');
+    }
+
+    public function test_it_can_retrieve_all_translations_from_registered_namespaced_sources(): void
+    {
+        Squanto::register($this->pluginLangPath(), 'chief-form-plugin', 'Form plugin');
+        config()->set('squanto.locales', ['en', 'nl']);
+
+        $lines = app(DiskLinesRepository::class)->all();
+
+        $this->assertInstanceOf(Lines::class, $lines);
+        $this->assertNotNull($lines->find('chief-form-plugin::general.title'));
+        $this->assertNotNull($lines->find('chief-form-plugin::nested.hero.title'));
+    }
+
+    public function test_it_can_retrieve_all_translations_of_a_namespaced_folder(): void
+    {
+        Squanto::register($this->pluginLangPath(), 'chief-form-plugin', 'Form plugin');
+
+        $source = app(SquantoRegistry::class)->all()[1];
+        $lines = app(ReadLanguageFolder::class)->read('en', $source);
+
+        $this->assertInstanceOf(Lines::class, $lines);
+        $this->assertNotNull($lines->find('chief-form-plugin::general.title'));
+        $this->assertNotNull($lines->find('chief-form-plugin::nested.hero.title'));
+    }
+
+    public function test_excluded_files_are_not_applied_to_namespaced_sources(): void
+    {
+        Squanto::register($this->pluginLangPath(), 'chief-form-plugin', 'Form plugin');
+        config()->set('squanto.excluded_files', ['nested']);
+
+        $source = app(SquantoRegistry::class)->all()[1];
+        $lines = app(ReadLanguageFolder::class)->read('en', $source);
+
+        $this->assertNotNull($lines->find('chief-form-plugin::nested.hero.title'));
+    }
+
+    private function pluginLangPath(): string
+    {
+        return dirname((string) config('squanto.lang_path')).'/plugin/lang';
     }
 }
