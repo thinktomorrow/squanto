@@ -5,8 +5,7 @@ namespace Thinktomorrow\Squanto\Translators;
 interface Translator
 {
     /**
-     * @param  string $key
-     * @param  array $replace
+     * @param  string  $key
      * @param  null  $locale
      * @param  bool  $fallback
      * @return string|array|null

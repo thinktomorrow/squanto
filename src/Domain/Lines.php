@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Domain;
@@ -22,7 +23,7 @@ final class Lines
     {
         $this->validateLines($lines);
 
-        $this->items = static::keyify($lines);
+        $this->items = self::keyify($lines);
     }
 
     public static function fromArray(string $locale, array $lines): self
@@ -37,7 +38,7 @@ final class Lines
             $preppedLines[] = Line::fromRaw($key, [$locale => $value]);
         }
 
-        return new static($preppedLines);
+        return new self($preppedLines);
     }
 
     public function count(): int
@@ -49,7 +50,7 @@ final class Lines
     {
         $mergedLines = $this->mergeByKey($this->items, $lines->items);
 
-        return new static($mergedLines);
+        return new self($mergedLines);
     }
 
     public function each(callable $callback)
@@ -61,9 +62,6 @@ final class Lines
 
     /**
      * Return all the values for a specific locale in key:value pairs
-     *
-     * @param string $locale
-     * @return array
      */
     public function values(string $locale): array
     {

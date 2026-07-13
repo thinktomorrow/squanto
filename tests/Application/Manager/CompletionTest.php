@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\SquantoTests\Application\Manager;
@@ -11,13 +12,13 @@ use Thinktomorrow\SquantoTests\TestCase;
 
 final class CompletionTest extends TestCase
 {
-    /** @var \Thinktomorrow\Squanto\Database\DatabaseLinesRepository */
+    /** @var DatabaseLinesRepository */
     private $repository;
 
     /** @var AddDatabaseLine */
     private $addDatabaseLine;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -45,7 +46,7 @@ final class CompletionTest extends TestCase
 
         $completion = app(Completion::class)->calculate(
             app(DatabaseLinesRepository::class)->all(),
-            ['nl','en']
+            ['nl', 'en']
         );
         $this->assertEquals(83, $completion);
     }

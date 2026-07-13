@@ -30,8 +30,6 @@ final class LineKey
     /**
      * Get Page identifier.
      * This is the first segment of the key
-     *
-     * @return string
      */
     public function pageKey(): string
     {
@@ -40,7 +38,7 @@ final class LineKey
 
     public function equals($other): bool
     {
-        return (get_class($this) === get_class($other) && $this->get() === $other->get());
+        return get_class($this) === get_class($other) && $this->get() === $other->get();
     }
 
     private function sanitizeKey(string $key): string
@@ -50,7 +48,7 @@ final class LineKey
 
     public static function validateKey($key): void
     {
-        if (! $key || ! is_string($key) || false === strpos($key, '.')) {
+        if (! $key || ! is_string($key) || strpos($key, '.') === false) {
             throw new InvalidLineKeyException('Invalid LineKey format ['.$key.', type: '.gettype($key).'] given. Must be a string containing at least two dot separated segments. E.g. about.title');
         }
     }

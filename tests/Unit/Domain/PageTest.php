@@ -6,6 +6,7 @@ namespace Thinktomorrow\SquantoTests\Unit\Domain;
 
 use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Manager\Pages\Page;
+use Thinktomorrow\Squanto\Sources\SquantoSource;
 use Thinktomorrow\SquantoTests\TestCase;
 
 class PageTest extends TestCase
@@ -30,5 +31,20 @@ class PageTest extends TestCase
 
         $this->assertEquals('foo bar', $page->label());
         $this->assertEquals('foo-bar', $page->slug());
+    }
+
+    public function test_page_can_be_created_from_a_namespaced_source_file(): void
+    {
+        $page = Page::fromSourceFile(
+            SquantoSource::make(__DIR__.'/../../stubs/plugin/lang', 'chief-form-plugin', 'Form plugin'),
+            'general'
+        );
+
+        $this->assertEquals('general', $page->label());
+        $this->assertEquals('chief-form-plugin::general', $page->slug());
+        $this->assertEquals('chief-form-plugin::general', $page->pageKey());
+        $this->assertEquals('chief-form-plugin', $page->namespace());
+        $this->assertEquals('general', $page->group());
+        $this->assertEquals('Form plugin', $page->sourceLabel());
     }
 }

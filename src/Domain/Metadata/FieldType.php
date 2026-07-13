@@ -7,7 +7,9 @@ use Thinktomorrow\Squanto\Domain\Exceptions\SquantoException;
 final class FieldType
 {
     const TEXT = 'text';
+
     const TEXTAREA = 'textarea';
+
     const EDITOR = 'editor';
 
     private string $type;
@@ -34,9 +36,9 @@ final class FieldType
         if (! in_array(
             $type,
             [
-            self::TEXT,
-            self::TEXTAREA,
-            self::EDITOR,
+                self::TEXT,
+                self::TEXTAREA,
+                self::EDITOR,
             ]
         )
         ) {
@@ -47,13 +49,13 @@ final class FieldType
     public static function guess(string $value): self
     {
         if (strip_tags($value) != $value) {
-            return new static(self::EDITOR);
+            return new self(self::EDITOR);
         }
 
         if (strlen($value) < 50) {
-            return new static(self::TEXT);
+            return new self(self::TEXT);
         }
 
-        return new static(self::TEXTAREA);
+        return new self(self::TEXTAREA);
     }
 }

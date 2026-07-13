@@ -12,7 +12,7 @@ class PurgeDatabaseCommandTest extends TestCase
     /** @var mixed */
     private $repository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 

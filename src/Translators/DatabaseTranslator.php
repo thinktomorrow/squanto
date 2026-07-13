@@ -20,8 +20,7 @@ class DatabaseTranslator implements Translator
     /**
      * Get translation for given key from database.
      *
-     * @param  string $key
-     * @param  array $replace
+     * @param  string  $key
      * @param  null  $locale
      * @param  bool  $fallback
      * @return string|array|null
@@ -30,7 +29,7 @@ class DatabaseTranslator implements Translator
     {
         if (! $this->databaseLinesRepository->exists($key)) {
 
-            $lines = $this->databaseLinesRepository->allStartingWith($key. self::$key_separator);
+            $lines = $this->databaseLinesRepository->allStartingWith($key.self::$key_separator);
 
             /**
              * If no specific line is requested, we check if a collection of lines can be retrieved

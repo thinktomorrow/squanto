@@ -20,8 +20,11 @@ class DatabaseLine extends Model
     use SoftDeletes;
 
     public $table = 'squanto_lines';
+
     public $guarded = [];
+
     public $dynamicKeys = ['value'];
+
     public $casts = [
         'metadata' => 'array',
     ];

@@ -1,4 +1,5 @@
 <?php
+
 return [
     'title' => 'title',
     // content is missing on purpose

@@ -15,24 +15,12 @@ class PurgeDatabaseCommand extends Command
 
     protected $description = 'Remove database lines that are no longer present in the language files.';
 
-    /**
-     * @var DiskLinesRepository
-     */
     private DiskLinesRepository $diskLinesRepository;
 
-    /**
-     * @var \Thinktomorrow\Squanto\Database\DatabaseLinesRepository
-     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /**
-     * @var RemoveDatabaseLine
-     */
     private RemoveDatabaseLine $removeDatabaseLine;
 
-    /**
-     * @var CacheDatabaseLines
-     */
     private CacheDatabaseLines $cacheDatabaseLines;
 
     public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, RemoveDatabaseLine $removeDatabaseLine, CacheDatabaseLines $cacheDatabaseLines)
@@ -66,7 +54,7 @@ class PurgeDatabaseCommand extends Command
         );
 
         if (count($purgedRows) > 0) {
-            $this->info(count($purgedRows) . ' obsolete lines purged from database.');
+            $this->info(count($purgedRows).' obsolete lines purged from database.');
             $this->displayTable(['line', 'translations'], $purgedRows);
             $this->info('Finished. Everything is back in sync!');
 

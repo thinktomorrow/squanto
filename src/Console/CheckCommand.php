@@ -9,16 +9,11 @@ use Thinktomorrow\Squanto\Domain\Line;
 class CheckCommand extends Command
 {
     protected $signature = 'squanto:check';
+
     protected $description = 'Check if your database lines are up to date.';
 
-    /**
-     * @var DiskLinesRepository
-     */
     private DiskLinesRepository $diskLinesRepository;
 
-    /**
-     * @var DatabaseLinesRepository
-     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
     public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository)
@@ -54,10 +49,10 @@ class CheckCommand extends Command
         );
 
         if (count($pushableRows) > 0) {
-            $this->displayTable([ count($pushableRows) . ' new lines'], $pushableRows);
+            $this->displayTable([count($pushableRows).' new lines'], $pushableRows);
         }
         if (count($purgableRows) > 0) {
-            $this->displayTable([count($purgableRows) . ' obsolete lines'], $purgableRows);
+            $this->displayTable([count($purgableRows).' obsolete lines'], $purgableRows);
         }
 
         if (count($pushableRows) > 0) {

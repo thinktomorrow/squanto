@@ -4,6 +4,7 @@ namespace Thinktomorrow\SquantoTests\Application\Translator;
 
 use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
 use Thinktomorrow\Squanto\Domain\Line;
+use Thinktomorrow\Squanto\Squanto;
 use Thinktomorrow\SquantoTests\TestCase;
 
 class SquantoTranslatorCascadeTest extends TestCase
@@ -28,7 +29,7 @@ class SquantoTranslatorCascadeTest extends TestCase
             'en' => 'content database',
         ]));
 
-        $aboutContent = require __DIR__ . '/../../stubs/cached/en/about.php';
+        $aboutContent = require __DIR__.'/../../stubs/cached/en/about.php';
         $this->assertNull($aboutContent['content']);
 
         app()->setLocale('en');
@@ -59,5 +60,25 @@ class SquantoTranslatorCascadeTest extends TestCase
         $this->rebindTranslator();
 
         $this->assertEquals('titel', $this->translator->get('about.title'));
+    }
+
+    public function test_it_uses_original_source_for_excluded_namespaced_files(): void
+    {
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('chief-form-plugin::general.title', [
+            'nl' => 'Database plugin titel',
+        ]));
+
+        config()->set('squanto.excluded_files', ['chief-form-plugin::general']);
+        $this->rebindTranslator();
+        app('translation.loader')->addNamespace('chief-form-plugin', dirname((string) config('squanto.lang_path')).'/plugin/lang');
+
+        $this->assertEquals('Plugin algemene titel', $this->translator->get('chief-form-plugin::general.title'));
+    }
+
+    public function test_register_plugin_registers_the_laravel_fallback_source(): void
+    {
+        Squanto::registerPlugin(dirname((string) config('squanto.lang_path')).'/plugin/lang', 'chief-form-plugin', 'Form plugin');
+
+        $this->assertEquals('Plugin algemene titel', $this->translator->get('chief-form-plugin::general.title'));
     }
 }

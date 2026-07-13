@@ -7,13 +7,14 @@ use Orchestra\Testbench\TestCase as BaseTestCase;
 use Spatie\TemporaryDirectory\TemporaryDirectory;
 use Thinktomorrow\Squanto\SquantoManagerServiceProvider;
 use Thinktomorrow\Squanto\SquantoServiceProvider;
+use Thinktomorrow\Squanto\Translators\SquantoTranslator;
 
 class TestCase extends BaseTestCase
 {
     use RefreshDatabase;
     use TestHelpers;
 
-    /** @var \Thinktomorrow\Squanto\Translators\SquantoTranslator */
+    /** @var SquantoTranslator */
     protected $translator;
 
     /** @var string */
@@ -21,7 +22,6 @@ class TestCase extends BaseTestCase
 
     /** @var string */
     private $tempDirectory;
-
 
     protected function setUp(): void
     {
@@ -54,7 +54,7 @@ class TestCase extends BaseTestCase
 
     protected function getEnvironmentSetUp($app): void
     {
-        //copy stubs to temp folder
+        // copy stubs to temp folder
         $this->recurse_copy($this->getStubDirectory(), $this->getTempDirectory());
 
         $app['path.lang'] = $this->getTempDirectory('lang');
@@ -93,11 +93,11 @@ class TestCase extends BaseTestCase
 
     private function getStubDirectory($dir = null)
     {
-        return __DIR__.'/stubs/' . $dir;
+        return __DIR__.'/stubs/'.$dir;
     }
 
     private function getTempDirectory($dir = null)
     {
-        return __DIR__.'/tmp/' . $dir;
+        return __DIR__.'/tmp/'.$dir;
     }
 }

@@ -10,7 +10,7 @@ use Thinktomorrow\SquantoTests\TestCase;
 
 class DatabaseTranslatorTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -31,7 +31,7 @@ class DatabaseTranslatorTest extends TestCase
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar', ['nl' => 'bazz']));
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar2', ['nl' => 'bazzer']));
 
-        $this->assertEquals(['bar' => 'bazz','bar2' => 'bazzer'], $this->translator->get('foo'));
+        $this->assertEquals(['bar' => 'bazz', 'bar2' => 'bazzer'], $this->translator->get('foo'));
     }
 
     public function test_it_can_get_nested_collection()
@@ -39,8 +39,8 @@ class DatabaseTranslatorTest extends TestCase
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar.first', ['nl' => 'bazz']));
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar.second', ['nl' => 'bazzer']));
 
-        $this->assertEquals(['bar' => ['first' => 'bazz','second' => 'bazzer']], $this->translator->get('foo'));
-        $this->assertEquals(['first' => 'bazz','second' => 'bazzer'], $this->translator->get('foo.bar'));
+        $this->assertEquals(['bar' => ['first' => 'bazz', 'second' => 'bazzer']], $this->translator->get('foo'));
+        $this->assertEquals(['first' => 'bazz', 'second' => 'bazzer'], $this->translator->get('foo.bar'));
     }
 
     public function test_it_does_not_get_collection_if_key_is_not_separated_with_dot()
@@ -48,7 +48,7 @@ class DatabaseTranslatorTest extends TestCase
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar_first', ['nl' => 'bazz']));
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.bar_second', ['nl' => 'bazzer']));
 
-        $this->assertEquals(['bar_first' => 'bazz','bar_second' => 'bazzer'], $this->translator->get('foo'));
+        $this->assertEquals(['bar_first' => 'bazz', 'bar_second' => 'bazzer'], $this->translator->get('foo'));
         $this->assertNull($this->translator->get('foo.bar'));
     }
 

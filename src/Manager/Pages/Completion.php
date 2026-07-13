@@ -18,7 +18,7 @@ final class Completion
 
         $lines->each(function (Line $line) use ($locales, &$completed) {
             foreach ($locales as $locale) {
-                if (null !== $line->value($locale) && '' !== $line->value($locale)) {
+                if ($line->value($locale) !== null && $line->value($locale) !== '') {
                     $completed++;
                 }
             }

@@ -46,9 +46,21 @@ final class DatabaseLinesRepository
         return new Lines($models);
     }
 
+    public function allForPage(string $pageKey): Lines
+    {
+        $models = $this->modelsForPage($pageKey)->map->toLine()->all();
+
+        return new Lines($models);
+    }
+
     public function modelsStartingWith(string $key): Collection
     {
         return DatabaseLine::where('key', 'LIKE', $key.'%')->get();
+    }
+
+    public function modelsForPage(string $pageKey): Collection
+    {
+        return DatabaseLine::where('key', 'LIKE', $pageKey.'.%')->get();
     }
 
     public function search(string $term): Collection

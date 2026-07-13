@@ -3,14 +3,20 @@
 namespace Thinktomorrow\Squanto\Translators;
 
 use Illuminate\Contracts\Translation\Loader;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 use Illuminate\Translation\Translator as LaravelTranslator;
+use Thinktomorrow\Squanto\Disk\Paths;
 
 class SquantoTranslator extends LaravelTranslator implements Translator
 {
     private DatabaseTranslator $databaseTranslator;
+
     private array $excludedFilenames;
+
     private bool $keyAsDefault = true;
+
     private ?bool $isDatabaseAlreadyMigrated = null;
 
     public function __construct(Loader $loader, $locale)
@@ -25,8 +31,6 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * In case the translation is not found, Laravel returns the transkey by default.
      * In squanto config you could choose to opt out of this behavior and instead
      * have a non existing translation return null.
-     *
-     * @param bool $keyAsDefault
      */
     public function setKeyAsDefault(bool $keyAsDefault = true): void
     {
@@ -40,8 +44,7 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * 2. Get from database
      * 3. Get from the /resources/lang
      *
-     * @param  string $key
-     * @param  array $replace
+     * @param  string  $key
      * @param  null  $locale
      * @param  bool  $fallback
      * @return string|array|null
@@ -74,10 +77,6 @@ class SquantoTranslator extends LaravelTranslator implements Translator
      * Get from excluded sources. This is used here to make retrieval of these
      * non-managed translations a lot faster by going straight to source
      *
-     * @param  $key
-     * @param  $replace
-     * @param  $locale
-     * @param  $fallback
      * @return array|null|string
      */
     private function getFromExcludedSource($key, $replace, $locale, $fallback)
@@ -91,28 +90,87 @@ class SquantoTranslator extends LaravelTranslator implements Translator
 
     private function belongsToExcludedSource(string $key): bool
     {
-        $pagePrefix = substr($key, 0, strpos($key, '.'));
+        if (! Str::contains($key, '.')) {
+            return false;
+        }
+
+        $pagePrefix = Str::before($key, '.');
 
         return in_array($pagePrefix, $this->excludedFilenames);
     }
 
     /**
-     * Retrieve the translation from the squanto cache.
+     * Retrieve the translation from the Squanto cache.
      *
-     * @param  $key
-     * @param  array $replace
      * @param  null  $locale
      * @return mixed|null
      */
     private function getFromCache($key, array $replace = [], $locale = null, $fallback = true)
     {
-        if (false === strpos($key, 'squanto::')) {
-            $key = 'squanto::'.$key;
+        foreach ($this->cacheLocales($locale, $fallback) as $cacheLocale) {
+            if (null !== ($result = $this->getFromCacheLocale($key, $replace, $cacheLocale))) {
+                return $result;
+            }
         }
 
-        $result = parent::get($key, $replace, $locale, $fallback);
+        return null;
+    }
 
-        return ($result !== $key) ? $result : null;
+    private function getFromCacheLocale(string $key, array $replace, string $locale)
+    {
+        [$namespace, $lineKey] = $this->splitNamespace($key);
+        $group = Str::before($lineKey, '.');
+        $item = Str::contains($lineKey, '.') ? Str::after($lineKey, '.') : null;
+        $filepath = $this->cacheFilepath($namespace, $locale, $group);
+
+        if (! is_file($filepath)) {
+            return null;
+        }
+
+        $lines = include $filepath;
+
+        if (! is_array($lines)) {
+            return null;
+        }
+
+        if ($item === null) {
+            return $lines;
+        }
+
+        if (! Arr::has($lines, $item)) {
+            return null;
+        }
+
+        return $this->makeReplacements(Arr::get($lines, $item), $replace);
+    }
+
+    private function cacheLocales(string $locale, bool $fallback): array
+    {
+        $locales = [$locale];
+
+        if ($fallback && config('app.fallback_locale')) {
+            $locales[] = config('app.fallback_locale');
+        }
+
+        return array_values(array_unique($locales));
+    }
+
+    private function cacheFilepath(?string $namespace, string $locale, string $group): string
+    {
+        if ($namespace) {
+            return Paths::getSquantoCachePath().'/vendor/'.$namespace.'/'.$locale.'/'.$group.'.php';
+        }
+
+        return Paths::getSquantoCachePath().'/'.$locale.'/'.$group.'.php';
+    }
+
+    private function splitNamespace(string $key): array
+    {
+        if (! Str::contains($key, '::')) {
+            return [null, $key];
+        }
+
+        return explode('::', $key, 2);
     }
 
     private function getFromDatabase($key, array $replace = [], $locale = null, $fallback = true)
@@ -137,6 +195,6 @@ class SquantoTranslator extends LaravelTranslator implements Translator
             return $this->isDatabaseAlreadyMigrated;
         }
 
-        return ($this->isDatabaseAlreadyMigrated = Schema::hasTable('squanto_lines'));
+        return $this->isDatabaseAlreadyMigrated = Schema::hasTable('squanto_lines');
     }
 }

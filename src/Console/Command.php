@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Console;
@@ -25,8 +26,8 @@ abstract class Command extends \Illuminate\Console\Command
         $pageKey = '';
 
         foreach ($rows as $row) {
-            if ($pageKey && 0 !== strpos($row[0], $pageKey)) {
-                $rowsWithSeparators[] = new TableSeparator();
+            if ($pageKey && strpos($row[0], $pageKey) !== 0) {
+                $rowsWithSeparators[] = new TableSeparator;
             }
 
             $rowsWithSeparators[] = $row;

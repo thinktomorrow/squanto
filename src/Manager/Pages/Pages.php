@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Manager\Pages;
@@ -17,7 +18,7 @@ final class Pages
     public static function fromFilenames(array $filenames): self
     {
         // Extract all files (excluding non-managed)
-        return new static(
+        return new self(
             array_map(
                 function ($filename) {
                     return Page::fromFilename($filename);
@@ -30,6 +31,17 @@ final class Pages
     public function all(): array
     {
         return $this->pages;
+    }
+
+    public function groupedBySource(): array
+    {
+        $grouped = [];
+
+        foreach ($this->pages as $page) {
+            $grouped[$page->sourceLabel()][] = $page;
+        }
+
+        return $grouped;
     }
 
     private function validatePages(array $pages)

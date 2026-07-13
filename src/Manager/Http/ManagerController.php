@@ -49,6 +49,7 @@ class ManagerController extends Controller
             'squanto::index',
             [
                 'pages' => $pages->all(),
+                'pageGroups' => $pages->groupedBySource(),
                 'results' => $results,
                 'searchTerm' => $searchTerm,
             ]
@@ -57,7 +58,7 @@ class ManagerController extends Controller
 
     public function edit($pageSlug)
     {
-        $lines = $this->databaseLinesRepository->modelsStartingWith($pageSlug);
+        $lines = $this->databaseLinesRepository->modelsForPage($pageSlug);
 
         $viewModels = [];
         $lines->each(function ($lineModel) use (&$viewModels) {

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Manager\Pages;
@@ -9,12 +10,11 @@ use Thinktomorrow\Squanto\Database\DatabaseLine;
 final class LineViewModel
 {
     const FIELDTYPE_TEXT = 'text';
+
     const FIELDTYPE_TEXTAREA = 'textarea';
+
     const FIELDTYPE_EDITOR = 'editor';
 
-    /**
-     * @var DatabaseLine
-     */
     private DatabaseLine $line;
 
     public function __construct(DatabaseLine $line)
@@ -39,7 +39,7 @@ final class LineViewModel
 
     public function label(): string
     {
-        if ($this->line->metadata['label']) {
+        if ($this->line->metadata['label'] ?? null) {
             return $this->line->metadata['label'];
         }
 

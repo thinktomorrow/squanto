@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Disk;
@@ -8,14 +9,8 @@ use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
 
 final class DiskMetadataRepository
 {
-    /**
-     * @var ReadMetadataFromLines
-     */
     private ReadMetadataFromLines $readMetadataFromLines;
 
-    /**
-     * @var ReadMetadataFolder
-     */
     private ReadMetadataFolder $readMetadataFolder;
 
     public function __construct(ReadMetadataFromLines $readMetadataFromLines, ReadMetadataFolder $readMetadataFolder)

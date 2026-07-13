@@ -2,6 +2,8 @@
 
 namespace Thinktomorrow\SquantoTests\Application\Translator;
 
+use Thinktomorrow\Squanto\Database\Application\AddDatabaseLine;
+use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\SquantoTests\TestCase;
 
 class SquantoTranslatorTest extends TestCase
@@ -23,7 +25,7 @@ class SquantoTranslatorTest extends TestCase
 
     public function test_it_can_get_a_translation_collection()
     {
-        $aboutContent = require __DIR__ . '/../../stubs/cached/nl/about.php';
+        $aboutContent = require __DIR__.'/../../stubs/cached/nl/about.php';
 
         $this->assertEquals($aboutContent, $this->translator->get('about'));
     }
@@ -61,5 +63,27 @@ class SquantoTranslatorTest extends TestCase
         $this->assertEquals('nl heading', $this->translator->get('about.heading', [], 'fr', true));
         $this->assertEquals('nl heading', $this->translator->get('about.heading', [], 'fr')); // Default is true
         $this->assertEquals('about.heading', $this->translator->get('about.heading', [], 'fr', false));
+    }
+
+    public function test_it_can_get_a_namespaced_translation_from_cache(): void
+    {
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('chief-form-plugin::general.title', [
+            'nl' => 'Plugin titel cached',
+        ]));
+
+        $this->artisan('squanto:cache');
+
+        $this->assertEquals('Plugin titel cached', $this->translator->get('chief-form-plugin::general.title'));
+    }
+
+    public function test_it_can_get_a_namespaced_translation_collection_from_cache(): void
+    {
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('chief-form-plugin::general.title', [
+            'nl' => 'Plugin titel cached',
+        ]));
+
+        $this->artisan('squanto:cache');
+
+        $this->assertEquals(['title' => 'Plugin titel cached'], $this->translator->get('chief-form-plugin::general'));
     }
 }

@@ -12,7 +12,7 @@ class CacheDatabaseCommandTest extends TestCase
     /** @var mixed */
     private $repository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -25,7 +25,7 @@ class CacheDatabaseCommandTest extends TestCase
 
         $this->artisan('squanto:cache');
 
-        $filepath = config('squanto.cache_path') . '/nl/foo.php';
+        $filepath = config('squanto.cache_path').'/nl/foo.php';
         $cache = require $filepath;
 
         $this->assertEquals('nl value', $cache['xxx']);
@@ -37,7 +37,21 @@ class CacheDatabaseCommandTest extends TestCase
 
         $this->artisan('squanto:cache');
 
-        $this->assertFalse(file_exists(config('squanto.cache_path') . '/nl/foo.php'));
-        $this->assertTrue(file_exists(config('squanto.cache_path') . '/en/foo.php'));
+        $this->assertFalse(file_exists(config('squanto.cache_path').'/nl/foo.php'));
+        $this->assertTrue(file_exists(config('squanto.cache_path').'/en/foo.php'));
+    }
+
+    public function test_it_can_cache_namespaced_database_lines(): void
+    {
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('chief-form-plugin::general.title', ['nl' => 'Plugin titel']));
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('chief-form-plugin::general.nested.content', ['nl' => 'Plugin inhoud']));
+
+        $this->artisan('squanto:cache');
+
+        $filepath = config('squanto.cache_path').'/vendor/chief-form-plugin/nl/general.php';
+        $cache = require $filepath;
+
+        $this->assertEquals('Plugin titel', $cache['title']);
+        $this->assertEquals('Plugin inhoud', $cache['nested']['content']);
     }
 }

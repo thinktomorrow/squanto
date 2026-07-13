@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Disk;
@@ -8,14 +9,8 @@ use Thinktomorrow\Squanto\Domain\Metadata\MetadataCollection;
 
 final class ReadMetadataFolder
 {
-    /**
-     * @var ReadMetadataFile
-     */
     private ReadMetadataFile $readMetadataFile;
 
-    /**
-     * @var Filesystem
-     */
     private Filesystem $filesystem;
 
     public function __construct(ReadMetadataFile $readMetadataFile, Filesystem $filesystem)
@@ -30,7 +25,7 @@ final class ReadMetadataFolder
         $files = $this->filesystem->listContents('/');
 
         foreach ($files as $file) {
-            $filepath = Paths::getSquantoMetadataPath() . '/' . $file['path']; // preprend with basepath: $this->path . DIRECTORY_SEPARATOR . $file['path']
+            $filepath = Paths::getSquantoMetadataPath().'/'.$file['path']; // preprend with basepath: $this->path . DIRECTORY_SEPARATOR . $file['path']
 
             $collection = $collection->merge($this->readMetadataFile->read($filepath));
         }

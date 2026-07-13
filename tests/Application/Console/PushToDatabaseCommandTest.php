@@ -4,6 +4,7 @@ namespace Thinktomorrow\SquantoTests\Application\Console;
 
 use Thinktomorrow\Squanto\Database\DatabaseLine;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
+use Thinktomorrow\Squanto\Squanto;
 use Thinktomorrow\SquantoTests\TestCase;
 
 class PushToDatabaseCommandTest extends TestCase
@@ -11,7 +12,7 @@ class PushToDatabaseCommandTest extends TestCase
     /** @var mixed */
     private $repository;
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         parent::setUp();
 
@@ -82,5 +83,22 @@ class PushToDatabaseCommandTest extends TestCase
 
         $this->assertEquals('titel', $this->repository->find('about.title')->value('nl'));
         $this->assertEquals('title', $this->repository->find('about.title')->value('en'));
+    }
+
+    public function test_it_can_push_registered_namespaced_disk_lines_to_database_and_cache(): void
+    {
+        Squanto::register(dirname((string) config('squanto.lang_path')).'/plugin/lang', 'chief-form-plugin', 'Form plugin');
+        config()->set('squanto.locales', ['en', 'nl']);
+
+        $this->artisan('squanto:push');
+
+        $this->assertEquals('Plugin general title', $this->repository->find('chief-form-plugin::general.title')->value('en'));
+        $this->assertEquals('Plugin algemene titel', $this->repository->find('chief-form-plugin::general.title')->value('nl'));
+        $this->assertEquals('Plugin hero title', $this->repository->find('chief-form-plugin::nested.hero.title')->value('en'));
+
+        $filepath = config('squanto.cache_path').'/vendor/chief-form-plugin/en/general.php';
+        $cache = require $filepath;
+
+        $this->assertEquals('Plugin general title', $cache['title']);
     }
 }

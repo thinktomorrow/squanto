@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Domain\Metadata;
@@ -24,7 +25,7 @@ final class MetadataCollection
     {
         $this->validateItems($items);
 
-        $this->items = static::keyify($items);
+        $this->items = self::keyify($items);
     }
 
     public static function fromLines(Lines $lines): self
@@ -37,7 +38,7 @@ final class MetadataCollection
             }
         );
 
-        return new static($collection);
+        return new self($collection);
     }
 
     public static function fromArray(array $items): self
@@ -48,14 +49,14 @@ final class MetadataCollection
             $preppedItems[] = Metadata::fromRaw($key, $values);
         }
 
-        return new static($preppedItems);
+        return new self($preppedItems);
     }
 
     public function merge(MetadataCollection $metadataCollection): self
     {
         $mergedItems = $this->mergeByKey($this->items, $metadataCollection->items);
 
-        return new static($mergedItems);
+        return new self($mergedItems);
     }
 
     private function validateItems(array $items): void

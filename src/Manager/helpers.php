@@ -7,7 +7,7 @@
  *
  * Takes an input and cleans up a regular string from unwanted input
  *
- * @param  string     $value
+ * @param  string  $value
  * @return string
  */
 if (! function_exists('squantoCleanupString')) {
@@ -26,8 +26,8 @@ if (! function_exists('squantoCleanupString')) {
  *
  * Takes an input and cleans up unwanted / malicious HTML
  *
- * @param  string     $value
- * @param  string     $whitelist - if false no tagstripping will occur - other than htmLawed
+ * @param  string  $value
+ * @param  string  $whitelist  - if false no tagstripping will occur - other than htmLawed
  * @return string
  */
 if (! function_exists('squantoCleanupHTML')) {
@@ -40,15 +40,15 @@ if (! function_exists('squantoCleanupHTML')) {
         // Strip entire blocks of malicious code
         $value = preg_replace(
             [
-            '@<script[^>]*?>.*?</script>@si',
-            '@onclick=[^ ].*? @si',
+                '@<script[^>]*?>.*?</script>@si',
+                '@onclick=[^ ].*? @si',
             ],
             '',
             $value
         );
 
         // strip unwanted tags via whitelist...
-        if (false !== $whitelist) {
+        if ($whitelist !== false) {
             $value = strip_tags($value, $whitelist);
         }
 

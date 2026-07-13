@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Disk;
@@ -12,13 +13,13 @@ final class ReadMetadataFile
     public function read(string $filepath): MetadataCollection
     {
         if (! is_file($filepath) || ! file_exists($filepath)) {
-            throw new InvalidMetadataFileReference('Filepath ['.$filepath . '] does not point to an existing or valid language file.');
+            throw new InvalidMetadataFileReference('Filepath ['.$filepath.'] does not point to an existing or valid language file.');
         }
 
         // Parse filepath and get all metadata lines as an array
         $lines = include $filepath;
 
-        return MetadataCollection::fromArray(static::flattenAndPrependGroupKey($lines, $filepath));
+        return MetadataCollection::fromArray(self::flattenAndPrependGroupKey($lines, $filepath));
     }
 
     private static function flattenAndPrependGroupKey(array $values, string $filepath): array

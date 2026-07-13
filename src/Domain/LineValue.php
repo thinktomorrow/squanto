@@ -17,7 +17,7 @@ final class LineValue
 
     public static function fromArray(array $values): self
     {
-        return new static($values);
+        return new self($values);
     }
 
     public function value(string $locale): ?string
@@ -36,24 +36,23 @@ final class LineValue
 
     public function merge(LineValue $otherLineValue): self
     {
-        return new static(array_merge($this->values, $otherLineValue->values));
+        return new self(array_merge($this->values, $otherLineValue->values));
     }
 
     /**
      * Values should consist of locale:value pairs.
      *
-     * @param  array $values
      * @throws InvalidLineValue
      */
     private function validateValues(array $values): void
     {
         foreach ($values as $locale => $value) {
             if (! is_string($locale)) {
-                throw new InvalidLineValue('LineValue should contain locale:value pairs. Invalid locale [' . $locale . '] given.');
+                throw new InvalidLineValue('LineValue should contain locale:value pairs. Invalid locale ['.$locale.'] given.');
             }
 
-            if (! is_string($value) && null !== $value) {
-                throw new InvalidLineValue('A value is expected to be of type string or null. A value of type ' . gettype($value) . ' is passed instead.');
+            if (! is_string($value) && $value !== null) {
+                throw new InvalidLineValue('A value is expected to be of type string or null. A value of type '.gettype($value).' is passed instead.');
             }
         }
     }

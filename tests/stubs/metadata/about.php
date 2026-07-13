@@ -1,4 +1,5 @@
 <?php
+
 return [
     'title' => [
         'label' => 'titel label',

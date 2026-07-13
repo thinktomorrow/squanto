@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Database\Application;
@@ -13,12 +14,12 @@ final class UpdateDatabaseLine
     {
         DatabaseLine::findByKey(LineKey::fromString($line->keyAsString()))->update(
             [
-            'values' => ['value' => array_filter(
-                $line->values(),
-                function ($value) {
-                    return null !== $value;
-                }
-            )],
+                'values' => ['value' => array_filter(
+                    $line->values(),
+                    function ($value) {
+                        return $value !== null;
+                    }
+                )],
             ]
         );
     }

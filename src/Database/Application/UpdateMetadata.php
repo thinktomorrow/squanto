@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Database\Application;
@@ -12,9 +13,9 @@ final class UpdateMetadata
     public function handle(LineKey $lineKey, Metadata $metadata): void
     {
         if (! $line = DatabaseLine::findByKey($lineKey)) {
-            throw new \InvalidArgumentException('No database line found for linekey ' . $lineKey->get());
+            throw new \InvalidArgumentException('No database line found for linekey '.$lineKey->get());
         }
 
-        $line->update(['metadata' => $metadata->values(),]);
+        $line->update(['metadata' => $metadata->values()]);
     }
 }

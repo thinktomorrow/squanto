@@ -17,7 +17,7 @@ return [
      *
      * @var array
      */
-    'excluded_files' => ['auth','pagination','passwords','validation','app', 'routes'],
+    'excluded_files' => ['auth', 'pagination', 'passwords', 'validation', 'app', 'routes'],
 
     /**
      * Return null instead of the translation key when a translation isn't found.`
@@ -37,6 +37,7 @@ return [
     /**
      * Path where the laravel language files are stored
      * Default is the /resources/lang folder
+     *
      * @var string
      */
     'lang_path' => base_path('resources/lang'),
@@ -44,6 +45,7 @@ return [
     /**
      * Path where the cached language files should be stored. Note that this entire folder
      * will be built up from scratch on each cache refresh.
+     *
      * @var string
      */
     'cache_path' => storage_path('app/lang'),

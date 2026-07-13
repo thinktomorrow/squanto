@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Services;
@@ -37,9 +38,6 @@ trait KeyedCollection
     /**
      * Use the key of each Line as key for its array entry.
      * This way we have unique entries and allow for easy replacement of existing values.
-     *
-     * @param  array $items
-     * @return array
      */
     private static function keyify(array $items): array
     {

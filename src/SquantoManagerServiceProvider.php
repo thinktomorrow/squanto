@@ -22,15 +22,15 @@ class SquantoManagerServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        include_once dirname(__FILE__) . "/Manager/helpers.php";
+        include_once dirname(__FILE__).'/Manager/helpers.php';
 
         if (! $this->app->routesAreCached() && config('squanto.use_default_routes')) {
-            include __DIR__ . '/Manager/Http/routes.php';
+            include __DIR__.'/Manager/Http/routes.php';
         }
 
         // Register squanto viewfiles under squanto:: namespace
         // allow to override them by making a view file under the resources/views/vendor/squanto location
-        $this->loadViewsFrom(__DIR__ . '/Manager/views', 'squanto');
+        $this->loadViewsFrom(__DIR__.'/Manager/views', 'squanto');
 
         // Project specific views
         $overridePath = resource_path('views/vendor/squanto');
@@ -39,7 +39,7 @@ class SquantoManagerServiceProvider extends ServiceProvider
             $this->loadViewsFrom($overridePath, 'squanto');
         }
 
-        $this->loadViewsFrom(realpath(__DIR__ . '/Manager/views'), 'squanto');
+        $this->loadViewsFrom(realpath(__DIR__.'/Manager/views'), 'squanto');
 
         Blade::componentNamespace('Thinktomorrow\\Squanto\\Manager\\Components', 'squanto');
     }

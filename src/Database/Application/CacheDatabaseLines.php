@@ -2,6 +2,7 @@
 
 namespace Thinktomorrow\Squanto\Database\Application;
 
+use Illuminate\Support\Str;
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
@@ -16,9 +17,6 @@ class CacheDatabaseLines
      */
     private $filesystem;
 
-    /**
-     * @var DatabaseLinesRepository
-     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
     public function __construct(DatabaseLinesRepository $databaseLinesRepository, Filesystem $filesystem)
@@ -42,7 +40,7 @@ class CacheDatabaseLines
                 array_filter(
                     $lines->values($locale),
                     function ($value) {
-                        return null !== $value;
+                        return $value !== null;
                     }
                 )
             );
@@ -52,19 +50,39 @@ class CacheDatabaseLines
     /**
      * Create new cached translation files based on database entries
      *
-     * @param string $locale
-     * @param array $lines  - flat array of key-value pairs e.g. foo.bar => 'translation of foo'
+     * @param  array  $lines  - flat array of key-value pairs e.g. foo.bar => 'translation of foo'
      */
     private function writeFile(string $locale, array $lines = [])
     {
-        $translations = ConvertToTree::fromFlattened($lines);
+        $translations = [];
 
-        foreach ($translations as $section => $trans) {
-            $this->filesystem->write(
-                $locale.'/'.$section.'.php',
-                "<?php\n\n return ".var_export($trans, true).";\n"
-            );
+        foreach ($lines as $key => $value) {
+            [$namespace, $lineKey] = $this->splitNamespace($key);
+            $group = Str::before($lineKey, '.');
+            $nestedKey = Str::after($lineKey, '.');
+            $path = $namespace ? 'vendor/'.$namespace.'/'.$locale : $locale;
+
+            $translations[$path][$group][$nestedKey] = $value;
         }
+
+        foreach ($translations as $path => $groups) {
+            foreach ($groups as $section => $trans) {
+                $this->filesystem->createDirectory($path);
+                $this->filesystem->write(
+                    $path.'/'.$section.'.php',
+                    "<?php\n\n return ".var_export(ConvertToTree::fromFlattened($trans), true).";\n"
+                );
+            }
+        }
+    }
+
+    private function splitNamespace(string $key): array
+    {
+        if (! Str::contains($key, '::')) {
+            return [null, $key];
+        }
+
+        return explode('::', $key, 2);
     }
 
     private function deleteAllCacheFiles(): void

@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Database\Application;
@@ -19,9 +20,9 @@ final class AddDatabaseLine
 
         DatabaseLine::create(
             [
-            'key' => $line->keyAsString(),
-            'values' => ['value' => $line->values()],
-            'metadata' => $metadata ? $metadata->values() : [],
+                'key' => $line->keyAsString(),
+                'values' => ['value' => $line->values()],
+                'metadata' => $metadata ? $metadata->values() : [],
             ]
         );
     }

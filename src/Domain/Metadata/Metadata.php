@@ -1,4 +1,5 @@
 <?php
+
 declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Domain\Metadata;
@@ -9,6 +10,7 @@ use Thinktomorrow\Squanto\Domain\LineKey;
 final class Metadata
 {
     private LineKey $lineKey;
+
     private array $values;
 
     public function __construct(LineKey $lineKey, array $values)
@@ -19,17 +21,17 @@ final class Metadata
 
     public static function fromLine(Line $line): self
     {
-        return new static(
+        return new self(
             LineKey::fromString($line->keyAsString()), [
-            'label' => null,
-            'description' => null,
-            'fieldtype' => static::guessFieldType($line),
-        ]);
+                'label' => null,
+                'description' => null,
+                'fieldtype' => self::guessFieldType($line),
+            ]);
     }
 
     public static function fromRaw(string $key, array $values): self
     {
-        return new static(LineKey::fromString($key), $values);
+        return new self(LineKey::fromString($key), $values);
     }
 
     public function values(): array
@@ -63,6 +65,6 @@ final class Metadata
 
     public function merge(Metadata $other): self
     {
-        return new static($this->lineKey, array_merge($this->values, $other->values));
+        return new self($this->lineKey, array_merge($this->values, $other->values));
     }
 }

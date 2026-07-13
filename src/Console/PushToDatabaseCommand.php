@@ -18,34 +18,16 @@ class PushToDatabaseCommand extends Command
 
     protected $description = 'Push all language lines to the database. Existing database values will remain untouched.';
 
-    /**
-     * @var DiskLinesRepository
-     */
     private DiskLinesRepository $diskLinesRepository;
 
-    /**
-     * @var \Thinktomorrow\Squanto\Database\DatabaseLinesRepository
-     */
     private DatabaseLinesRepository $databaseLinesRepository;
 
-    /**
-     * @var AddDatabaseLine
-     */
     private AddDatabaseLine $addDatabaseLine;
 
-    /**
-     * @var UpdateMetadata
-     */
     private UpdateMetadata $updateMetadata;
 
-    /**
-     * @var DiskMetadataRepository
-     */
     private DiskMetadataRepository $diskMetadataRepository;
 
-    /**
-     * @var CacheDatabaseLines
-     */
     private CacheDatabaseLines $cacheDatabaseLines;
 
     public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, AddDatabaseLine $addDatabaseLine, UpdateMetadata $updateMetadata, DiskMetadataRepository $diskMetadataRepository, CacheDatabaseLines $cacheDatabaseLines)
@@ -84,15 +66,15 @@ class PushToDatabaseCommand extends Command
                     $this->addDatabaseLine->handle($line, $metadata);
 
                     $newlyAddedRows[] = [
-                       $line->keyAsString(),
-                       $this->outputTranslations($line->values()),
+                        $line->keyAsString(),
+                        $this->outputTranslations($line->values()),
                     ];
                 }
             }
         );
 
         if (count($newlyAddedRows) > 0) {
-            $this->info(count($newlyAddedRows) . ' new lines pushed to database.');
+            $this->info(count($newlyAddedRows).' new lines pushed to database.');
             $this->displayTable(['line', 'translations'], $newlyAddedRows);
             $this->info('Finished. Everything is back in sync!');
 
