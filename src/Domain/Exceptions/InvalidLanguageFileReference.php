@@ -2,4 +2,6 @@
 
 namespace Thinktomorrow\Squanto\Domain\Exceptions;
 
-class InvalidLanguageFileReference extends SquantoException {}
+class InvalidLanguageFileReference extends SquantoException
+{
+}

@@ -12,7 +12,9 @@ use Thinktomorrow\Squanto\Sources\SquantoSource;
 
 final class ReadLanguageFile
 {
-    public function __construct(private SquantoRegistry $registry) {}
+    public function __construct(private SquantoRegistry $registry)
+    {
+    }
 
     public function read(string $locale, string $filepath, ?SquantoSource $source = null): Lines
     {

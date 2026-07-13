@@ -22,11 +22,13 @@ final class Metadata
     public static function fromLine(Line $line): self
     {
         return new self(
-            LineKey::fromString($line->keyAsString()), [
+            LineKey::fromString($line->keyAsString()),
+            [
                 'label' => null,
                 'description' => null,
                 'fieldtype' => self::guessFieldType($line),
-            ]);
+            ]
+        );
     }
 
     public static function fromRaw(string $key, array $values): self

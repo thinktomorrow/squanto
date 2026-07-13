@@ -2,4 +2,6 @@
 
 namespace Thinktomorrow\Squanto\Domain\Exceptions;
 
-class NotFoundDatabaseLine extends SquantoException {}
+class NotFoundDatabaseLine extends SquantoException
+{
+}

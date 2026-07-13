@@ -2,4 +2,6 @@
 
 namespace Thinktomorrow\Squanto\Domain\Exceptions;
 
-class InvalidMetadataArray extends SquantoException {}
+class InvalidMetadataArray extends SquantoException
+{
+}

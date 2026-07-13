@@ -12,7 +12,8 @@ final class SquantoSource
         private string $path,
         private ?string $namespace,
         private string $label,
-    ) {}
+    ) {
+    }
 
     public static function make(string $path, ?string $namespace = null, ?string $label = null): self
     {
