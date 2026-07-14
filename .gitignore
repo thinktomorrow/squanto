@@ -8,3 +8,4 @@ tests/tmp
 /database/testing.sqlite
 .phpunit.result.cache
 .phpunit.cache
+.php-cs-fixer.cache
