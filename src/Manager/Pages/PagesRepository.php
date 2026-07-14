@@ -43,9 +43,13 @@ final class PagesRepository
 
     public function findBySlug(string $slug): Page
     {
-        foreach ($this->all()->all() as $page) {
-            if ($page->slug() === $slug) {
-                return $page;
+        [$namespace, $group] = str_contains($slug, '::')
+            ? explode('::', $slug, 2)
+            : [null, $slug];
+
+        foreach ($this->registry->all() as $source) {
+            if ($source->namespace() === $namespace) {
+                return Page::fromSourceFile($source, $group);
             }
         }
 

@@ -14,9 +14,6 @@ final class ReadLanguageFolder
 {
     private ReadLanguageFile $readLanguageFile;
 
-    /**
-     * @var Filesystem
-     */
     private SquantoRegistry $registry;
 
     public function __construct(ReadLanguageFile $readLanguageFile, SquantoRegistry $registry)
