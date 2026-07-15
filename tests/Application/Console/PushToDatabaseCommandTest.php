@@ -23,7 +23,7 @@ class PushToDatabaseCommandTest extends TestCase
     {
         config()->set('squanto.locales', ['en', 'nl']);
 
-        $this->artisan('squanto:push');
+        $this->artisan('squanto:push --yes');
 
         $databaseLines = $this->repository->all();
 
@@ -47,7 +47,7 @@ class PushToDatabaseCommandTest extends TestCase
         ]);
 
         config()->set('squanto.locales', ['nl']);
-        $this->artisan('squanto:push');
+        $this->artisan('squanto:push --yes');
 
         $this->assertEquals('custom titel', $this->repository->find('about.title')->value('nl'));
     }
@@ -62,7 +62,7 @@ class PushToDatabaseCommandTest extends TestCase
         ]);
 
         config()->set('squanto.locales', ['nl', 'en']);
-        $this->artisan('squanto:push');
+        $this->artisan('squanto:push --yes');
 
         $this->assertNull($this->repository->find('about.title')->value('en'));
     }
@@ -79,7 +79,7 @@ class PushToDatabaseCommandTest extends TestCase
         $record->delete();
 
         config()->set('squanto.locales', ['nl', 'en']);
-        $this->artisan('squanto:push');
+        $this->artisan('squanto:push --yes');
 
         $this->assertEquals('titel', $this->repository->find('about.title')->value('nl'));
         $this->assertEquals('title', $this->repository->find('about.title')->value('en'));
@@ -90,7 +90,7 @@ class PushToDatabaseCommandTest extends TestCase
         Squanto::register(dirname((string) config('squanto.lang_path')).'/plugin/lang', 'chief-form-plugin', 'Form plugin');
         config()->set('squanto.locales', ['en', 'nl']);
 
-        $this->artisan('squanto:push');
+        $this->artisan('squanto:push --yes');
 
         $this->assertEquals('Plugin general title', $this->repository->find('chief-form-plugin::general.title')->value('en'));
         $this->assertEquals('Plugin algemene titel', $this->repository->find('chief-form-plugin::general.title')->value('nl'));
@@ -100,5 +100,60 @@ class PushToDatabaseCommandTest extends TestCase
         $cache = require $filepath;
 
         $this->assertEquals('Plugin general title', $cache['title']);
+    }
+
+    public function test_it_can_push_all_groups_for_a_namespace_target(): void
+    {
+        Squanto::register(dirname((string) config('squanto.lang_path')).'/plugin/lang', 'chief-form-plugin', 'Form plugin');
+        config()->set('squanto.locales', ['nl']);
+
+        $this->artisan('squanto:push chief-form-plugin --yes');
+
+        $this->assertTrue($this->repository->exists('chief-form-plugin::general.title'));
+        $this->assertTrue($this->repository->exists('chief-form-plugin::general.content'));
+        $this->assertFalse($this->repository->exists('about.title'));
+    }
+
+    public function test_it_can_push_a_specific_target_to_database(): void
+    {
+        config()->set('squanto.locales', ['nl']);
+
+        $this->artisan('squanto:push about.title --yes');
+
+        $this->assertTrue($this->repository->exists('about.title'));
+        $this->assertFalse($this->repository->exists('about.content'));
+    }
+
+    public function test_target_matching_is_segment_aware(): void
+    {
+        config()->set('squanto.locales', ['nl']);
+
+        $this->artisan('squanto:push about.t --yes');
+
+        $this->assertFalse($this->repository->exists('about.title'));
+    }
+
+    public function test_it_can_force_push_existing_database_translations(): void
+    {
+        DatabaseLine::create([
+            'key' => 'about.title',
+            'values' => ['value' => [
+                'nl' => 'custom titel',
+            ]],
+        ]);
+
+        config()->set('squanto.locales', ['nl']);
+        $this->artisan('squanto:push about.title --force --yes');
+
+        $this->assertEquals('titel', $this->repository->find('about.title')->value('nl'));
+    }
+
+    public function test_dry_push_does_not_change_database(): void
+    {
+        config()->set('squanto.locales', ['nl']);
+
+        $this->artisan('squanto:push about.title --dry');
+
+        $this->assertFalse($this->repository->exists('about.title'));
     }
 }

@@ -53,6 +53,11 @@ final class Lines
         return new self($mergedLines);
     }
 
+    public function filter(callable $callback): self
+    {
+        return new self(array_values(array_filter($this->items, $callback)));
+    }
+
     public function each(callable $callback)
     {
         foreach ($this->items as $line) {

@@ -18,12 +18,13 @@
     ],
     "require": {
         "php": ">=8.3",
+        "ext-json": "*",
         "illuminate/contracts": "^11.0|^12.0",
         "illuminate/database": "^11.0|^12.0",
         "illuminate/support": "^11.0|^12.0",
+        "laravel/prompts": "^0.3",
         "league/flysystem": "^3.25",
-        "thinktomorrow/dynamic-attributes": "^2.0",
-        "ext-json": "*"
+        "thinktomorrow/dynamic-attributes": "^2.0"
     },
     "require-dev": {
         "larastan/larastan": "^3.0",

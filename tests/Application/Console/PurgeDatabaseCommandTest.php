@@ -26,8 +26,17 @@ class PurgeDatabaseCommandTest extends TestCase
 
         $this->assertTrue($this->repository->exists('foo.xxx'));
 
-        $this->artisan('squanto:purge');
+        $this->artisan('squanto:purge --yes');
 
         $this->assertFalse($this->repository->exists('foo.xxx'));
+    }
+
+    public function test_dry_purge_does_not_remove_obsolete_lines()
+    {
+        app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.xxx', []));
+
+        $this->artisan('squanto:purge --dry');
+
+        $this->assertTrue($this->repository->exists('foo.xxx'));
     }
 }

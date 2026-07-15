@@ -30,4 +30,15 @@ final class SquantoRegistry
     {
         return $this->all()[0];
     }
+
+    public function findByNamespace(?string $namespace): ?SquantoSource
+    {
+        foreach ($this->all() as $source) {
+            if ($source->namespace() === $namespace) {
+                return $source;
+            }
+        }
+
+        return null;
+    }
 }

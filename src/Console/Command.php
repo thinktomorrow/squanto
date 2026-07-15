@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Console;
 
-use Symfony\Component\Console\Helper\Table;
-use Symfony\Component\Console\Helper\TableSeparator;
+use function Laravel\Prompts\confirm;
+use function Laravel\Prompts\note;
+use function Laravel\Prompts\table;
+use function Laravel\Prompts\warning;
 
 abstract class Command extends \Illuminate\Console\Command
 {
@@ -16,30 +18,28 @@ abstract class Command extends \Illuminate\Console\Command
 
     protected function displayTable(array $headers, array $rows)
     {
-        $table = new Table($this->output);
+        table($headers, $rows);
+    }
 
-        $table->setHeaders($headers);
-
-        $rowsWithSeparators = [];
-
-        // last pagekey
-        $pageKey = '';
-
-        foreach ($rows as $row) {
-            if ($pageKey && strpos($row[0], $pageKey) !== 0) {
-                $rowsWithSeparators[] = new TableSeparator;
-            }
-
-            $rowsWithSeparators[] = $row;
-
-            $pageKey = substr($row[0], 0, strpos($row[0], '.'));
+    protected function confirmChanges(string $summary): bool
+    {
+        if ($this->option('dry') || $this->option('yes')) {
+            return true;
         }
 
-        $table->setRows($rowsWithSeparators);
+        warning($summary);
+        note('Use --dry to view the complete summary.');
 
-        // Allow the last column to expand multiple rows (because it contains the translations)
-        $table->setColumnMaxWidth(count($headers) - 1, 120);
+        return confirm('Continue?', default: false);
+    }
 
-        $table->render();
+    protected function outputTranslations(array $values): string
+    {
+        $output = [];
+        foreach ($values as $locale => $value) {
+            $output[] = $locale.': '.$value;
+        }
+
+        return implode("\n", $output);
     }
 }

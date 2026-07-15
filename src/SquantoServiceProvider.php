@@ -8,8 +8,10 @@ use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Thinktomorrow\Squanto\Console\CacheDatabaseCommand;
 use Thinktomorrow\Squanto\Console\CheckCommand;
+use Thinktomorrow\Squanto\Console\PullFromDatabaseCommand;
 use Thinktomorrow\Squanto\Console\PurgeDatabaseCommand;
 use Thinktomorrow\Squanto\Console\PushToDatabaseCommand;
+use Thinktomorrow\Squanto\Console\ResetDatabaseCommand;
 use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Disk\Paths;
@@ -57,7 +59,9 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
                 CheckCommand::class,
                 CacheDatabaseCommand::class,
                 PushToDatabaseCommand::class,
+                PullFromDatabaseCommand::class,
                 PurgeDatabaseCommand::class,
+                ResetDatabaseCommand::class,
             ]);
         }
     }
