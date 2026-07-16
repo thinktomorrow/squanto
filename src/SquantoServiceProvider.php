@@ -4,14 +4,18 @@ namespace Thinktomorrow\Squanto;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
+use Laravel\Prompts\Prompt;
+use Laravel\Prompts\Table;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Thinktomorrow\Squanto\Console\CacheDatabaseCommand;
 use Thinktomorrow\Squanto\Console\CheckCommand;
+use Thinktomorrow\Squanto\Console\Prompts\SquantoTableRenderer;
 use Thinktomorrow\Squanto\Console\PullFromDatabaseCommand;
 use Thinktomorrow\Squanto\Console\PurgeDatabaseCommand;
 use Thinktomorrow\Squanto\Console\PushToDatabaseCommand;
 use Thinktomorrow\Squanto\Console\ResetDatabaseCommand;
+use Thinktomorrow\Squanto\Console\SquantoCommand;
 use Thinktomorrow\Squanto\Database\Application\CacheDatabaseLines;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Disk\Paths;
@@ -46,6 +50,10 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
      */
     public function boot()
     {
+        Prompt::addTheme('squanto', [
+            Table::class => SquantoTableRenderer::class,
+        ]);
+
         $this->loadTranslationsFrom(Paths::getSquantoCachePath(), 'squanto');
 
         if ($this->app->runningInConsole()) {
@@ -56,6 +64,7 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
             $this->loadMigrationsFrom(__DIR__.'/../database/migrations');
 
             $this->commands([
+                SquantoCommand::class,
                 CheckCommand::class,
                 CacheDatabaseCommand::class,
                 PushToDatabaseCommand::class,

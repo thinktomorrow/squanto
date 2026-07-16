@@ -60,7 +60,8 @@ class PullFromDatabaseCommandTest extends TestCase
     {
         app(AddDatabaseLine::class)->handle(Line::fromRaw('about.title', ['nl' => 'database titel']));
 
-        $this->artisan('squanto:pull about.title --dry');
+        $this->artisan('squanto:pull about.title --dry')
+            ->assertExitCode(0);
 
         $translations = require config('squanto.lang_path').'/nl/about.php';
 

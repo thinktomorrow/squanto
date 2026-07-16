@@ -35,7 +35,8 @@ class PurgeDatabaseCommandTest extends TestCase
     {
         app(AddDatabaseLine::class)->handle(Line::fromRaw('foo.xxx', []));
 
-        $this->artisan('squanto:purge --dry');
+        $this->artisan('squanto:purge --dry')
+            ->assertExitCode(0);
 
         $this->assertTrue($this->repository->exists('foo.xxx'));
     }

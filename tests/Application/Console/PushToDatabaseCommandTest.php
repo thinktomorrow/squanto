@@ -152,7 +152,8 @@ class PushToDatabaseCommandTest extends TestCase
     {
         config()->set('squanto.locales', ['nl']);
 
-        $this->artisan('squanto:push about.title --dry');
+        $this->artisan('squanto:push about.title --dry')
+            ->assertExitCode(0);
 
         $this->assertFalse($this->repository->exists('about.title'));
     }

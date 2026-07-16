@@ -20,6 +20,19 @@ final class TranslationTarget
         return $this->target;
     }
 
+    public function keyMatchDescription(): string
+    {
+        if ($this->target === 'all') {
+            return '*';
+        }
+
+        if ($this->target === 'app') {
+            return 'non-namespaced keys';
+        }
+
+        return $this->target.'.*';
+    }
+
     public function matches(string $key): bool
     {
         $key = strtolower($key);

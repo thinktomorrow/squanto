@@ -48,6 +48,15 @@ class ResetDatabaseCommand extends Command
             return;
         }
 
+        if ($this->option('dry')) {
+            $this->displaySummary('Dry run: reset database translations', [
+                ['Target', $target->value()],
+                ['Key match', $target->keyMatchDescription()],
+                ['Matching database records', (string) count($rows)],
+                ['Action', 'Remove database records'],
+            ]);
+        }
+
         if (! $this->confirmChanges('This will reset '.count($rows).' database lines for target ['.$target->value().'].')) {
             $this->info('Reset cancelled.');
 

@@ -33,19 +33,32 @@ final class WriteLanguageLines
         return $written;
     }
 
+    public function pathsForLines(Lines $lines): array
+    {
+        $paths = [];
+
+        $lines->each(function (Line $line) use (&$paths) {
+            foreach ($line->values() as $locale => $value) {
+                if ($value === null) {
+                    continue;
+                }
+
+                $paths[] = $this->filepathForKey($line->keyAsString(), $locale);
+            }
+        });
+
+        $paths = array_values(array_unique($paths));
+        sort($paths);
+
+        return $paths;
+    }
+
     private function writeValue(string $key, string $locale, string $value): string
     {
         [$namespace, $lineKey] = $this->splitNamespace($key);
         $group = Str::before($lineKey, '.');
         $nestedKey = Str::after($lineKey, '.');
-        $source = $namespace === null
-            ? $this->registry->defaultSource()
-            : $this->registry->findByNamespace($namespace);
-
-        if (! $source) {
-            throw new \InvalidArgumentException('No Squanto source registered for namespace ['.$namespace.'].');
-        }
-        $filepath = $source->path().'/'.$locale.'/'.$group.'.php';
+        $filepath = $this->filepathForKey($key, $locale);
 
         if (! is_dir(dirname($filepath))) {
             mkdir(dirname($filepath), 0777, true);
@@ -61,6 +74,21 @@ final class WriteLanguageLines
         file_put_contents($filepath, "<?php\n\n return ".var_export(ConvertToTree::fromFlattened(Arr::dot($translations)), true).";\n");
 
         return $filepath;
+    }
+
+    private function filepathForKey(string $key, string $locale): string
+    {
+        [$namespace, $lineKey] = $this->splitNamespace($key);
+        $group = Str::before($lineKey, '.');
+        $source = $namespace === null
+            ? $this->registry->defaultSource()
+            : $this->registry->findByNamespace($namespace);
+
+        if (! $source) {
+            throw new \InvalidArgumentException('No Squanto source registered for namespace ['.$namespace.'].');
+        }
+
+        return $source->path().'/'.$locale.'/'.$group.'.php';
     }
 
     private function splitNamespace(string $key): array

@@ -33,7 +33,8 @@ class ResetDatabaseCommandTest extends TestCase
     {
         app(AddDatabaseLine::class)->handle(Line::fromRaw('about.title', ['nl' => 'database titel']));
 
-        $this->artisan('squanto:reset about.title --dry');
+        $this->artisan('squanto:reset about.title --dry')
+            ->assertExitCode(0);
 
         $this->assertTrue($this->repository->exists('about.title'));
     }

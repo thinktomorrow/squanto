@@ -56,6 +56,13 @@ class PurgeDatabaseCommand extends Command
         );
 
         if (count($purgedRows) > 0) {
+            if ($this->option('dry')) {
+                $this->displaySummary('Dry run: purge obsolete database translations', [
+                    ['Obsolete database records', (string) count($purgedRows)],
+                    ['Action', 'Remove records that no longer exist in language files'],
+                ]);
+            }
+
             if (! $this->confirmChanges('This will purge '.count($purgedRows).' obsolete database lines.')) {
                 $this->info('Purge cancelled.');
 

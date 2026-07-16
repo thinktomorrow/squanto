@@ -9,6 +9,7 @@ use Thinktomorrow\Squanto\Database\Application\UpdateMetadata;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
 use Thinktomorrow\Squanto\Disk\DiskMetadataRepository;
+use Thinktomorrow\Squanto\Disk\WriteLanguageLines;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\LineKey;
 use Thinktomorrow\Squanto\Domain\TranslationTarget;
@@ -37,7 +38,9 @@ class PushToDatabaseCommand extends Command
 
     private CacheDatabaseLines $cacheDatabaseLines;
 
-    public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, AddDatabaseLine $addDatabaseLine, UpdateDatabaseLine $updateDatabaseLine, UpdateMetadata $updateMetadata, DiskMetadataRepository $diskMetadataRepository, CacheDatabaseLines $cacheDatabaseLines)
+    private WriteLanguageLines $writeLanguageLines;
+
+    public function __construct(DiskLinesRepository $diskLinesRepository, DatabaseLinesRepository $databaseLinesRepository, AddDatabaseLine $addDatabaseLine, UpdateDatabaseLine $updateDatabaseLine, UpdateMetadata $updateMetadata, DiskMetadataRepository $diskMetadataRepository, CacheDatabaseLines $cacheDatabaseLines, WriteLanguageLines $writeLanguageLines)
     {
         parent::__construct();
 
@@ -48,6 +51,7 @@ class PushToDatabaseCommand extends Command
         $this->updateMetadata = $updateMetadata;
         $this->diskMetadataRepository = $diskMetadataRepository;
         $this->cacheDatabaseLines = $cacheDatabaseLines;
+        $this->writeLanguageLines = $writeLanguageLines;
     }
 
     public function handle()
@@ -90,6 +94,18 @@ class PushToDatabaseCommand extends Command
         );
 
         $changeCount = count($newlyAddedRows) + count($updatedRows);
+
+        if ($this->option('dry')) {
+            $this->displaySummary('Dry run: push file translations', [
+                ['Target', $target->value()],
+                ['Key match', $target->keyMatchDescription()],
+                ['Matching files', $this->summarizeFiles($this->writeLanguageLines->pathsForLines($diskLines))],
+                ['Matching file translations', (string) $diskLines->count()],
+                ['Database records to create', (string) count($newlyAddedRows)],
+                ['Database records to update', (string) count($updatedRows)],
+                ['Action', $this->option('force') ? 'Create missing records and overwrite existing records' : 'Create missing records only'],
+            ]);
+        }
 
         if ($changeCount > 0 && ! $this->confirmChanges('This will push '.$changeCount.' lines to the database for target ['.$target->value().'].')) {
             $this->info('Push cancelled.');

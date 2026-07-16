@@ -51,6 +51,16 @@ class PullFromDatabaseCommand extends Command
             return;
         }
 
+        if ($this->option('dry')) {
+            $this->displaySummary('Dry run: pull database translations', [
+                ['Target', $target->value()],
+                ['Key match', $target->keyMatchDescription()],
+                ['Matching files', $this->summarizeFiles($this->writeLanguageLines->pathsForLines($lines))],
+                ['Matching database records', (string) count($rows)],
+                ['Action', $this->option('reset') ? 'Write database values to language files, then remove database records' : 'Write database values to language files'],
+            ]);
+        }
+
         $summary = 'This will pull '.count($rows).' database lines to language files for target ['.$target->value().'].'.($this->option('reset') ? ' Pulled database lines will be removed afterwards.' : '');
         if (! $this->confirmChanges($summary)) {
             $this->info('Pull cancelled.');
