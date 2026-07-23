@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Console;
 
-use Laravel\Prompts\Prompt;
-use Symfony\Component\Console\Input\InputInterface;
-use Symfony\Component\Console\Output\OutputInterface;
-
 use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\note;
+use Laravel\Prompts\Prompt;
+
 use function Laravel\Prompts\table;
 use function Laravel\Prompts\warning;
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
 
 abstract class Command extends \Illuminate\Console\Command
 {
