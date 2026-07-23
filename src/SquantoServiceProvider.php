@@ -4,12 +4,16 @@ namespace Thinktomorrow\Squanto;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Translation\TranslationServiceProvider as BaseServiceProvider;
+use Laravel\Prompts\MultiSelectPrompt;
 use Laravel\Prompts\Prompt;
+use Laravel\Prompts\SelectPrompt;
 use Laravel\Prompts\Table;
 use League\Flysystem\Filesystem;
 use League\Flysystem\Local\LocalFilesystemAdapter;
 use Thinktomorrow\Squanto\Console\CacheDatabaseCommand;
 use Thinktomorrow\Squanto\Console\CheckCommand;
+use Thinktomorrow\Squanto\Console\Prompts\SquantoMultiSelectPromptRenderer;
+use Thinktomorrow\Squanto\Console\Prompts\SquantoSelectPromptRenderer;
 use Thinktomorrow\Squanto\Console\Prompts\SquantoTableRenderer;
 use Thinktomorrow\Squanto\Console\PullFromDatabaseCommand;
 use Thinktomorrow\Squanto\Console\PurgeDatabaseCommand;
@@ -51,6 +55,8 @@ class SquantoServiceProvider extends BaseServiceProvider implements DeferrablePr
     public function boot()
     {
         Prompt::addTheme('squanto', [
+            MultiSelectPrompt::class => SquantoMultiSelectPromptRenderer::class,
+            SelectPrompt::class => SquantoSelectPromptRenderer::class,
             Table::class => SquantoTableRenderer::class,
         ]);
 
