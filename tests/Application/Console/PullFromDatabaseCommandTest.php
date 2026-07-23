@@ -25,11 +25,14 @@ class PullFromDatabaseCommandTest extends TestCase
 
         $this->artisan('squanto:pull about.title --yes');
 
-        $translations = require config('squanto.lang_path').'/nl/about.php';
+        $filepath = config('squanto.lang_path').'/nl/about.php';
+        $translations = require $filepath;
 
         $this->assertEquals('database titel', $translations['title']);
         $this->assertEquals('omschrijving', $translations['content']);
         $this->assertTrue($this->repository->exists('about.title'));
+        $this->assertStringContainsString('return [', file_get_contents($filepath));
+        $this->assertStringNotContainsString('array (', file_get_contents($filepath));
     }
 
     public function test_it_can_pull_and_reset_database_lines(): void

@@ -29,6 +29,8 @@ class CacheDatabaseCommandTest extends TestCase
         $cache = require $filepath;
 
         $this->assertEquals('nl value', $cache['xxx']);
+        $this->assertStringContainsString('return [', file_get_contents($filepath));
+        $this->assertStringNotContainsString('array (', file_get_contents($filepath));
     }
 
     public function test_a_null_value_will_not_be_cached()

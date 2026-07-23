@@ -6,6 +6,7 @@ use Illuminate\Support\Str;
 use League\Flysystem\Filesystem;
 use Thinktomorrow\Squanto\Database\DatabaseLinesRepository;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
+use Thinktomorrow\Squanto\Services\PhpArrayExporter;
 
 class CacheDatabaseLines
 {
@@ -70,7 +71,7 @@ class CacheDatabaseLines
                 $this->filesystem->createDirectory($path);
                 $this->filesystem->write(
                     $path.'/'.$section.'.php',
-                    "<?php\n\n return ".var_export(ConvertToTree::fromFlattened($trans), true).";\n"
+                    "<?php\n\n return ".PhpArrayExporter::export(ConvertToTree::fromFlattened($trans)).";\n"
                 );
             }
         }

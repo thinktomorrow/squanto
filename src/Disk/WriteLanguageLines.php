@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 use Thinktomorrow\Squanto\Domain\Line;
 use Thinktomorrow\Squanto\Domain\Lines;
 use Thinktomorrow\Squanto\Services\ConvertToTree;
+use Thinktomorrow\Squanto\Services\PhpArrayExporter;
 use Thinktomorrow\Squanto\Sources\SquantoRegistry;
 
 final class WriteLanguageLines
@@ -71,7 +72,7 @@ final class WriteLanguageLines
 
         Arr::set($translations, $nestedKey, $value);
 
-        file_put_contents($filepath, "<?php\n\n return ".var_export(ConvertToTree::fromFlattened(Arr::dot($translations)), true).";\n");
+        file_put_contents($filepath, "<?php\n\n return ".PhpArrayExporter::export(ConvertToTree::fromFlattened(Arr::dot($translations))).";\n");
 
         return $filepath;
     }
