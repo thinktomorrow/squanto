@@ -13,7 +13,9 @@ use Thinktomorrow\Squanto\Sources\SquantoRegistry;
 
 final class WriteLanguageLines
 {
-    public function __construct(private SquantoRegistry $registry) {}
+    public function __construct(private SquantoRegistry $registry)
+    {
+    }
 
     public function handle(Lines $lines): array
     {
