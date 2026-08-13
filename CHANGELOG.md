@@ -1,5 +1,6 @@
 
 ## unreleased
+- Fixed: reading language files with numeric translation keys.
 
 ### 5.1.0 - 2025-12-15
 - Added: basic key/value search

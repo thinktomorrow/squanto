@@ -67,6 +67,15 @@ final class DiskLinesRepositoryTest extends TestCase
         $this->assertNotNull($lines->find('langfile_stub.title'));
     }
 
+    public function test_it_can_retrieve_translations_with_numeric_keys_from_any_file()
+    {
+        $lines = app(ReadLanguageFile::class)->read('nl', __DIR__.'/langfile_numeric_stub.php');
+
+        $this->assertInstanceOf(Lines::class, $lines);
+        $this->assertNotNull($lines->find('langfile_numeric_stub.0'));
+        $this->assertNotNull($lines->find('langfile_numeric_stub.1'));
+    }
+
     public function test_it_fails_when_file_does_not_exist()
     {
         $this->expectException(InvalidLanguageFileReference::class);

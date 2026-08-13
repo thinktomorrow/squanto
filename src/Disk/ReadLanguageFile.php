@@ -41,7 +41,7 @@ final class ReadLanguageFile
 
         $combinedValues = [];
         foreach ($dottedValues as $key => $value) {
-            $combinedValues[$source->translationKey($filename, $key)] = $value;
+            $combinedValues[$source->translationKey($filename, (string) $key)] = $value;
         }
 
         return $combinedValues;
