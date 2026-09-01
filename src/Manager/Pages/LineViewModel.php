@@ -70,6 +70,11 @@ final class LineViewModel
         return $parts[1];
     }
 
+    public function sectionLabel(): ?string
+    {
+        return $this->line->metadata['section_label'] ?? null;
+    }
+
     public function isFieldTypeEditor(): bool
     {
         return $this->fieldType() == self::FIELDTYPE_EDITOR;

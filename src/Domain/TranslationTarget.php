@@ -6,9 +6,7 @@ namespace Thinktomorrow\Squanto\Domain;
 
 final class TranslationTarget
 {
-    private function __construct(private string $target)
-    {
-    }
+    private function __construct(private string $target) {}
 
     public static function fromString(?string $target): self
     {

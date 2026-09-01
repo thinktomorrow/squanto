@@ -6,7 +6,6 @@ interface Translator
 {
     /**
      * @param  string  $key
-     * @param array $replace
      * @param  null  $locale
      * @param  bool  $fallback
      * @return string|array|null

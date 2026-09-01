@@ -4,11 +4,14 @@
         <input type="hidden" name="_method" value="PUT">
 
         @foreach(collect($lines)->groupBy(function($lineViewModel){ return $lineViewModel->sectionKey(); }) as $sectionKey => $groupedLines)
+            @php
+                $sectionLabel = $groupedLines->map->sectionLabel()->filter()->first() ?: ucfirst($sectionKey);
+            @endphp
             <div class="{{ $loop->first ? '' : 'mt-10' }}">
                 <div class="md:grid md:grid-cols-4 md:gap-6">
                     <div class="md:col-span-1">
                         <div class="px-4 sm:px-0 py-3">
-                            <h2 class="text-lg font-medium leading-6 text-gray-900">{{ ucfirst($sectionKey) }}</h2>
+                            <h2 class="text-lg font-medium leading-6 text-gray-900">{{ $sectionLabel }}</h2>
                             <p class="mt-1 text-sm text-gray-600"></p>
                         </div>
                     </div>

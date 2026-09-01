@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Thinktomorrow\Squanto\Console;
 
-use function Laravel\Prompts\confirm;
+use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
 
+use function Laravel\Prompts\confirm;
 use function Laravel\Prompts\intro;
 use function Laravel\Prompts\multiselect;
 use function Laravel\Prompts\select;
-use Thinktomorrow\Squanto\Disk\DiskLinesRepository;
 
 class SquantoCommand extends Command
 {

@@ -1,5 +1,6 @@
 
 ## unreleased
+- Added: section labels can be configured via Squanto line metadata.
 - Fixed: reading language files with numeric translation keys.
 
 ### 5.1.0 - 2025-12-15
