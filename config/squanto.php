@@ -35,6 +35,13 @@ return [
     'use_default_routes' => true,
 
     /**
+     * Blade component that wraps the default manager pages. It is resolved at
+     * render time, so the host application only needs to provide it when the
+     * default manager pages are actually used. Defaults to <x-app-layout>.
+     */
+    'layout_component' => 'app-layout',
+
+    /**
      * Path where the laravel language files are stored
      * Default is the /resources/lang folder
      *

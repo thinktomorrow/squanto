@@ -2,6 +2,8 @@
 ## unreleased
 - Added: section labels can be configured via Squanto line metadata.
 - Fixed: reading language files with numeric translation keys.
+- Fixed: `php artisan view:cache` failing on the default manager layout when the host app has no `<x-app-layout>` component.
+- Added: `squanto.layout_component` config option to set the layout component for the manager pages.
 
 ### 5.1.0 - 2025-12-15
 - Added: basic key/value search
