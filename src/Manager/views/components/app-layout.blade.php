@@ -1,4 +1,4 @@
-<x-app-layout>
+<x-dynamic-component :component="config('squanto.layout_component', 'app-layout')">
 
     <x-slot name="customHead">
         <link rel="stylesheet" href="{{ asset('/back/redactor/redactor.css') }}">
@@ -29,4 +29,4 @@
             {{ $slot }}
         </div>
     </div>
-</x-app-layout>
+</x-dynamic-component>

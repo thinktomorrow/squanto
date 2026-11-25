@@ -50,6 +50,12 @@ Route::put('translations/{id}', [\Thinktomorrow\Squanto\Manager\Http\ManagerCont
 Route::get('translations', [\Thinktomorrow\Squanto\Manager\Http\ManagerController::class, 'index'])->name('squanto.index');
 ```
 
+### layout
+The manager pages are wrapped in the `<x-app-layout>` component of your application. To use another layout component, set the `layout_component` option in `config/squanto.php`.
+```php
+'layout_component' => 'admin-layout',
+```
+
 ### Wysiswyg editor
 The 'redactor' editor is required so you'll need to include the css and js assets. This is not provided since you'll need a licence.
 Feel free to switch editors. The textareas that require a wysiwyg are assigned the `redactor-editor` class.
